@@ -1,0 +1,14 @@
+{
+  "name": "fantabid",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "node server.mjs"
+  },
+  "dependencies": {
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "playwright": "^1.62.0"
+  }
+}
