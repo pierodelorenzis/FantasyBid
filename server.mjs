@@ -32,8 +32,13 @@ const supabase =
   supabaseUrl && supabaseSecretKey
     ? createClient(supabaseUrl, supabaseSecretKey, {
         auth: { persistSession: false, autoRefreshToken: false },
-      })
+    })
     : null;
+const production = process.env.NODE_ENV === "production";
+if (production && !supabase)
+  throw Error(
+    "In produzione sono obbligatorie SUPABASE_URL e SUPABASE_SECRET_KEY",
+  );
 const auctionVersions = new Map();
 const storageReady = (async () => {
   if (!supabase) return;
@@ -62,6 +67,7 @@ const storageReady = (async () => {
       "Impossibile caricare Supabase, viene usato il backup locale:",
       error.message,
     );
+    if (production) throw error;
   }
 })();
 const pendingSupabaseMirror = new Map();
@@ -238,6 +244,11 @@ storageReady.then(() => {
         auction.countdownEndsAt,
       );
   });
+});
+storageReady.catch((error) => {
+  if (!production) return;
+  console.error("Avvio annullato: Supabase non è raggiungibile.", error.message);
+  process.exit(1);
 });
 const id = () => randomBytes(14).toString("hex");
 const code = () => randomBytes(3).toString("hex").toUpperCase();
