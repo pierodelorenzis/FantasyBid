@@ -138,19 +138,21 @@ async function saveNewAuction(auctionCode) {
   const auction = db.auctions[auctionCode];
   fs.writeFileSync(store, JSON.stringify(db, null, 2));
   if (!supabase) return;
-  const { data, error } = await supabase
-    .from("auction_snapshots")
-    .upsert(
-      {
-        code: auctionCode,
-        state: auction,
-        version: 1,
-        updated_at: new Date().toISOString(),
-      },
-      { onConflict: "code" },
-    )
-    .select("version")
-    .single();
+  const { data, error } = atomicBidEnabled
+    ? await supabase.rpc("create_auction", { p_state: auction })
+    : await supabase
+        .from("auction_snapshots")
+        .upsert(
+          {
+            code: auctionCode,
+            state: auction,
+            version: 1,
+            updated_at: new Date().toISOString(),
+          },
+          { onConflict: "code" },
+        )
+        .select("version")
+        .single();
   if (error) {
     delete db.auctions[auctionCode];
     fs.writeFileSync(store, JSON.stringify(db, null, 2));
