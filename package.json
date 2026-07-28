@@ -3,9 +3,32 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "start": "node server.mjs"
+    "start": "node --env-file-if-exists=.env server.mjs",
+    "migrate:supabase": "node --env-file=.env scripts/migrate-data-to-supabase.mjs",
+    "verify:supabase": "node --env-file=.env scripts/verify-supabase-migration.mjs",
+    "migrate:normalized": "node --env-file=.env scripts/migrate-normalized-auctions.mjs",
+    "verify:normalized": "node --env-file=.env scripts/verify-normalized-auctions.mjs",
+    "test:atomic-bid": "node --env-file=.env scripts/test-place-bid-rpc.mjs",
+    "test:atomic-close": "node --env-file=.env scripts/test-close-current-player-rpc.mjs",
+    "test:atomic-session": "node --env-file=.env scripts/test-update-auction-session-rpc.mjs",
+    "test:atomic-call": "node --env-file=.env scripts/test-call-player-rpc.mjs",
+    "test:atomic-order": "node --env-file=.env scripts/test-set-player-order-rpc.mjs",
+    "test:atomic-catalog": "node --env-file=.env scripts/test-update-catalog-player-rpc.mjs",
+    "test:atomic-tiers": "node --env-file=.env scripts/test-apply-auction-tiers-rpc.mjs",
+    "test:atomic-join": "node --env-file=.env scripts/test-join-auction-rpc.mjs",
+    "test:atomic-removals": "node --env-file=.env scripts/test-remove-roster-and-participant-rpc.mjs",
+    "repair:orphaned-bids": "node --env-file=.env scripts/repair-orphaned-bids.mjs",
+    "repair:completed-unassigned-bids": "node --env-file=.env scripts/repair-completed-unassigned-bids.mjs",
+    "test:atomic-clear-activity": "node --env-file=.env scripts/test-clear-auction-activity-rpc.mjs",
+    "reset:auction": "node --env-file=.env scripts/reset-auction-progress.mjs",
+    "test:atomic-undo": "node --env-file=.env scripts/test-restore-auction-state-rpc.mjs",
+    "test:atomic-import": "node --env-file=.env scripts/test-import-auction-catalog-rpc.mjs",
+    "test:countdown-on-bid": "node --env-file=.env scripts/test-cancel-pause-countdown-on-bid-rpc.mjs",
+    "test:atomic-credits": "node --env-file=.env scripts/test-add-participant-credits-rpc.mjs",
+    "test:initial-player-call": "node --env-file=.env scripts/test-log-initial-player-on-start-rpc.mjs"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.110.8",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {

@@ -24,7 +24,10 @@ body {
   align-items: center;
   gap: 7px;
 }
-.brand > span:last-child {
+.brand-name {
+  color: var(--ink);
+}
+.brand-name span {
   color: var(--blue);
 }
 .brand-mark {
@@ -821,6 +824,11 @@ body {
   gap: 14px;
   margin-bottom: 20px;
 }
+.team-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
 .team-table > div {
   grid-template-columns: 1.7fr 0.6fr 1.2fr 0.7fr 0.8fr;
 }
@@ -948,6 +956,19 @@ body {
   color: #758198;
   font-size: 13px;
   line-height: 1.5;
+}
+.credit-input {
+  display: grid;
+  gap: 7px;
+  margin-top: 18px;
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 700;
+}
+.credit-input input {
+  width: 100%;
+  min-height: 52px;
+  font-size: 18px;
 }
 .confirm-actions {
   display: flex;
@@ -1342,4 +1363,184 @@ body {
   background: #ecfdf3;
   border-color: #22c55e;
   color: #15803d;
+}
+.owner-dashboard {
+  min-height: 100vh;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 28px clamp(20px, 4vw, 48px) 52px;
+}
+.owner-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--line);
+}
+.owner-header > div {
+  display: flex;
+  gap: 8px;
+}
+.owner-title {
+  margin: 44px 0 26px;
+}
+.owner-title h1 {
+  margin: 7px 0;
+  font-size: clamp(32px, 5vw, 48px);
+  letter-spacing: -2px;
+}
+.owner-title p:not(.eyebrow),
+.owner-table-heading p,
+.owner-danger-zone p:not(.eyebrow) {
+  color: var(--muted);
+  font-size: 13px;
+}
+.owner-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.owner-stats article,
+.owner-table-card,
+.owner-danger-zone,
+.owner-error {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fff;
+}
+.owner-stats article {
+  min-height: 126px;
+  padding: 22px;
+  display: grid;
+  align-content: space-between;
+}
+.owner-stats span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+.owner-stats strong {
+  font-size: 38px;
+  letter-spacing: -2px;
+}
+.owner-table-card {
+  overflow: hidden;
+}
+.owner-table-heading {
+  padding: 23px 24px 14px;
+}
+.owner-table-heading h2,
+.owner-danger-zone h2,
+.owner-error h2 {
+  margin: 0;
+  font-size: 21px;
+}
+.owner-table-heading p {
+  margin: 5px 0 0;
+}
+.owner-table-wrap {
+  overflow-x: auto;
+}
+.owner-table {
+  width: 100%;
+  min-width: 800px;
+  border-collapse: collapse;
+  text-align: left;
+}
+.owner-table th {
+  padding: 12px 24px;
+  border-top: 1px solid var(--line);
+  color: #8490a4;
+  font: 500 10px "DM Mono";
+  letter-spacing: 1px;
+}
+.owner-table td {
+  padding: 15px 24px;
+  border-top: 1px solid var(--line);
+  font-size: 13px;
+}
+.owner-table td:first-child b,
+.owner-table td:first-child small {
+  display: block;
+}
+.owner-table td:first-child small {
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 11px;
+}
+.owner-status {
+  display: inline-block;
+  border-radius: 99px;
+  padding: 5px 8px;
+  font-size: 11px;
+  font-weight: 700;
+}
+.owner-status.live {
+  background: #e9fbf0;
+  color: #168345;
+}
+.owner-status.paused {
+  background: #fff0f0;
+  color: #c62d2d;
+}
+.owner-danger-zone {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: 20px;
+  padding: 24px;
+  border-color: #f2c8c4;
+  background: #fffafa;
+}
+.owner-danger-zone p:not(.eyebrow) {
+  margin-bottom: 0;
+}
+.owner-danger-zone .danger {
+  flex: 0 0 auto;
+}
+.owner-loading,
+.owner-error {
+  padding: 28px;
+  color: var(--muted);
+}
+.owner-error p {
+  color: var(--muted);
+}
+.owner-error .primary {
+  margin-top: 16px;
+}
+@media (max-width: 750px) {
+  .owner-dashboard {
+    padding: 20px 16px 32px;
+  }
+  .owner-header {
+    padding-bottom: 18px;
+  }
+  .owner-header .brand {
+    font-size: 20px;
+  }
+  .owner-title {
+    margin: 32px 0 22px;
+  }
+  .owner-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .owner-stats article {
+    min-height: 100px;
+    padding: 16px;
+  }
+  .owner-stats strong {
+    font-size: 31px;
+  }
+  .owner-danger-zone {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .owner-danger-zone .danger {
+    width: 100%;
+  }
 }

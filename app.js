@@ -25,6 +25,105 @@ const toast = (t) => {
   e.classList.add("show");
   setTimeout(() => e.classList.remove("show"), 2500);
 };
+const ownerApi = async (path, opts = {}) => {
+  const token = sessionStorage.getItem("fantabid-owner-token") || "";
+  const r = await fetch("/api/owner" + path, {
+    ...opts,
+    headers: {
+      "content-type": "application/json",
+      "x-owner-token": token,
+      ...(opts.headers || {}),
+    },
+  });
+  const d = await r.json();
+  if (!r.ok) throw new Error(d.error || "Operazione non riuscita");
+  return d;
+};
+function ownerLogin() {
+  stop();
+  app.innerHTML = `<main class="auth owner-auth"><a class="brand"><span class="brand-mark">F</span><span class="brand-name">Fanta<span>Bid</span></span></a><section class="auth-card"><button class="back" id="ownerBack">← Torna all'app</button><p class="eyebrow">AREA PROPRIETARIO</p><h1>Panoramica globale</h1><p>Inserisci il token privato configurato sul server per accedere alle statistiche di tutte le aste.</p><form id="ownerLogin"><label>Token proprietario<input name="token" type="password" autocomplete="current-password" required autofocus></label><button class="primary">Accedi</button></form></section></main>`;
+  $("#ownerBack").onclick = () => (location.href = "/");
+  $("#ownerLogin").onsubmit = async (event) => {
+    event.preventDefault();
+    const token = new FormData(event.target).get("token").trim();
+    sessionStorage.setItem("fantabid-owner-token", token);
+    await ownerDashboard();
+  };
+}
+function ownerDate(value) {
+  if (!value) return "—";
+  return new Intl.DateTimeFormat("it-IT", {
+    dateStyle: "short",
+    timeStyle: "short",
+  }).format(new Date(value));
+}
+function ownerStatus(status) {
+  return status === "live" ? "In corso" : "In pausa";
+}
+function ownerEmptyDatabaseDialog() {
+  return new Promise((resolve) => {
+    const modal = document.createElement("div");
+    modal.className = "confirm-modal";
+    modal.innerHTML = `<section class="confirm-card" role="dialog" aria-modal="true" aria-labelledby="emptyDbTitle"><p class="eyebrow">OPERAZIONE IRREVERSIBILE</p><h2 id="emptyDbTitle">Svuotare tutte le aste?</h2><p>Verranno eliminati definitivamente dal database tutte le aste, le squadre, i giocatori assegnati e i movimenti. Per confermare, scrivi <strong>ELIMINA TUTTE LE ASTE</strong>.</p><form><label class="credit-input">Conferma<input name="confirmation" autocomplete="off" required></label><div class="confirm-actions"><button class="ghost" type="button" data-cancel>Annulla</button><button class="danger" type="submit">Svuota il database</button></div></form></section>`;
+    const close = (confirmed = false) => {
+      modal.remove();
+      resolve(confirmed);
+    };
+    const form = modal.querySelector("form");
+    const input = form.elements.confirmation;
+    modal.querySelector("[data-cancel]").onclick = () => close();
+    form.onsubmit = (event) => {
+      event.preventDefault();
+      if (input.value !== "ELIMINA TUTTE LE ASTE") {
+        input.setCustomValidity("Inserisci la frase di conferma esatta");
+        input.reportValidity();
+        return;
+      }
+      close(true);
+    };
+    input.oninput = () => input.setCustomValidity("");
+    modal.onclick = (event) => {
+      if (event.target === modal) close();
+    };
+    document.body.append(modal);
+    input.focus();
+  });
+}
+async function ownerDashboard() {
+  stop();
+  if (!sessionStorage.getItem("fantabid-owner-token")) return ownerLogin();
+  app.innerHTML = `<main class="owner-dashboard"><header class="owner-header"><a class="brand"><span class="brand-mark">F</span><span class="brand-name">Fanta<span>Bid</span></span></a><div><button class="ghost" id="ownerRefresh">Aggiorna</button><button class="ghost" id="ownerLogout">Esci</button></div></header><section class="owner-title"><p class="eyebrow">AREA PROPRIETARIO</p><h1>Tutte le aste</h1><p>Panoramica globale delle aste salvate nel database.</p></section><div id="ownerContent" class="owner-loading">Caricamento dati…</div></main>`;
+  $("#ownerLogout").onclick = () => {
+    sessionStorage.removeItem("fantabid-owner-token");
+    ownerLogin();
+  };
+  $("#ownerRefresh").onclick = ownerDashboard;
+  try {
+    const { auctions } = await ownerApi("/auctions");
+    const totalParticipants = auctions.reduce((sum, item) => sum + item.participants, 0);
+    const totalAssigned = auctions.reduce((sum, item) => sum + item.assigned, 0);
+    const liveAuctions = auctions.filter((item) => item.status === "live").length;
+    $("#ownerContent").innerHTML = `<section class="owner-stats"><article><span>Aste totali</span><strong>${auctions.length}</strong></article><article><span>Aste in corso</span><strong>${liveAuctions}</strong></article><article><span>Partecipanti</span><strong>${totalParticipants}</strong></article><article><span>Giocatori assegnati</span><strong>${totalAssigned}</strong></article></section><section class="owner-table-card"><div class="owner-table-heading"><div><h2>Elenco aste</h2><p>${auctions.length ? "Dati aggiornati dal database." : "Non sono presenti aste nel database."}</p></div></div>${auctions.length ? `<div class="owner-table-wrap"><table class="owner-table"><thead><tr><th>Asta</th><th>Stato</th><th>Partecipanti</th><th>Assegnati</th><th>Giocatore chiamato</th><th>Movimenti</th><th>Aggiornata</th></tr></thead><tbody>${auctions.map((item) => `<tr><td><b>${item.name}</b><small>Codice ${item.code}</small></td><td><span class="owner-status ${item.status === "live" ? "live" : "paused"}">${ownerStatus(item.status)}</span></td><td>${item.participants}</td><td>${item.assigned} / ${item.players}</td><td>${item.currentPlayer || "—"}</td><td>${item.activityCount}</td><td>${ownerDate(item.updatedAt)}</td></tr>`).join("")}</tbody></table></div>` : ""}</section><section class="owner-danger-zone"><div><p class="eyebrow">ZONA PERICOLOSA</p><h2>Svuota il database</h2><p>Elimina ogni asta presente, incluse squadre, assegnazioni e movimenti.</p></div><button class="danger" id="emptyDatabase" ${auctions.length ? "" : "disabled"}>Elimina tutte le aste</button></section>`;
+    if ($("#emptyDatabase"))
+      $("#emptyDatabase").onclick = async () => {
+        if (!(await ownerEmptyDatabaseDialog())) return;
+        try {
+          const result = await ownerApi("/auctions", {
+            method: "DELETE",
+            body: JSON.stringify({ confirmation: "ELIMINA TUTTE LE ASTE" }),
+          });
+          toast(`${result.deletedCount} aste eliminate dal database`);
+          ownerDashboard();
+        } catch (error) {
+          toast(error.message);
+        }
+      };
+  } catch (error) {
+    sessionStorage.removeItem("fantabid-owner-token");
+    $("#ownerContent").innerHTML = `<section class="owner-error"><h2>Accesso non disponibile</h2><p>${error.message}</p><button class="primary" id="retryOwnerLogin">Inserisci di nuovo il token</button></section>`;
+    $("#retryOwnerLogin").onclick = ownerLogin;
+  }
+}
 function confirmDialog(title, message, confirmLabel = "Rimuovi") {
   return new Promise((resolve) => {
     const modal = document.createElement("div");
@@ -43,15 +142,41 @@ function confirmDialog(title, message, confirmLabel = "Rimuovi") {
     modal.querySelector("[data-cancel]").focus();
   });
 }
+function creditDialog(participantName) {
+  return new Promise((resolve) => {
+    const modal = document.createElement("div");
+    modal.className = "confirm-modal";
+    modal.innerHTML = `<section class="confirm-card" role="dialog" aria-modal="true" aria-labelledby="creditTitle"><p class="eyebrow">ACCREDITO CREDITI</p><h2 id="creditTitle">Aggiungi crediti a ${participantName}</h2><p>Inserisci il numero di crediti da aggiungere al budget della squadra.</p><form><label class="credit-input">Crediti<input name="amount" type="number" min="1" step="1" value="1" required autofocus></label><div class="confirm-actions"><button type="button" class="ghost" data-cancel>Annulla</button><button class="primary" type="submit">Aggiungi crediti</button></div></form></section>`;
+    const close = (amount = null) => {
+      modal.remove();
+      resolve(amount);
+    };
+    const form = modal.querySelector("form");
+    const input = form.elements.amount;
+    modal.querySelector("[data-cancel]").onclick = () => close();
+    form.onsubmit = (event) => {
+      event.preventDefault();
+      const amount = Number(input.value);
+      if (!Number.isInteger(amount) || amount <= 0) return input.reportValidity();
+      close(amount);
+    };
+    modal.onclick = (event) => {
+      if (event.target === modal) close();
+    };
+    document.body.append(modal);
+    input.focus();
+    input.select();
+  });
+}
 const money = (n) => "ƒ " + n;
 function landing() {
   stop();
-  app.innerHTML = `<main class="landing"><nav class="land-nav"><a class="brand"><span class="brand-mark">F</span>Fanta<span>Bid</span></a><button id="showJoin" class="ghost">Entra in un'asta →</button></nav><section class="hero"><p class="eyebrow">L'ASTA DEL FANTACALCIO, SEMPLIFICATA</p><h1>Tutta la tua lega.<br><em>Un'unica asta.</em></h1><p class="lead">Crea una stanza, condividi il link e gestisci ogni rilancio in tempo reale.</p><button class="primary big" id="showCreate">Crea una nuova asta <span>→</span></button></section><div class="features"><span>◉ Nessuna registrazione</span><span>◈ Regole personalizzabili</span><span>↓ Export CSV incluso</span></div></main>`;
+  app.innerHTML = `<main class="landing"><nav class="land-nav"><a class="brand"><span class="brand-mark">F</span><span class="brand-name">Fanta<span>Bid</span></span></a><button id="showJoin" class="ghost">Entra in un'asta →</button></nav><section class="hero"><p class="eyebrow">L'ASTA DEL FANTACALCIO, SEMPLIFICATA</p><h1>Tutta la tua lega.<br><em>Un'unica asta.</em></h1><p class="lead">Crea una stanza, condividi il link e gestisci ogni rilancio in tempo reale.</p><button class="primary big" id="showCreate">Crea una nuova asta <span>→</span></button></section><div class="features"><span>◉ Nessuna registrazione</span><span>◈ Regole personalizzabili</span><span>↓ Export CSV incluso</span></div></main>`;
   $("#showCreate").onclick = createForm;
   $("#showJoin").onclick = joinForm;
 }
 function createForm() {
-  app.innerHTML = `<main class="auth"><a class="brand"><span class="brand-mark">F</span>Fanta<span>Bid</span></a><section class="auth-card"><button class="back">← Indietro</button><p class="eyebrow">AMMINISTRATORE</p><h1>Crea la tua asta</h1><p>Imposta i dettagli iniziali. Potrai modificare le regole dalla dashboard.</p><form id="create"><label>Nome della lega<input name="name" required placeholder="es. Amici del calcetto"></label><label>Il tuo nome<input name="adminName" required placeholder="es. Marco Rossi"></label><label>Crediti iniziali per squadra<input name="budget" type="number" value="300" min="1" required></label><button class="primary">Crea asta <span>→</span></button></form></section></main>`;
+  app.innerHTML = `<main class="auth"><a class="brand"><span class="brand-mark">F</span><span class="brand-name">Fanta<span>Bid</span></span></a><section class="auth-card"><button class="back">← Indietro</button><p class="eyebrow">AMMINISTRATORE</p><h1>Crea la tua asta</h1><p>Imposta i dettagli iniziali. Potrai modificare le regole dalla dashboard.</p><form id="create"><label>Nome della lega<input name="name" required placeholder="es. Amici del calcetto"></label><label>Il tuo nome<input name="adminName" required placeholder="es. Marco Rossi"></label><label>Crediti iniziali per squadra<input name="budget" type="number" value="300" min="1" required></label><button class="primary">Crea asta <span>→</span></button></form></section></main>`;
   $(".back").onclick = landing;
   $("#create").onsubmit = async (e) => {
     e.preventDefault();
@@ -74,7 +199,7 @@ function createForm() {
   };
 }
 function joinForm() {
-  app.innerHTML = `<main class="auth"><a class="brand"><span class="brand-mark">F</span>Fanta<span>Bid</span></a><section class="auth-card"><button class="back">← Indietro</button><p class="eyebrow">PARTECIPANTE</p><h1>Entra nell'asta</h1><p>Inserisci il codice che ti ha inviato l'amministratore.</p><form id="join"><label>Codice asta<input name="code" required maxlength="6" placeholder="ABC123" style="text-transform:uppercase"></label><label>Il tuo nome<input name="name" required placeholder="es. Luca Gallo"></label><button class="primary">Entra nell'asta <span>→</span></button></form></section></main>`;
+  app.innerHTML = `<main class="auth"><a class="brand"><span class="brand-mark">F</span><span class="brand-name">Fanta<span>Bid</span></span></a><section class="auth-card"><button class="back">← Indietro</button><p class="eyebrow">PARTECIPANTE</p><h1>Entra nell'asta</h1><p>Inserisci il codice che ti ha inviato l'amministratore.</p><form id="join"><label>Codice asta<input name="code" required maxlength="6" placeholder="ABC123" style="text-transform:uppercase"></label><label>Il tuo nome<input name="name" required placeholder="es. Luca Gallo"></label><button class="primary">Entra nell'asta <span>→</span></button></form></section></main>`;
   $(".back").onclick = landing;
   $("#join").onsubmit = async (e) => {
     e.preventDefault();
@@ -141,7 +266,7 @@ async function load() {
 }
 function nav(page = "live") {
   const admin = session.role === "admin";
-  return `<aside><div class="menu-brand"><a class="brand"><span class="brand-mark">F</span>Fanta<span>Bid</span></a><button id="closeMobileMenu" class="mobile-menu-close" aria-label="Chiudi menu">×</button></div><button class="nav ${page === "live" ? "active" : ""}" data-page="live">◈ Asta live</button>${admin ? `<button class="nav ${page === "teams" ? "active" : ""}" data-page="teams">♟ Squadre partecipanti</button><button class="nav ${page === "admin" ? "active" : ""}" data-page="admin">⚙ Gestione asta</button>` : `<button class="nav ${page === "team" ? "active" : ""}" data-page="team">♟ La mia squadra</button>`}<div class="side-user"><div class="avatar">${initials(session.name)}</div><div><b>${session.name}</b><small>${admin ? "Admin" : "Partecipante"}</small></div><button id="logout">↪</button></div></aside>`;
+  return `<aside><div class="menu-brand"><a class="brand"><span class="brand-mark">F</span><span class="brand-name">Fanta<span>Bid</span></span></a><button id="closeMobileMenu" class="mobile-menu-close" aria-label="Chiudi menu">×</button></div><button class="nav ${page === "live" ? "active" : ""}" data-page="live">◈ Asta live</button>${admin ? `<button class="nav ${page === "teams" ? "active" : ""}" data-page="teams">♟ Squadre partecipanti</button><button class="nav ${page === "admin" ? "active" : ""}" data-page="admin">⚙ Gestione asta</button>` : `<button class="nav ${page === "team" ? "active" : ""}" data-page="team">♟ La mia squadra</button>`}<div class="side-user"><div class="avatar">${initials(session.name)}</div><div><b>${session.name}</b><small>${admin ? "Admin" : "Partecipante"}</small></div><button id="logout">↪</button></div></aside>`;
 }
 function render(page = "live") {
   activePage = page;
@@ -195,7 +320,7 @@ function live() {
   let side =
     session.role === "admin"
       ? `<article class="bid-panel admin-control"><p>Controllo amministratore</p><h2>${auction.participants.filter((x) => x.role === "participant").length} <small>partecipanti</small></h2><hr><p>Osserva i rilanci, assegna il giocatore all'offerta più alta e chiama il successivo.</p><button id="closePlayer" class="primary">Assegna e chiama il prossimo</button></article>`
-      : `<article class="bid-panel"><p>La tua disponibilità</p><h2>${money(my.budget - (my.committed || 0))} <small>crediti</small></h2><div class="bar-label"><span>Budget impegnato</span><b>${my.committed || 0} / ${my.budget}</b></div><div class="bar"><i style="width:${((my.committed || 0) / my.budget) * 100}%"></i></div><hr><label>La tua offerta <small>min. ${money(min)}</small></label><div class="offer"><button id="minus">−</button><input id="amount" type="number" min="${min}" value="${min}"><button id="plus">+</button></div>${warning ? `<div class="warning"><b>!</b><p><strong>Attenzione al completamento rosa</strong>Questa offerta potrebbe lasciarti senza crediti per completare i ${auction.remainingSlots} giocatori mancanti.</p></div>` : ""}<button id="bid" class="primary" ${auction.status !== "live" ? "disabled" : ""}>Fai la tua offerta <span id="offerAmount">${money(min)}</span></button><small class="note">Il server convalida disponibilità, rilanci minimi e tetti per fascia.</small></article>`;
+      : `<article class="bid-panel"><p>La tua disponibilità</p><h2>${money(my.budget - (my.committed || 0))} <small>crediti</small></h2><div class="bar-label"><span>Budget impegnato</span><b>${my.committed || 0} / ${my.budget}</b></div><div class="bar"><i style="width:${((my.committed || 0) / my.budget) * 100}%"></i></div><hr><label>La tua offerta <small>min. ${money(min)}</small></label><div class="offer"><button id="minus">−</button><input id="amount" type="number" min="${min}" value="${min}"><button id="plus">+</button></div>${warning ? `<div class="warning"><b>!</b><p><strong>Attenzione al completamento rosa</strong>Questa offerta potrebbe lasciarti senza crediti per completare i ${auction.remainingSlots} giocatori mancanti.</p></div>` : ""}<button id="bid" class="primary" ${auction.canBid ? "" : "disabled"}>Fai la tua offerta <span id="offerAmount">${money(min)}</span></button><small class="note">Il server convalida disponibilità, rilanci minimi e tetti per fascia.</small></article>`;
   let table = `<section class="recent"><div class="activity-head"><div><p class="eyebrow">ULTIMI MOVIMENTI</p><h2>Il tavolo dell'asta</h2></div>${session.role === "admin" ? `<div class="activity-actions"><button id="undoActivity" class="ghost" ${auction.canUndo ? "" : "disabled"}>Annulla ultima</button><button id="clearActivity" class="danger">Cancella movimenti</button></div>` : ""}</div>${
     auction.activity
       .map(
@@ -219,7 +344,7 @@ function team() {
 }
 function teams() {
   let ps = auction.participants.filter((p) => p.role === "participant");
-  return `<div class="title-row"><div><p class="eyebrow">VISIONE AMMINISTRATORE</p><h1>Squadre dei <em>partecipanti.</em></h1></div><button id="exportAll" class="ghost">↓ Resoconto CSV</button></div>${ps.map((p) => `<section class="admin-card"><div class="team-card-head"><h2>${p.name} <small class="muted">${p.players.length}/${auction.totalSlots} giocatori · ${money(p.budget - p.committed)} residui</small></h2><button class="danger remove-participant" data-participant="${p.token}">Rimuovi squadra</button></div><div class="table team-table">${p.players.length ? `<div class="thead"><span>GIOCATORE</span><span>RUOLO</span><span>SQUADRA</span><span>ACQUISTO</span><span></span></div>${p.players.map((x) => `<div><b>${x.name}</b><span>${x.role}</span><span>${x.team}</span><em>${money(x.price)}</em><button class="ghost remove-team-player" data-participant="${p.token}" data-player="${x.id}">Rimuovi</button></div>`).join("")}` : '<p class="muted pad">Nessun giocatore acquistato.</p>'}</div></section>`).join("") || '<div class="empty"><h1>Nessun partecipante ancora.</h1></div>'}`;
+  return `<div class="title-row"><div><p class="eyebrow">VISIONE AMMINISTRATORE</p><h1>Squadre dei <em>partecipanti.</em></h1></div><button id="exportAll" class="ghost">↓ Resoconto CSV</button></div>${ps.map((p) => `<section class="admin-card"><div class="team-card-head"><h2>${p.name} <small class="muted">${p.players.length}/${auction.totalSlots} giocatori · ${money(p.budget - p.committed)} residui</small></h2><div class="team-card-actions"><button class="ghost add-credits" data-participant="${p.token}" data-participant-name="${p.name}">+ Aggiungi crediti</button><button class="danger remove-participant" data-participant="${p.token}">Rimuovi squadra</button></div></div><div class="table team-table">${p.players.length ? `<div class="thead"><span>GIOCATORE</span><span>RUOLO</span><span>SQUADRA</span><span>ACQUISTO</span><span></span></div>${p.players.map((x) => `<div><b>${x.name}</b><span>${x.role}</span><span>${x.team}</span><em>${money(x.price)}</em><button class="ghost remove-team-player" data-participant="${p.token}" data-player="${x.id}">Rimuovi</button></div>`).join("")}` : '<p class="muted pad">Nessun giocatore acquistato.</p>'}</div></section>`).join("") || '<div class="empty"><h1>Nessun partecipante ancora.</h1></div>'}`;
 }
 function tierRowMarkup(tier = {}) {
   return `<fieldset class="tier-row"><label>Nome<input data-tier-name value="${tier.name || ""}" maxlength="8" required></label><label>Soglia quotazione<input data-tier-min-quote type="number" min="0" value="${tier.minQuote ?? 0}" required></label><label>Base<input data-tier-min-price type="number" min="0" value="${tier.minPrice ?? 1}" required></label><label>Rilancio<input data-tier-increment type="number" min="0" value="${tier.increment ?? 1}" required></label><label>Tetto<input data-tier-cap type="number" min="0" value="${tier.cap ?? 50}" required></label><button type="button" class="danger remove-tier">Rimuovi fascia</button></fieldset>`;
@@ -255,10 +380,7 @@ function wire(page) {
         }
       };
     }
-    if (
-      $("#bid") &&
-      auction.currentPlayer?.highestBid?.participantToken === session.token
-    ) {
+    if ($("#bid") && !auction.canBid && auction.status === "live") {
       $("#bid").disabled = true;
       $("#bid").title = "Sei già in testa con l’ultima offerta";
     }
@@ -350,6 +472,29 @@ function wire(page) {
         "resoconto.csv",
       );
   if (page === "teams") {
+    $$(".add-credits").forEach(
+      (button) =>
+        (button.onclick = async () => {
+          const amount = await creditDialog(button.dataset.participantName);
+          if (amount === null) return;
+          button.disabled = true;
+          try {
+            const result = await api(
+              `/auctions/${session.code}/participants/${button.dataset.participant}/credits`,
+              {
+                method: "POST",
+                body: JSON.stringify({ token: session.token, amount }),
+              },
+            );
+            auction = result.auction;
+            render("teams");
+            toast(`${money(amount)} aggiunti alla squadra`);
+          } catch (error) {
+            toast(error.message);
+            button.disabled = false;
+          }
+        }),
+    );
     $$(".remove-participant").forEach(
       (button) =>
         (button.onclick = async () => {
@@ -475,6 +620,14 @@ function wire(page) {
         $("#playerFile").click();
         return;
       }
+      if (
+        !(await confirmDialog(
+          "Sostituire il catalogo?",
+          "Il nuovo file sostituirà completamente tutti i giocatori del catalogo attuale. L’operazione è disponibile solo quando l’asta non ha offerte o assegnazioni attive.",
+          "Sostituisci catalogo",
+        ))
+      )
+        return;
       result.textContent = `Caricamento di ${file.name}…`;
       let data = await file.arrayBuffer();
       try {
@@ -752,7 +905,9 @@ function initials(n) {
     .toUpperCase();
 }
 window.addEventListener("load", () => {
-  let code = new URLSearchParams(location.search).get("asta");
+  let params = new URLSearchParams(location.search),
+    code = params.get("asta");
+  if (params.has("owner")) return ownerDashboard();
   if (code && !session) {
     joinForm();
     $("#join [name=code]").value = code.toUpperCase();
