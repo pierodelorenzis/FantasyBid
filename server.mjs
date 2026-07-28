@@ -128,6 +128,43 @@ function save(auctionCode) {
   fs.writeFileSync(store, JSON.stringify(db, null, 2));
   scheduleSupabaseMirror(auctionCode);
 }
+async function saveNewAuction(auctionCode) {
+  const auction = db.auctions[auctionCode];
+  fs.writeFileSync(store, JSON.stringify(db, null, 2));
+  if (!supabase) return;
+  const { data, error } = await supabase
+    .from("auction_snapshots")
+    .upsert(
+      {
+        code: auctionCode,
+        state: auction,
+        version: 1,
+        updated_at: new Date().toISOString(),
+      },
+      { onConflict: "code" },
+    )
+    .select("version")
+    .single();
+  if (error) {
+    delete db.auctions[auctionCode];
+    fs.writeFileSync(store, JSON.stringify(db, null, 2));
+    throw Error(`Impossibile salvare la nuova asta su Supabase: ${error.message}`);
+  }
+  auctionVersions.set(auctionCode, data.version);
+}
+async function restoreAuctionFromSupabase(auctionCode) {
+  if (!supabase) return null;
+  const { data, error } = await supabase
+    .from("auction_snapshots")
+    .select("code, state, version")
+    .eq("code", auctionCode)
+    .maybeSingle();
+  if (error) throw Error(error.message);
+  if (!data) return null;
+  db.auctions[auctionCode] = data.state;
+  auctionVersions.set(auctionCode, data.version);
+  return data.state;
+}
 function scheduleAtomicSessionCompletion(
   auction,
   administrator,
@@ -481,14 +518,15 @@ const server = http.createServer(async (req, res) => {
         activity: [],
       };
       db.auctions[auctionCode] = auction;
-      save(auctionCode);
+      await saveNewAuction(auctionCode);
       return json(res, {
         code: auctionCode,
         adminToken: token,
         adminName: body.adminName,
       });
     }
-    const auction = db.auctions[bits[2]];
+    const auction =
+      db.auctions[bits[2]] || (await restoreAuctionFromSupabase(bits[2]));
     if (!auction) throw Error("Asta non trovata");
     ensureTierSettings(auction);
     if (req.method === "GET" && bits.length === 3)

@@ -1,3 +1,188 @@
 {
-  "auctions": {}
+  "auctions": {
+    "CBB678": {
+      "code": "CBB678",
+      "name": "Prima asta",
+      "rules": {
+        "A": {
+          "cap": 150,
+          "minPrice": 20,
+          "increment": 3
+        },
+        "B": {
+          "cap": 100,
+          "minPrice": 8,
+          "increment": 2
+        },
+        "C": {
+          "cap": 50,
+          "minPrice": 1,
+          "increment": 1
+        }
+      },
+      "budget": 500,
+      "status": "paused",
+      "players": [
+        {
+          "id": "p0",
+          "name": "Mateo Retegui",
+          "role": "ATT",
+          "team": "Atalanta",
+          "tier": "A",
+          "quote": 30,
+          "nation": "Italia",
+          "number": 9
+        },
+        {
+          "id": "p1",
+          "name": "Lautaro Martínez",
+          "role": "ATT",
+          "team": "Inter",
+          "tier": "A",
+          "quote": 35,
+          "nation": "Argentina",
+          "number": 10
+        },
+        {
+          "id": "p2",
+          "name": "Teun Koopmeiners",
+          "role": "CEN",
+          "team": "Juventus",
+          "tier": "A",
+          "quote": 25,
+          "nation": "Olanda",
+          "number": 8
+        },
+        {
+          "id": "p3",
+          "name": "Riccardo Orsolini",
+          "role": "CEN",
+          "team": "Bologna",
+          "tier": "B",
+          "quote": 15,
+          "nation": "Italia",
+          "number": 7
+        },
+        {
+          "id": "p4",
+          "name": "Gleison Bremer",
+          "role": "DIF",
+          "team": "Juventus",
+          "tier": "A",
+          "quote": 22,
+          "nation": "Brasile",
+          "number": 3
+        },
+        {
+          "id": "p5",
+          "name": "Alessandro Buongiorno",
+          "role": "DIF",
+          "team": "Napoli",
+          "tier": "B",
+          "quote": 14,
+          "nation": "Italia",
+          "number": 4
+        },
+        {
+          "id": "p6",
+          "name": "Michele Di Gregorio",
+          "role": "POR",
+          "team": "Juventus",
+          "tier": "B",
+          "quote": 12,
+          "nation": "Italia",
+          "number": 1
+        },
+        {
+          "id": "p7",
+          "name": "Nicolò Fagioli",
+          "role": "CEN",
+          "team": "Fiorentina",
+          "tier": "C",
+          "quote": 6,
+          "nation": "Italia",
+          "number": 21
+        },
+        {
+          "id": "p8",
+          "name": "Raoul Bellanova",
+          "role": "DIF",
+          "team": "Atalanta",
+          "tier": "B",
+          "quote": 12,
+          "nation": "Italia",
+          "number": 16
+        },
+        {
+          "id": "p9",
+          "name": "Moise Kean",
+          "role": "ATT",
+          "team": "Fiorentina",
+          "tier": "B",
+          "quote": 18,
+          "nation": "Italia",
+          "number": 20
+        },
+        {
+          "id": "p10",
+          "name": "Elia Caprile",
+          "role": "POR",
+          "team": "Cagliari",
+          "tier": "C",
+          "quote": 5,
+          "nation": "Italia",
+          "number": 12
+        },
+        {
+          "id": "p11",
+          "name": "Matias Soulé",
+          "role": "CEN",
+          "team": "Roma",
+          "tier": "B",
+          "quote": 16,
+          "nation": "Argentina",
+          "number": 18
+        }
+      ],
+      "activity": [],
+      "totalSlots": 25,
+      "orderByRole": false,
+      "playerOrder": null,
+      "currentIndex": 0,
+      "participants": [
+        {
+          "name": "Piero",
+          "role": "admin",
+          "token": "5e1c25c228aa07d4a2160ab74bcc",
+          "budget": 500,
+          "players": [],
+          "committed": 0
+        }
+      ],
+      "tierSettings": [
+        {
+          "cap": 150,
+          "name": "A",
+          "minPrice": 20,
+          "minQuote": 20,
+          "increment": 3
+        },
+        {
+          "cap": 100,
+          "name": "B",
+          "minPrice": 8,
+          "minQuote": 8,
+          "increment": 2
+        },
+        {
+          "cap": 50,
+          "name": "C",
+          "minPrice": 1,
+          "minQuote": 0,
+          "increment": 1
+        }
+      ],
+      "remainingSlots": 25
+    }
+  }
 }
