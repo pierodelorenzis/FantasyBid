@@ -862,9 +862,10 @@ function showCountdown() {
     banner = document.createElement("div");
   banner.className = "auction-countdown" + (starting ? " starting" : "");
   banner.innerHTML = starting
-    ? "▶ Asta al via tra <strong>0</strong> secondi"
-    : "⏱ Giocatore assegnato tra <strong>0</strong> secondi";
+    ? '<i data-lucide="play"></i> Asta al via tra <strong>0</strong> secondi'
+    : '<i data-lucide="timer"></i> Giocatore assegnato tra <strong>0</strong> secondi';
   $(".countdown-slot").append(banner);
+  renderIcons();
   let counter = banner.querySelector("strong"),
     update = () => {
       let seconds = Math.max(0, Math.ceil((end - Date.now()) / 1000));

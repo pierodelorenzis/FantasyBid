@@ -1453,6 +1453,12 @@ button svg,
   font: 700 15px Outfit;
   text-align: center;
 }
+.auction-countdown svg {
+  width: 16px;
+  height: 16px;
+  margin-right: 5px;
+  vertical-align: -3px;
+}
 .auction-countdown.starting {
   background: #ecfdf3;
   border-color: #22c55e;
