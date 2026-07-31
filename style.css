@@ -65,6 +65,26 @@ body {
   font: 600 12px Outfit;
   cursor: pointer;
 }
+button svg,
+.features svg {
+  width: 15px;
+  height: 15px;
+  stroke-width: 2.2;
+  flex: 0 0 auto;
+  vertical-align: middle;
+}
+.ghost,
+.back,
+.nav,
+.features span {
+  align-items: center;
+  gap: 6px;
+}
+.ghost,
+.back,
+.features span {
+  display: inline-flex;
+}
 .mobile-menu {
   display: none;
 }
@@ -310,6 +330,7 @@ body {
   background: #dc2626;
 }
 .nav {
+  display: flex;
   background: transparent;
   border: 0;
   border-radius: 8px;
@@ -1039,9 +1060,9 @@ body {
     padding: 9px;
     font-size: 0;
   }
-  #share::after {
-    content: "↗";
-    font-size: 14px;
+  #share svg {
+    width: 16px;
+    height: 16px;
   }
   .auction-grid {
     grid-template-columns: 1fr;
