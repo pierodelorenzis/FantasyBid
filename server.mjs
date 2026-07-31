@@ -7,20 +7,6 @@ import { createClient } from "@supabase/supabase-js";
 
 const root = path.dirname(fileURLToPath(import.meta.url));
 const store = path.join(root, "data.json");
-const players = [
-  ["Mateo Retegui", "ATT", "Atalanta", "Italia", "A", 9, 30],
-  ["Lautaro Martínez", "ATT", "Inter", "Argentina", "A", 10, 35],
-  ["Teun Koopmeiners", "CEN", "Juventus", "Olanda", "A", 8, 25],
-  ["Riccardo Orsolini", "CEN", "Bologna", "Italia", "B", 7, 15],
-  ["Gleison Bremer", "DIF", "Juventus", "Brasile", "A", 3, 22],
-  ["Alessandro Buongiorno", "DIF", "Napoli", "Italia", "B", 4, 14],
-  ["Michele Di Gregorio", "POR", "Juventus", "Italia", "B", 1, 12],
-  ["Nicolò Fagioli", "CEN", "Fiorentina", "Italia", "C", 21, 6],
-  ["Raoul Bellanova", "DIF", "Atalanta", "Italia", "B", 16, 12],
-  ["Moise Kean", "ATT", "Fiorentina", "Italia", "B", 20, 18],
-  ["Elia Caprile", "POR", "Cagliari", "Italia", "C", 12, 5],
-  ["Matias Soulé", "CEN", "Roma", "Argentina", "B", 18, 16],
-];
 let db = fs.existsSync(store)
   ? JSON.parse(fs.readFileSync(store))
   : { auctions: {} };
@@ -505,16 +491,7 @@ const server = http.createServer(async (req, res) => {
           C: { minPrice: 1, increment: 1, cap: 50 },
         },
         tierSettings: defaultTierSettings(),
-        players: players.map((player, index) => ({
-          id: "p" + index,
-          name: player[0],
-          role: player[1],
-          team: player[2],
-          nation: player[3],
-          tier: player[4],
-          number: player[5],
-          quote: player[6],
-        })),
+        players: [],
         currentIndex: 0,
         playerOrder: null,
         orderByRole: false,
@@ -1050,6 +1027,8 @@ const server = http.createServer(async (req, res) => {
       }
       if (bits[3] === "toggle" && atomicBidEnabled && supabase) {
         const starting = auction.status !== "live";
+        if (starting && !auction.players.length)
+          throw Error("Importa prima il catalogo giocatori in Gestione asta");
         const { data, error } = await supabase.rpc("update_auction_session", {
           p_auction_code: auction.code,
           p_admin_token: administrator.token,
@@ -1105,6 +1084,8 @@ const server = http.createServer(async (req, res) => {
             action: "mette in pausa l’asta",
           });
         } else {
+          if (!auction.players.length)
+            throw Error("Importa prima il catalogo giocatori in Gestione asta");
           if (
             auction.startCountdownEndsAt &&
             auction.startCountdownEndsAt > Date.now()

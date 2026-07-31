@@ -431,6 +431,9 @@ button svg,
 .live-status-row {
   margin-bottom: 16px;
 }
+.countdown-slot {
+  min-height: 62px;
+}
 .player-card,
 .bid-panel,
 .recent,
@@ -503,6 +506,9 @@ button svg,
   margin: 0;
   font-size: 24px;
 }
+.mobile-player-meta {
+  display: none;
+}
 .player-name p {
   margin: 3px 0 0;
   color: #8390a5;
@@ -518,6 +524,22 @@ button svg,
 .player-quote b {
   color: #f56322;
   font-size: 14px;
+}
+.player-details {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 3px;
+}
+.player-details p {
+  min-width: 0;
+  margin: 0;
+}
+.player-details .player-quote {
+  flex: 0 0 auto;
+  margin: 0;
+  text-align: right;
 }
 .bid-info {
   border-top: 1px solid var(--line);
@@ -545,6 +567,13 @@ button svg,
 .bid-info p {
   font-size: 12px;
   margin: 7px 0 0;
+}
+.bid-info > div:last-child {
+  text-align: right;
+}
+.your-last-bid {
+  color: #168345;
+  font-weight: 700;
 }
 .bid-panel {
   padding: 25px;
@@ -758,6 +787,7 @@ button svg,
   order: -1;
 }
 .activity-actions .ghost {
+  justify-content: center;
   padding: 7px 9px;
   font-size: 10px;
   white-space: nowrap;
@@ -879,12 +909,18 @@ button svg,
   grid-template-columns: 0.7fr 1fr 1fr 1fr 1fr auto;
   align-items: end;
 }
-.admin-card #addTier,
-.admin-card #recalculateTiers {
+.admin-card #addTier {
   margin-top: 12px;
 }
-.admin-card #recalculateTiers {
-  margin-left: 8px;
+.tier-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-top: 14px;
+}
+.tier-actions .primary {
+  margin-top: 0;
 }
 .admin-card label {
   font-size: 10px;
@@ -1049,6 +1085,7 @@ button svg,
     padding-bottom: 20px;
   }
   .shell header {
+    height: 64px;
     gap: 10px;
   }
   .crumb {
@@ -1071,56 +1108,92 @@ button svg,
   .auction-grid > * {
     width: 100%;
   }
+  .live-status-row {
+    margin-bottom: 10px;
+  }
+  .countdown-slot {
+    min-height: 58px;
+  }
+  .countdown-slot .auction-countdown {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 46px;
+    margin: 0;
+    padding: 10px;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+  .player-card {
+    display: block;
+  }
   .player-hero {
-    height: 118px;
+    display: none;
   }
   .player-hero > strong {
     display: none;
   }
   .player-hero div {
-    width: 72px;
-    height: 72px;
-    font-size: 32px;
+    width: 58px;
+    height: 58px;
+    font-size: 27px;
+  }
+  .player-hero .role-art {
+    display: none;
   }
   .player-hero .role,
   .player-hero .tier {
-    top: 13px;
+    top: 10px;
+    font-size: 9px;
   }
   .player-hero .role {
-    left: 14px;
+    left: 10px;
   }
   .player-hero .tier {
-    right: 14px;
+    top: auto;
+    right: 10px;
+    bottom: 10px;
   }
   .player-name {
-    padding: 13px 16px;
+    padding: 12px 14px 9px;
   }
   .player-name h2 {
-    font-size: 21px;
+    font-size: 19px;
+  }
+  .player-quote {
+    margin: 0;
+  }
+  .player-details p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .mobile-player-meta {
+    display: block;
+    margin-top: 3px;
+    color: #f56322;
+    font: 600 10px "DM Mono";
   }
   .bid-info {
-    padding: 11px 16px;
+    padding: 8px 13px;
   }
   .bid-info b {
-    font-size: 21px;
+    font-size: 19px;
   }
   .bid-panel {
-    padding: 16px;
+    padding: 13px 14px;
   }
   .bid-panel h2 {
-    font-size: 23px;
+    font-size: 21px;
   }
   .bar-label {
-    margin-top: 14px;
+    margin-top: 10px;
   }
   .bid-panel hr {
-    margin: 14px 0;
+    margin: 10px 0;
   }
   .bid-panel .note {
     margin-top: 7px;
-  }
-  .bid-panel {
-    padding: 20px;
   }
   .live-layout {
     grid-template-columns: 1fr;
@@ -1384,6 +1457,14 @@ button svg,
   background: #ecfdf3;
   border-color: #22c55e;
   color: #15803d;
+}
+.auction-countdown strong::before {
+  content: " ";
+  white-space: pre;
+}
+.auction-countdown strong::after {
+  content: " ";
+  white-space: pre;
 }
 .owner-dashboard {
   min-height: 100vh;

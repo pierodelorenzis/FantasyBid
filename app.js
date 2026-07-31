@@ -319,10 +319,15 @@ function live() {
   let p = auction.currentPlayer;
   let my = me();
   if (!p)
-    return `<div class="empty"><h1>Non ci sono più giocatori da chiamare.</h1><p>L'asta è terminata.</p></div>`;
+    return `<div class="empty"><h1>${session.role === "admin" ? "Importa il catalogo giocatori." : "Il catalogo giocatori non è ancora disponibile."}</h1><p>${session.role === "admin" ? "Vai in Gestione asta e carica il file CSV o XLSX prima di avviare l’asta." : "Attendi che l’amministratore carichi il catalogo e avvii l’asta."}</p></div>`;
   let min = p.highestBid
     ? p.highestBid.amount + auction.rules[p.tier].increment
     : auction.rules[p.tier].minPrice;
+  let lastBidder = !p.highestBid
+    ? "Nessuna offerta"
+    : p.highestBid.participantToken === session.token
+      ? '<span class="your-last-bid">Tu</span>'
+      : p.highestBid.participantName;
   let roleArtwork =
     { POR: "🧤", DIF: "🛡️", CEN: "🧭", ATT: "🎯" }[p.role] || "⚽";
   let warning = false;
@@ -344,7 +349,7 @@ function live() {
   let sharedWarning = auction.rosterWarning
     ? `<div class="shared-roster-warning"><b>!</b><p><strong>Attenzione per ${auction.rosterWarning.participantName}</strong>Dopo questa offerta restano ${money(auction.rosterWarning.remainingCredits)}. ${warningDetails}</p></div>`
     : "";
-  return `<div class="live-layout"><div class="live-main"><div class="live-status-row"><span class="auction-status ${auction.status === "live" ? "live" : "paused"}"><i></i>${auction.status === "live" ? "Asta in corso" : "Asta in pausa"}</span></div>${sharedWarning}<div class="auction-grid"><article class="player-card"><div class="player-hero"><span class="role">${p.role}</span><span class="tier">★ Fascia ${p.tier}</span><strong>${p.number}</strong><div class="role-art role-${p.role.toLowerCase()}" aria-label="${p.role}">${roleArtwork}</div></div><div class="player-name"><h2>${p.name}</h2><p>${p.team} · ${p.nation}</p><span class="player-quote">Quotazione <b>${Number.isFinite(+p.quote) ? p.quote : 0}</b></span></div><div class="bid-info"><div><small>OFFERTA ATTUALE</small><b class="current-bid">${money(p.highestBid?.amount || 0)}</b></div><div><small>ULTIMA PUNTATA VALIDA</small><p>${p.highestBid?.participantName || "Nessuna offerta"}</p></div></div></article>${side}</div></div><section class="auction-sidebar">${table}</section></div>`;
+  return `<div class="live-layout"><div class="live-main"><div class="live-status-row"><span class="auction-status ${auction.status === "live" ? "live" : "paused"}"><i></i>${auction.status === "live" ? "Asta in corso" : "Asta in pausa"}</span></div>${sharedWarning}<div class="countdown-slot"></div><div class="auction-grid"><article class="player-card"><div class="player-hero"><span class="role">${p.role}</span><span class="tier">★ Fascia ${p.tier}</span><strong>${p.number}</strong><div class="role-art role-${p.role.toLowerCase()}" aria-label="${p.role}">${roleArtwork}</div></div><div class="player-name"><h2>${p.name}</h2><span class="mobile-player-meta">${p.role} · Fascia ${p.tier}</span><div class="player-details"><p>${p.team} · ${p.nation}</p><span class="player-quote">Quotazione <b>${Number.isFinite(+p.quote) ? p.quote : 0}</b></span></div></div><div class="bid-info"><div><small>OFFERTA ATTUALE</small><b class="current-bid">${money(p.highestBid?.amount || 0)}</b></div><div><small>ULTIMA PUNTATA VALIDA</small><p>${lastBidder}</p></div></div></article>${side}</div></div><section class="auction-sidebar">${table}</section></div>`;
 }
 function team() {
   let m = me(),
@@ -360,7 +365,7 @@ function tierRowMarkup(tier = {}) {
 }
 function admin() {
   let tiers = auction.tierSettings || [];
-  return `<div class="title-row"><div><p class="eyebrow">AMMINISTRAZIONE</p><h1>Gestisci l'<em>asta.</em></h1></div><button id="exportAll" class="ghost"><i data-lucide="download"></i> Resoconto CSV</button></div><div class="admin-card"><h2>Importa giocatori</h2><p>Carica un CSV oppure il file XLSX delle quotazioni. Per XLSX vengono usati i fogli Portieri, Difensori, Centrocampisti e Attaccanti.</p><input id="playerFile" type="file" accept=".csv,.xlsx"><button id="importPlayers" class="primary">Importa catalogo <i data-lucide="upload"></i></button><p id="importResult" class="muted"></p></div><div class="admin-card"><h2>Fasce e regole d’asta</h2><p>Definisci soglia di quotazione, prezzo base, rilancio e tetto. Le fasce sono ordinate automaticamente dalla soglia più alta.</p><form id="rules"><div id="tierRows">${tiers.map(tierRowMarkup).join("")}</div><button type="button" id="addTier" class="ghost">+ Aggiungi fascia</button><button class="primary">Salva fasce e regole</button></form><button id="recalculateTiers" class="ghost"><i data-lucide="rotate-ccw"></i> Ricalcola fasce dei giocatori</button></div><div class="admin-card"><h2>Link partecipanti</h2><p>Per entrare basta il codice dell'asta e il proprio nome: non è richiesta alcuna password.</p><div class="linkbox">${location.origin}/?asta=${auction.code}<button id="copyCode">Copia</button></div></div>`;
+  return `<div class="title-row"><div><p class="eyebrow">AMMINISTRAZIONE</p><h1>Gestisci l'<em>asta.</em></h1></div><button id="exportAll" class="ghost"><i data-lucide="download"></i> Resoconto CSV</button></div><div class="admin-card"><h2>Importa giocatori</h2><p>Carica un CSV oppure il file XLSX delle quotazioni. Per XLSX vengono usati i fogli Portieri, Difensori, Centrocampisti e Attaccanti.</p><input id="playerFile" type="file" accept=".csv,.xlsx"><button id="importPlayers" class="primary">Importa catalogo <i data-lucide="upload"></i></button><p id="importResult" class="muted"></p></div><div class="admin-card"><h2>Fasce e regole d’asta</h2><p>Definisci soglia di quotazione, prezzo base, rilancio e tetto. Le fasce sono ordinate automaticamente dalla soglia più alta.</p><form id="rules"><div id="tierRows">${tiers.map(tierRowMarkup).join("")}</div><button type="button" id="addTier" class="ghost">+ Aggiungi fascia</button><div class="tier-actions"><button class="primary">Salva fasce e regole</button><button type="button" id="recalculateTiers" class="ghost"><i data-lucide="rotate-ccw"></i> Ricalcola fasce dei giocatori</button></div></form></div><div class="admin-card"><h2>Link partecipanti</h2><p>Per entrare basta il codice dell'asta e il proprio nome: non è richiesta alcuna password.</p><div class="linkbox">${location.origin}/?asta=${auction.code}<button id="copyCode">Copia</button></div></div>`;
 }
 function wire(page) {
   if (page === "live") showCountdown();
@@ -859,7 +864,7 @@ function showCountdown() {
   banner.innerHTML = starting
     ? "▶ Asta al via tra <strong>0</strong> secondi"
     : "⏱ Giocatore assegnato tra <strong>0</strong> secondi";
-  $(".auction-grid").before(banner);
+  $(".countdown-slot").append(banner);
   let counter = banner.querySelector("strong"),
     update = () => {
       let seconds = Math.max(0, Math.ceil((end - Date.now()) / 1000));
