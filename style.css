@@ -65,6 +65,17 @@ body {
   font: 600 12px Outfit;
   cursor: pointer;
 }
+.ghost:not(:disabled):hover {
+  background: #f3f6fb;
+  border-color: #cbd5e1;
+}
+button {
+  transition:
+    background-color 0.16s ease,
+    border-color 0.16s ease,
+    color 0.16s ease,
+    box-shadow 0.16s ease;
+}
 button svg,
 .features svg {
   width: 15px;
@@ -408,6 +419,9 @@ button svg,
   font: 600 12px Outfit;
   cursor: pointer;
 }
+.danger:not(:disabled):hover {
+  background: #ffe0d6;
+}
 .auction-grid {
   display: grid;
   grid-template-columns: minmax(360px, 1.15fr) minmax(300px, 0.85fr);
@@ -718,22 +732,26 @@ button svg,
   display: flex;
   gap: 10px;
   align-items: flex-start;
-  margin: 0 0 18px;
+  position: fixed;
+  z-index: 30;
+  top: 94px;
+  right: 28px;
+  width: min(470px, calc(100vw - 300px));
+  margin: 0;
   padding: 12px 14px;
   border: 1px solid #f5b445;
   border-radius: 9px;
   background: #fff7e9;
+  box-shadow: 0 12px 28px #18223a24;
 }
-.shared-roster-warning > b {
+.shared-roster-warning .warning-icon {
   display: grid;
   place-items: center;
   flex: 0 0 auto;
   width: 18px;
   height: 18px;
-  border-radius: 50%;
-  background: #f5b445;
-  color: #fff;
-  font-size: 12px;
+  color: #b7791f;
+  stroke-width: 2.4;
 }
 .shared-roster-warning p {
   margin: 0;
@@ -743,6 +761,26 @@ button svg,
 }
 .shared-roster-warning strong {
   display: block;
+}
+.shared-roster-warning button {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 26px;
+  height: 26px;
+  margin: -4px -6px -4px 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: #85632a;
+  cursor: pointer;
+}
+.shared-roster-warning button:hover {
+  background: #f6e4bb;
+}
+.shared-roster-warning button svg {
+  width: 16px;
+  height: 16px;
 }
 .note {
   display: block;
@@ -1033,7 +1071,40 @@ button svg,
   gap: 9px;
   margin-top: 24px;
 }
+.catalog-player-dialog {
+  width: min(100%, 540px);
+}
+.catalog-player-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 13px;
+  margin-top: 18px;
+}
+.catalog-player-fields label {
+  display: grid;
+  gap: 6px;
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 700;
+}
+.catalog-player-fields input,
+.catalog-player-fields select {
+  width: 100%;
+  min-height: 40px;
+  border: 1px solid #d8dee8;
+  border-radius: 7px;
+  padding: 8px;
+  color: var(--ink);
+  font: 13px Outfit;
+  background: #fff;
+}
 @media (max-width: 750px) {
+  .shared-roster-warning {
+    top: 74px;
+    right: 16px;
+    left: 16px;
+    width: auto;
+  }
   .shell aside {
     z-index: 20;
     width: min(280px, 82vw);
@@ -1318,9 +1389,16 @@ button svg,
   transform: translateY(2px);
 }
 .catalog-table .catalog-save {
+  height: 32px;
   min-height: 32px;
+  background: #eaf8ef;
+  color: #168345;
+  border: 0;
   padding: 7px 9px;
   font-size: 11px;
+}
+.catalog-table .catalog-save:hover {
+  background: #d7f2e1;
 }
 @media (max-width: 750px) {
   .catalog-table > div {
@@ -1344,15 +1422,71 @@ button svg,
   gap: 5px;
   align-items: center;
 }
+.catalog-actions .danger {
+  height: 32px;
+  min-height: 32px;
+  padding: 7px 9px;
+  font-size: 11px;
+}
+.catalog-actions .danger:not(:disabled):hover {
+  background: #ffe0d6;
+}
+.remove-tier:not(:disabled):hover {
+  background: #ffe0d6;
+}
+.catalog-actions .danger:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+  pointer-events: none;
+}
+.catalog-remove-wrap {
+  position: relative;
+  display: inline-flex;
+}
+.catalog-remove-wrap[data-tooltip]:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  z-index: 5;
+  right: 0;
+  bottom: calc(100% + 7px);
+  width: max-content;
+  max-width: 190px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  background: #18223a;
+  color: #fff;
+  font: 500 10px Outfit;
+  line-height: 1.25;
+  text-align: center;
+  white-space: normal;
+  box-shadow: 0 6px 16px #18223a35;
+}
+.catalog-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
 .catalog-actions .primary {
   padding: 7px 9px;
   font-size: 11px;
 }
 @media (max-width: 750px) {
+  .catalog-player-fields {
+    grid-template-columns: 1fr;
+  }
+  .catalog-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
   .catalog-actions {
     gap: 3px;
   }
   .catalog-actions .primary {
+    padding: 5px;
+    font-size: 9px;
+  }
+  .catalog-actions .danger {
     padding: 5px;
     font-size: 9px;
   }
@@ -1607,6 +1741,33 @@ button svg,
 }
 .owner-danger-zone .danger {
   flex: 0 0 auto;
+}
+.import-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.import-loader {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--muted);
+  font-weight: 700;
+  font-size: 0.88rem;
+}
+.import-loader[hidden] {
+  display: none;
+}
+.import-loader svg {
+  width: 18px;
+  height: 18px;
+  animation: import-loader-spin 0.8s linear infinite;
+}
+@keyframes import-loader-spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 .owner-loading,
 .owner-error {

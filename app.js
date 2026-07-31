@@ -9,7 +9,9 @@ let session = JSON.parse(localStorage.getItem("fantabid-session") || "null"),
   catalogRole = "POR",
   catalogTier = "all",
   catalogPage = 1,
-  mobileMenuOpen = false;
+  mobileMenuOpen = false,
+  dismissedRosterWarningKey = null,
+  activeRosterWarningKey = null;
 const api = async (path, opts = {}) => {
   const r = await fetch("/api" + path, {
     headers: { "content-type": "application/json" },
@@ -171,6 +173,36 @@ function creditDialog(participantName) {
     document.body.append(modal);
     input.focus();
     input.select();
+  });
+}
+function catalogPlayerDialog(tiers) {
+  return new Promise((resolve) => {
+    const modal = document.createElement("div");
+    const defaultTier = tiers.at(-1)?.name || "";
+    modal.className = "confirm-modal";
+    modal.innerHTML = `<section class="confirm-card catalog-player-dialog" role="dialog" aria-modal="true" aria-labelledby="catalogPlayerTitle"><p class="eyebrow">CATALOGO GIOCATORI</p><h2 id="catalogPlayerTitle">Aggiungi giocatore</h2><form><div class="catalog-player-fields"><label>Nome<input name="name" required maxlength="100" autofocus></label><label>Ruolo<select name="role" required><option value="POR">Portiere</option><option value="DIF">Difensore</option><option value="CEN">Centrocampista</option><option value="ATT">Attaccante</option></select></label><label>Squadra<input name="team" maxlength="80"></label><label>Nazione<input name="nation" maxlength="80"></label><label>Quotazione<input name="quote" type="number" min="0" step="1" value="0" required></label><label>Fascia<select name="tier" required>${tiers.map((tier) => `<option value="${tier.name}" ${tier.name === defaultTier ? "selected" : ""}>${tier.name}</option>`).join("")}</select></label></div><div class="confirm-actions"><button type="button" class="ghost" data-cancel>Annulla</button><button class="primary" type="submit">Aggiungi giocatore</button></div></form></section>`;
+    const close = (player = null) => {
+      modal.remove();
+      resolve(player);
+    };
+    const form = modal.querySelector("form");
+    modal.querySelector("[data-cancel]").onclick = () => close();
+    form.onsubmit = (event) => {
+      event.preventDefault();
+      const player = Object.fromEntries(new FormData(form));
+      player.name = player.name.trim();
+      player.team = player.team.trim();
+      player.nation = player.nation.trim();
+      player.quote = Number(player.quote);
+      if (!player.name || !Number.isInteger(player.quote) || player.quote < 0)
+        return form.reportValidity();
+      close(player);
+    };
+    modal.onclick = (event) => {
+      if (event.target === modal) close();
+    };
+    document.body.append(modal);
+    form.elements.name.focus();
   });
 }
 const money = (n) => "ƒ " + n;
@@ -346,10 +378,23 @@ function live() {
   let warningDetails = auction.rosterWarning?.notEnoughAvailablePlayers
     ? `Restano solo ${auction.rosterWarning.availablePlayers} giocatori disponibili per ${auction.rosterWarning.remainingSlots} posti da coprire.`
     : `Per completare i ${auction.rosterWarning?.remainingSlots} posti mancanti servono almeno ${money(auction.rosterWarning?.minimumRequiredCredits)}: la somma dei prezzi di partenza più bassi dei giocatori ancora disponibili.`;
-  let sharedWarning = auction.rosterWarning
-    ? `<div class="shared-roster-warning"><b>!</b><p><strong>Attenzione per ${auction.rosterWarning.participantName}</strong>Dopo questa offerta restano ${money(auction.rosterWarning.remainingCredits)}. ${warningDetails}</p></div>`
-    : "";
-  return `<div class="live-layout"><div class="live-main"><div class="live-status-row"><span class="auction-status ${auction.status === "live" ? "live" : "paused"}"><i></i>${auction.status === "live" ? "Asta in corso" : "Asta in pausa"}</span></div>${sharedWarning}<div class="countdown-slot"></div><div class="auction-grid"><article class="player-card"><div class="player-hero"><span class="role">${p.role}</span><span class="tier">★ Fascia ${p.tier}</span><strong>${p.number}</strong><div class="role-art role-${p.role.toLowerCase()}" aria-label="${p.role}">${roleArtwork}</div></div><div class="player-name"><h2>${p.name}</h2><span class="mobile-player-meta">${p.role} · Fascia ${p.tier}</span><div class="player-details"><p>${p.team} · ${p.nation}</p><span class="player-quote">Quotazione <b>${Number.isFinite(+p.quote) ? p.quote : 0}</b></span></div></div><div class="bid-info"><div><small>OFFERTA ATTUALE</small><b class="current-bid">${money(p.highestBid?.amount || 0)}</b></div><div><small>ULTIMA PUNTATA VALIDA</small><p>${lastBidder}</p></div></div></article>${side}</div></div><section class="auction-sidebar">${table}</section></div>`;
+  let rosterWarningKey = auction.rosterWarning
+    ? [
+        auction.code,
+        p.id,
+        p.highestBid?.amount || 0,
+        auction.rosterWarning.participantName,
+        auction.rosterWarning.remainingCredits,
+        auction.rosterWarning.minimumRequiredCredits,
+      ].join(":")
+    : null;
+  activeRosterWarningKey = rosterWarningKey;
+  if (!rosterWarningKey) dismissedRosterWarningKey = null;
+  let sharedWarning =
+    rosterWarningKey && dismissedRosterWarningKey !== rosterWarningKey
+      ? `<div class="shared-roster-warning" role="alert"><i class="warning-icon" data-lucide="triangle-alert"></i><p><strong>Attenzione per ${auction.rosterWarning.participantName}</strong>Dopo questa offerta restano ${money(auction.rosterWarning.remainingCredits)}. ${warningDetails}</p><button id="dismissRosterWarning" aria-label="Chiudi avviso"><i data-lucide="x"></i></button></div>`
+      : "";
+  return `${sharedWarning}<div class="live-layout"><div class="live-main"><div class="live-status-row"><span class="auction-status ${auction.status === "live" ? "live" : "paused"}"><i></i>${auction.status === "live" ? "Asta in corso" : "Asta in pausa"}</span></div><div class="countdown-slot"></div><div class="auction-grid"><article class="player-card"><div class="player-hero"><span class="role">${p.role}</span><span class="tier">★ Fascia ${p.tier}</span><strong>${p.number}</strong><div class="role-art role-${p.role.toLowerCase()}" aria-label="${p.role}">${roleArtwork}</div></div><div class="player-name"><h2>${p.name}</h2><span class="mobile-player-meta">${p.role} · Fascia ${p.tier}</span><div class="player-details"><p>${p.team} · ${p.nation}</p><span class="player-quote">Quotazione <b>${Number.isFinite(+p.quote) ? p.quote : 0}</b></span></div></div><div class="bid-info"><div><small>OFFERTA ATTUALE</small><b class="current-bid">${money(p.highestBid?.amount || 0)}</b></div><div><small>ULTIMA PUNTATA VALIDA</small><p>${lastBidder}</p></div></div></article>${side}</div></div><section class="auction-sidebar">${table}</section></div>`;
 }
 function team() {
   let m = me(),
@@ -365,11 +410,16 @@ function tierRowMarkup(tier = {}) {
 }
 function admin() {
   let tiers = auction.tierSettings || [];
-  return `<div class="title-row"><div><p class="eyebrow">AMMINISTRAZIONE</p><h1>Gestisci l'<em>asta.</em></h1></div><button id="exportAll" class="ghost"><i data-lucide="download"></i> Resoconto CSV</button></div><div class="admin-card"><h2>Importa giocatori</h2><p>Carica un CSV oppure il file XLSX delle quotazioni. Per XLSX vengono usati i fogli Portieri, Difensori, Centrocampisti e Attaccanti.</p><input id="playerFile" type="file" accept=".csv,.xlsx"><button id="importPlayers" class="primary">Importa catalogo <i data-lucide="upload"></i></button><p id="importResult" class="muted"></p></div><div class="admin-card"><h2>Fasce e regole d’asta</h2><p>Definisci soglia di quotazione, prezzo base, rilancio e tetto. Le fasce sono ordinate automaticamente dalla soglia più alta.</p><form id="rules"><div id="tierRows">${tiers.map(tierRowMarkup).join("")}</div><button type="button" id="addTier" class="ghost">+ Aggiungi fascia</button><div class="tier-actions"><button class="primary">Salva fasce e regole</button><button type="button" id="recalculateTiers" class="ghost"><i data-lucide="rotate-ccw"></i> Ricalcola fasce dei giocatori</button></div></form></div><div class="admin-card"><h2>Link partecipanti</h2><p>Per entrare basta il codice dell'asta e il proprio nome: non è richiesta alcuna password.</p><div class="linkbox">${location.origin}/?asta=${auction.code}<button id="copyCode">Copia</button></div></div>`;
+  return `<div class="title-row"><div><p class="eyebrow">AMMINISTRAZIONE</p><h1>Gestisci l'<em>asta.</em></h1></div><button id="exportAll" class="ghost"><i data-lucide="download"></i> Resoconto CSV</button></div><div class="admin-card"><h2>Importa giocatori</h2><p>Carica un CSV oppure un XLSX con un solo foglio, contenente tutti i giocatori. La riga delle intestazioni deve usare: <b>Nome</b>, <b>Ruolo</b> (POR, DIF, CEN o ATT), <b>Squadra</b>, <b>Quotazione</b>. La colonna <b>Nazione</b> è facoltativa. Ogni giocatore deve comparire una sola volta.</p><input id="playerFile" type="file" accept=".csv,.xlsx"><div class="import-actions"><button id="importPlayers" class="primary">Importa catalogo <i data-lucide="upload"></i></button><span id="importLoader" class="import-loader" hidden role="status"><i data-lucide="loader-circle"></i> Caricamento…</span></div><p id="importResult" class="muted"></p></div><div class="admin-card"><h2>Fasce e regole d’asta</h2><p>Definisci soglia di quotazione, prezzo base, rilancio e tetto. Le fasce sono ordinate automaticamente dalla soglia più alta.</p><form id="rules"><div id="tierRows">${tiers.map(tierRowMarkup).join("")}</div><button type="button" id="addTier" class="ghost">+ Aggiungi fascia</button><div class="tier-actions"><button class="primary">Salva fasce e regole</button><button type="button" id="recalculateTiers" class="ghost"><i data-lucide="rotate-ccw"></i> Ricalcola fasce dei giocatori</button></div></form></div><div class="admin-card"><h2>Link partecipanti</h2><p>Per entrare basta il codice dell'asta e il proprio nome: non è richiesta alcuna password.</p><div class="linkbox">${location.origin}/?asta=${auction.code}<button id="copyCode">Copia</button></div></div>`;
 }
 function wire(page) {
   if (page === "live") showCountdown();
   if (page === "live") {
+    if ($("#dismissRosterWarning"))
+      $("#dismissRosterWarning").onclick = () => {
+        dismissedRosterWarningKey = activeRosterWarningKey;
+        $(".shared-roster-warning")?.remove();
+      };
     let amount = $("#amount");
     if (amount) {
       $("#plus").onclick = () => (amount.value = +amount.value + 1);
@@ -627,6 +677,10 @@ function wire(page) {
       }
     };
     $("#playerFile").style.display = "none";
+    const setImportBusy = (busy) => {
+      $("#importPlayers").disabled = busy;
+      $("#importLoader").hidden = !busy;
+    };
     const uploadPlayers = async () => {
       let file = selectedImportFile || $("#playerFile").files[0],
         result = $("#importResult");
@@ -640,11 +694,15 @@ function wire(page) {
           "Il nuovo file sostituirà completamente tutti i giocatori del catalogo attuale. L’operazione è disponibile solo quando l’asta non ha offerte o assegnazioni attive.",
           "Sostituisci catalogo",
         ))
-      )
+      ) {
+        selectedImportFile = null;
+        $("#playerFile").value = "";
         return;
+      }
       result.textContent = `Caricamento di ${file.name}…`;
-      let data = await file.arrayBuffer();
+      setImportBusy(true);
       try {
+        let data = await file.arrayBuffer();
         let x = await api(`/auctions/${session.code}/import`, {
           method: "POST",
           body: JSON.stringify({
@@ -658,8 +716,12 @@ function wire(page) {
         render("admin");
         toast(`Importazione completata: ${x.count} giocatori`);
       } catch (e) {
+        selectedImportFile = null;
+        $("#playerFile").value = "";
         result.textContent = "Errore importazione: " + e.message;
         toast(e.message);
+      } finally {
+        setImportBusy(false);
       }
     };
     $("#importPlayers").onclick = uploadPlayers;
@@ -682,8 +744,50 @@ function wire(page) {
         pages = Math.max(1, Math.ceil(rows.length / per));
       catalogPage = Math.min(catalogPage, pages);
       let slice = rows.slice((catalogPage - 1) * per, catalogPage * per);
-      panel.innerHTML = `<h2>Catalogo giocatori <small class="muted">${auction.players.length} importati</small></h2><div class="catalog-order"><span>Ordine di chiamata</span><button data-player-order="alphabetical" class="${auction.playerOrder === "alphabetical" ? "selected" : ""}">A–Z</button><button data-player-order="random" class="${auction.playerOrder === "random" ? "selected" : ""}">Casuale</button><button data-role-order class="${auction.orderByRole ? "selected" : ""}">Per ruolo</button></div><div class="catalog-tabs">${["POR", "DIF", "CEN", "ATT"].map((r) => `<button data-role="${r}" class="${r === catalogRole ? "selected" : ""}">${r} (${auction.players.filter((p) => p.role === r).length})</button>`).join("")}</div><div class="catalog-tiers">${["all", ...tierNames].map((t) => `<button data-tier="${t}" class="${t === catalogTier ? "selected" : ""}">${t === "all" ? "Tutte le fasce" : "Fascia " + t}</button>`).join("")}</div><p class="muted">${rows.length} giocatori · pagina ${catalogPage} di ${pages}</p><div class="table catalog-table"><div class="thead"><span>GIOCATORE</span><span>RUOLO</span><span>SQUADRA</span><span>QUOTAZIONE</span><span>FASCIA</span><span>AZIONI</span></div>${slice.map((p) => `<div data-player-row="${p.id}"><b>${p.name}</b><span>${p.role}</span><span>${p.team || "—"}</span><span><input data-quote type="number" min="0" step="1" value="${Number.isFinite(+p.quote) ? p.quote : 0}" aria-label="Quotazione di ${p.name}"></span><span><select data-tier-select aria-label="Fascia di ${p.name}">${tierNames.map((t) => `<option value="${t}" ${p.tier === t ? "selected" : ""}>${t}</option>`).join("")}</select></span><span class="catalog-actions"><button class="ghost catalog-save" data-save-player="${p.id}">Salva</button></span></div>`).join("") || '<p class="muted pad">Nessun giocatore in questa fascia.</p>'}</div><div class="pager"><button data-page="-1" ${catalogPage === 1 ? "disabled" : ""}><i data-lucide="chevron-left"></i> Precedente</button><button data-page="1" ${catalogPage === pages ? "disabled" : ""}>Successiva <i data-lucide="chevron-right"></i></button></div>`;
+      const isCatalogPlayerLocked = (player) => {
+        const normalizedName = String(player.name || "").trim().toLowerCase();
+        const hasPlayerMovement = auction.activity.some((entry) => {
+          const action = String(entry.action || "").trim().toLowerCase();
+          return (
+            (action.startsWith("chiama ") || action.startsWith("acquista ")) &&
+            action.includes(normalizedName)
+          );
+        });
+        const isInRoster = auction.participants.some((participant) =>
+          participant.players?.some((rosterPlayer) =>
+            String(rosterPlayer.id) === String(player.id) ||
+            (String(rosterPlayer.name || "").trim().toLowerCase() ===
+              normalizedName &&
+              rosterPlayer.role === player.role &&
+              rosterPlayer.team === player.team),
+          ),
+        );
+        return (
+          hasPlayerMovement ||
+          Boolean(player.highestBid) ||
+          isInRoster
+        );
+      };
+      panel.innerHTML = `<div class="catalog-heading"><h2>Catalogo giocatori <small class="muted">${auction.players.length} importati</small></h2><button id="addCatalogPlayer" class="ghost"><i data-lucide="user-plus"></i> Aggiungi giocatore</button></div><div class="catalog-order"><span>Ordine di chiamata</span><button data-player-order="alphabetical" class="${auction.playerOrder === "alphabetical" ? "selected" : ""}">A–Z</button><button data-player-order="random" class="${auction.playerOrder === "random" ? "selected" : ""}">Casuale</button><button data-role-order class="${auction.orderByRole ? "selected" : ""}">Per ruolo</button></div><div class="catalog-tabs">${["POR", "DIF", "CEN", "ATT"].map((r) => `<button data-role="${r}" class="${r === catalogRole ? "selected" : ""}">${r} (${auction.players.filter((p) => p.role === r).length})</button>`).join("")}</div><div class="catalog-tiers">${["all", ...tierNames].map((t) => `<button data-tier="${t}" class="${t === catalogTier ? "selected" : ""}">${t === "all" ? "Tutte le fasce" : "Fascia " + t}</button>`).join("")}</div><p class="muted">${rows.length} giocatori · pagina ${catalogPage} di ${pages}</p><div class="table catalog-table"><div class="thead"><span>GIOCATORE</span><span>RUOLO</span><span>SQUADRA</span><span>QUOTAZIONE</span><span>FASCIA</span><span>AZIONI</span></div>${slice.map((p) => { const locked = isCatalogPlayerLocked(p); const lockReason = "Giocatore già chiamato o assegnato"; return `<div data-player-row="${p.id}"><b>${p.name}</b><span>${p.role}</span><span>${p.team || "—"}</span><span><input data-quote type="number" min="0" step="1" value="${Number.isFinite(+p.quote) ? p.quote : 0}" aria-label="Quotazione di ${p.name}"></span><span><select data-tier-select aria-label="Fascia di ${p.name}">${tierNames.map((t) => `<option value="${t}" ${p.tier === t ? "selected" : ""}>${t}</option>`).join("")}</select></span><span class="catalog-actions"><button class="ghost catalog-save" data-save-player="${p.id}">Salva</button><span class="catalog-remove-wrap" ${locked ? `data-tooltip="${lockReason}"` : ""}><button class="danger catalog-remove" data-remove-player="${p.id}" data-player-name="${p.name}" ${locked ? `disabled aria-label="${lockReason}"` : ""}>Rimuovi</button></span></span></div>`; }).join("") || '<p class="muted pad">Nessun giocatore in questa fascia.</p>'}</div><div class="pager"><button data-page="-1" ${catalogPage === 1 ? "disabled" : ""}><i data-lucide="chevron-left"></i> Precedente</button><button data-page="1" ${catalogPage === pages ? "disabled" : ""}>Successiva <i data-lucide="chevron-right"></i></button></div>`;
       renderIcons();
+      panel.querySelector("#addCatalogPlayer").onclick = async () => {
+        const player = await catalogPlayerDialog(auction.tierSettings);
+        if (!player) return;
+        try {
+          const response = await api(`/auctions/${session.code}/players`, {
+            method: "POST",
+            body: JSON.stringify({ token: session.token, ...player }),
+          });
+          auction = response.auction;
+          catalogRole = player.role;
+          catalogTier = player.tier;
+          catalogPage = 1;
+          toast("Giocatore aggiunto al catalogo");
+          drawCatalog();
+        } catch (error) {
+          toast(error.message);
+        }
+      };
       panel.querySelectorAll("[data-player-order]").forEach(
         (button) =>
           (button.onclick = async () => {
@@ -778,6 +882,35 @@ function wire(page) {
             } catch (e) {
               toast(e.message);
               b.disabled = false;
+            }
+          }),
+      );
+      panel.querySelectorAll("[data-remove-player]").forEach(
+        (button) =>
+          (button.onclick = async () => {
+            if (
+              !(await confirmDialog(
+                "Rimuovere il giocatore?",
+                `${button.dataset.playerName} verrà eliminato dal catalogo.`,
+                "Rimuovi giocatore",
+              ))
+            )
+              return;
+            button.disabled = true;
+            try {
+              const response = await api(
+                `/auctions/${session.code}/players/${button.dataset.removePlayer}`,
+                {
+                  method: "DELETE",
+                  body: JSON.stringify({ token: session.token }),
+                },
+              );
+              auction = response.auction;
+              toast("Giocatore rimosso dal catalogo");
+              drawCatalog();
+            } catch (error) {
+              toast(error.message);
+              button.disabled = false;
             }
           }),
       );

@@ -705,9 +705,99 @@ const server = http.createServer(async (req, res) => {
       save(auction.code);
       return json(res, { auction: publicAuction(auction, body.token) });
     }
+    if (req.method === "POST" && bits[3] === "players" && bits.length === 4) {
+      const administrator = requireAdmin(auction, body.token);
+      const name = String(body.name || "").trim();
+      const role = normalizeRole(body.role);
+      const quote = Number(body.quote);
+      const tier = String(body.tier || "").trim().toUpperCase();
+      if (name.length < 2 || name.length > 100)
+        throw Error("Nome giocatore non valido");
+      if (!role) throw Error("Ruolo giocatore non valido");
+      if (!auction.tierSettings.some((item) => item.name === tier))
+        throw Error("Fascia non valida");
+      if (!Number.isFinite(quote) || quote < 0)
+        throw Error("Quotazione non valida");
+      if (
+        auction.players.some(
+          (player) => player.name.toLowerCase() === name.toLowerCase(),
+        )
+      )
+        throw Error("Esiste già un giocatore con questo nome");
+      let player = {
+        id: id(),
+        name,
+        role,
+        team: String(body.team || "").trim(),
+        nation: String(body.nation || "").trim(),
+        tier,
+        number: String(body.number || "").trim(),
+        quote,
+      };
+      if (atomicBidEnabled && supabase) {
+        const { data, error } = await supabase.rpc("add_catalog_player", {
+          p_auction_code: auction.code,
+          p_admin_token: administrator.token,
+          p_name: player.name,
+          p_role: player.role,
+          p_team: player.team,
+          p_nation: player.nation,
+          p_quote: player.quote,
+          p_tier: player.tier,
+          p_number: player.number,
+        });
+        if (error) throw Error(error.message);
+        player = data;
+      }
+      rememberState(auction);
+      auction.players.push(player);
+      auction.activity.unshift({
+        name: administrator.name,
+        action: "aggiunge " + player.name + " al catalogo",
+      });
+      save(auction.code);
+      return json(res, { auction: publicAuction(auction, body.token) });
+    }
+    if (req.method === "DELETE" && bits[3] === "players" && bits[4]) {
+      const administrator = requireAdmin(auction, body.token);
+      const playerIndex = auction.players.findIndex(
+        (item) => String(item.id) === String(bits[4]),
+      );
+      if (playerIndex < 0) throw Error("Giocatore non trovato");
+      const player = auction.players[playerIndex];
+      const assigned = auction.participants.some((participant) =>
+        participant.players?.some(
+          (rosterPlayer) => String(rosterPlayer.id) === String(player.id),
+        ),
+      );
+      if (
+        auction.activity.some((entry) => entry.action === "chiama " + player.name) ||
+        player.highestBid?.participantToken ||
+        assigned
+      )
+        throw Error("Non puoi rimuovere un giocatore già chiamato o assegnato");
+      if (atomicBidEnabled && supabase) {
+        const { error } = await supabase.rpc("remove_catalog_player", {
+          p_auction_code: auction.code,
+          p_admin_token: administrator.token,
+          p_player_id: player.id,
+        });
+        if (error) throw Error(error.message);
+      }
+      rememberState(auction);
+      auction.players.splice(playerIndex, 1);
+      auction.activity.unshift({
+        name: administrator.name,
+        action: "rimuove " + player.name + " dal catalogo",
+      });
+      save(auction.code);
+      return json(res, { auction: publicAuction(auction, body.token) });
+    }
     if (req.method === "POST" && bits[3] === "players" && bits[4]) {
       const administrator = requireAdmin(auction, body.token);
-      const player = auction.players.find((item) => item.id === bits[4]);
+      const player = auction.players.find(
+        (item) => String(item.id) === String(bits[4]),
+      );
       const quote = Number(body.quote);
       if (!player) throw Error("Giocatore non trovato");
       if (!auction.tierSettings.some((tier) => tier.name === body.tier))
@@ -774,7 +864,7 @@ const server = http.createServer(async (req, res) => {
       if (!participant || participant.role !== "participant")
         throw Error("Partecipante non trovato");
       const playerIndex = participant.players.findIndex(
-        (player) => player.id === bits[6],
+        (player) => String(player.id) === String(bits[6]),
       );
       if (playerIndex < 0) throw Error("Giocatore non trovato nella squadra");
       if (atomicBidEnabled && supabase) {
@@ -789,7 +879,7 @@ const server = http.createServer(async (req, res) => {
       rememberState(auction);
       const [player] = participant.players.splice(playerIndex, 1);
       const catalogPlayer = auction.players.find(
-        (catalogItem) => catalogItem.id === player.id,
+        (catalogItem) => String(catalogItem.id) === String(player.id),
       );
       if (catalogPlayer) delete catalogPlayer.highestBid;
       calculate(participant);
@@ -1235,50 +1325,71 @@ const server = http.createServer(async (req, res) => {
       const workbook = XLSX.read(Buffer.from(body.data, "base64"), {
         type: "buffer",
       });
+      if (workbook.SheetNames.length !== 1)
+        throw Error("Il file XLSX deve contenere un solo foglio con il catalogo");
       const list = [];
-      for (const sheetName of workbook.SheetNames) {
-        const sheetRole = {
-          Portieri: "POR",
-          Difensori: "DIF",
-          Centrocampisti: "CEN",
-          Attaccanti: "ATT",
-        }[sheetName];
-        const grid = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], {
-          header: 1,
-          defval: "",
-        });
-        const header = grid.findIndex(
-          (row) => row.includes("Nome") && row.includes("Squadra"),
+      const sheetName = workbook.SheetNames[0];
+      const grid = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], {
+        header: 1,
+        defval: "",
+      });
+      const requiredColumns = ["Nome", "Ruolo", "Squadra", "Quotazione"];
+      const header = grid.findIndex((row) =>
+        requiredColumns.every((column) => row.includes(column)),
+      );
+      if (header < 0)
+        throw Error(
+          "Intestazioni non valide. Usa: Nome, Ruolo, Squadra, Quotazione",
         );
-        if (header < 0) continue;
-        const nameIndex = grid[header].indexOf("Nome"),
-          teamIndex = grid[header].indexOf("Squadra"),
-          quoteIndex = grid[header].findIndex((cell) =>
-            ["Qt.A", "Quotazione", "Quote"].includes(String(cell).trim()),
-          ),
-          roleIndex = grid[header].findIndex((cell) =>
-            ["Ruolo", "R"].includes(String(cell).trim()),
-          );
-        grid.slice(header + 1).forEach((row, index) => {
-          const quote = Number(row[quoteIndex]) || 0;
-          const role = sheetRole || normalizeRole(row[roleIndex]);
-          if (
-            role &&
-            row[nameIndex] &&
-            String(row[nameIndex]).trim().length > 2
-          )
-            list.push({
-              id: id(),
-              name: String(row[nameIndex]).trim(),
-              role,
-              team: String(row[teamIndex] || "").trim(),
-              nation: "",
-              tier: "",
-              quote,
-              number: "",
-            });
+      const nameIndex = grid[header].indexOf("Nome");
+      const roleIndex = grid[header].indexOf("Ruolo");
+      const teamIndex = grid[header].indexOf("Squadra");
+      const quoteIndex = grid[header].indexOf("Quotazione");
+      const nationIndex = grid[header].indexOf("Nazione");
+      const importedPlayers = new Set();
+      const invalidRows = [];
+      grid.slice(header + 1).forEach((row, index) => {
+        if (row.every((cell) => String(cell).trim() === "")) return;
+        const name = String(row[nameIndex] || "").trim();
+        const role = normalizeRole(row[roleIndex]);
+        const team = String(row[teamIndex] || "").trim();
+        const quoteValue = String(row[quoteIndex] ?? "").trim();
+        const quote = Number(quoteValue);
+        const line = header + index + 2;
+        if (
+          name.length < 3 ||
+          !role ||
+          !team ||
+          !quoteValue ||
+          !Number.isFinite(quote) ||
+          quote < 0
+        ) {
+          invalidRows.push(line);
+          return;
+        }
+        const playerKey = [role, name, team]
+          .map((value) => value.toLocaleLowerCase("it"))
+          .join("|");
+        if (importedPlayers.has(playerKey)) {
+          invalidRows.push(line);
+          return;
+        }
+        importedPlayers.add(playerKey);
+        list.push({
+          id: id(),
+          name,
+          role,
+          team,
+          nation: nationIndex >= 0 ? String(row[nationIndex] || "").trim() : "",
+          tier: "",
+          quote,
+          number: "",
         });
-      }
+      });
+      if (invalidRows.length)
+        throw Error(
+          `Righe non valide o duplicate nel catalogo: ${invalidRows.slice(0, 10).join(", ")}${invalidRows.length > 10 ? "…" : ""}`,
+        );
       if (!list.length) throw Error("Nessun giocatore riconosciuto");
       let importHistory = null;
       if (atomicBidEnabled && supabase) {
