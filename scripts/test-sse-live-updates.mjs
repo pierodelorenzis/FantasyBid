@@ -14,7 +14,7 @@ const storePath = path.join(temporaryDirectory, "data.json");
 const source = JSON.parse(await fs.readFile(path.join(root, "data.json")));
 const auction = Object.values(source.auctions).find(
   (item) =>
-    item.players?.length &&
+    item.players?.length >= 2 &&
     item.participants?.filter((participant) => participant.role === "participant")
       .length >= 2,
 );
@@ -23,6 +23,7 @@ assert(auction, "Serve un'asta con almeno un giocatore e due partecipanti");
 auction.status = "live";
 auction.currentIndex = 0;
 delete auction.players[0].highestBid;
+delete auction.players[1].highestBid;
 auction.countdownEndsAt = null;
 auction.startCountdownEndsAt = null;
 auction.activity = [];
@@ -120,7 +121,12 @@ try {
   );
   const browserParticipant = participants[0];
   const bidder = participants[1];
+  const administrator = auction.participants.find(
+    (participant) => participant.role === "admin",
+  );
+  assert(administrator, "Serve un amministratore per chiudere la puntata");
   const minimum = auction.rules[auction.players[0].tier].minPrice;
+  const nextMinimum = auction.rules[auction.players[1].tier].minPrice;
 
   stream = await connectSse(
     `${baseUrl}/api/auctions/${auction.code}/events?token=${browserParticipant.token}`,
@@ -189,6 +195,15 @@ try {
     "Su desktop molto stretto tutte le card devono disporsi in colonna",
   );
 
+  await page.setViewportSize({ width: 390, height: 844 });
+  assert.equal(
+    await page.evaluate(
+      () => getComputedStyle(document.documentElement).touchAction,
+    ),
+    "manipulation",
+    "Il doppio tap deve essere disattivato nel layout mobile",
+  );
+
   const bidResponse = await fetch(
     `${baseUrl}/api/auctions/${auction.code}/bid`,
     {
@@ -206,6 +221,26 @@ try {
       document.querySelector(".current-bid")?.textContent.includes(String(expected)),
     minimum,
   );
+  await page.locator("#amount").fill(String(minimum + 77));
+
+  const closeResponse = await fetch(
+    `${baseUrl}/api/auctions/${auction.code}/close`,
+    {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ token: administrator.token }),
+    },
+  );
+  assert.equal(closeResponse.status, 200);
+  const nextPlayerEvent = await stream.next();
+  assert.equal(nextPlayerEvent.auction.currentPlayer.id, auction.players[1].id);
+  await page.waitForFunction(
+    ({ playerName, amount }) =>
+      document.querySelector(".player-name h2")?.textContent === playerName &&
+      document.querySelector("#amount")?.value === String(amount),
+    { playerName: auction.players[1].name, amount: nextMinimum },
+  );
+  assert.equal(await page.locator("#amount").inputValue(), String(nextMinimum));
   await page.waitForTimeout(2200);
   assert.equal(
     snapshotRequests,

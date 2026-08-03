@@ -5,6 +5,9 @@
   --blue: #315efb;
   --bg: #f7f8fb;
 }
+html {
+  touch-action: manipulation;
+}
 * {
   box-sizing: border-box;
 }

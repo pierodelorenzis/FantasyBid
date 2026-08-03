@@ -273,11 +273,16 @@ function stop() {
   auctionEvents = null;
 }
 function applyAuctionUpdate(nextAuction) {
+  const currentPlayerId = auction?.currentPlayer?.id;
+  const nextPlayerId = nextAuction?.currentPlayer?.id;
+  const samePlayer =
+    currentPlayerId != null && String(currentPlayerId) === String(nextPlayerId);
   auction = nextAuction;
   if (activePage !== "live") return;
   const activityScroll = $(".auction-sidebar .recent")?.scrollTop || 0;
-  const pendingAmount = $("#amount")?.value;
-  const wasEditingAmount = document.activeElement?.id === "amount";
+  const pendingAmount = samePlayer ? $("#amount")?.value : null;
+  const wasEditingAmount =
+    samePlayer && document.activeElement?.id === "amount";
   render(activePage);
   const activityTable = $(".auction-sidebar .recent");
   if (activityTable) activityTable.scrollTop = activityScroll;
