@@ -669,6 +669,10 @@ button svg,
   color: #6e7b92;
   font-size: 20px;
   cursor: pointer;
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 .offer input {
   border: 0;

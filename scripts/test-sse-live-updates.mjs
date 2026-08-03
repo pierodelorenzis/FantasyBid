@@ -203,6 +203,27 @@ try {
     "manipulation",
     "Il doppio tap deve essere disattivato nel layout mobile",
   );
+  const touchButtons = await page.evaluate(() => {
+    const plus = document.querySelector("#plus");
+    const initialAmount = Number(document.querySelector("#amount").value);
+    const firstAccepted = plus.dispatchEvent(
+      new Event("touchend", { bubbles: true, cancelable: true }),
+    );
+    const secondAccepted = plus.dispatchEvent(
+      new Event("touchend", { bubbles: true, cancelable: true }),
+    );
+    return {
+      touchAction: getComputedStyle(plus).touchAction,
+      firstAccepted,
+      secondAccepted,
+      amount: Number(document.querySelector("#amount").value),
+      initialAmount,
+    };
+  });
+  assert.equal(touchButtons.touchAction, "manipulation");
+  assert.equal(touchButtons.firstAccepted, false);
+  assert.equal(touchButtons.secondAccepted, false);
+  assert.equal(touchButtons.amount, touchButtons.initialAmount + 2);
 
   const bidResponse = await fetch(
     `${baseUrl}/api/auctions/${auction.code}/bid`,

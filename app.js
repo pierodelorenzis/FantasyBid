@@ -457,9 +457,24 @@ function wire(page) {
       };
     let amount = $("#amount");
     if (amount) {
-      $("#plus").onclick = () => (amount.value = +amount.value + 1);
-      $("#minus").onclick = () =>
-        (amount.value = Math.max(+amount.min, +amount.value - 1));
+      const changeAmount = (step) => {
+        amount.value = Math.max(+amount.min, +amount.value + step);
+        $("#offerAmount").textContent = money(amount.value);
+      };
+      const wireAmountButton = (button, step) => {
+        button.onclick = () => changeAmount(step);
+        button.addEventListener(
+          "touchend",
+          (event) => {
+            event.preventDefault();
+            changeAmount(step);
+          },
+          { passive: false },
+        );
+        button.ondblclick = (event) => event.preventDefault();
+      };
+      wireAmountButton($("#plus"), 1);
+      wireAmountButton($("#minus"), -1);
       amount.oninput = () =>
         ($("#offerAmount").textContent = money(amount.value));
       $("#bid").onclick = async () => {
