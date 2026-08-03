@@ -1014,6 +1014,30 @@ button svg,
   font: 600 10px Outfit;
   cursor: pointer;
 }
+.access-links {
+  display: grid;
+  gap: 14px;
+}
+.access-links > div {
+  display: grid;
+  gap: 6px;
+}
+.access-links small {
+  color: #8792a5;
+  font: 500 9px "DM Mono";
+  letter-spacing: 0.7px;
+}
+.access-links #copyAdminLink {
+  justify-self: start;
+}
+.admin-created-link span {
+  overflow-wrap: anywhere;
+}
+.admin-link-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
 .empty {
   background: #fff;
   border: 1px solid var(--line);

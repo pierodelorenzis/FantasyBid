@@ -299,7 +299,17 @@ function broadcastAuction(auctionCode) {
   if (!auction || !streams?.size) return;
   const version = (auctionEventVersions.get(auctionCode) || 0) + 1;
   auctionEventVersions.set(auctionCode, version);
-  streams.forEach((stream) => writeAuctionEvent(stream, auction, version));
+  streams.forEach((stream) => {
+    if (!own(auction, stream.token)) {
+      stream.res.write("event: session-invalid\n");
+      stream.res.write('data: {"message":"Sessione non valida"}\n\n');
+      stream.res.end();
+      streams.delete(stream);
+      return;
+    }
+    writeAuctionEvent(stream, auction, version);
+  });
+  if (!streams.size) auctionStreams.delete(auctionCode);
 }
 
 function openAuctionStream(req, res, auction, token) {
@@ -346,6 +356,12 @@ function requireOwner(req) {
     throw Error("Area proprietario non configurata sul server");
   if (req.headers["x-owner-token"] !== ownerDashboardToken)
     throw Error("Accesso proprietario non autorizzato");
+}
+function replaceAdminTokenInState(state, previousToken, nextToken) {
+  state?.participants?.forEach((participant) => {
+    if (participant.role === "admin" && participant.token === previousToken)
+      participant.token = nextToken;
+  });
 }
 function ownerAuctionSummary(auction, metadata = {}) {
   const participants = auction.participants || [];
@@ -476,11 +492,15 @@ const server = http.createServer(async (req, res) => {
       ? await read(req)
       : {};
     if (!bits[0]) return serveFile(res, "index.html");
-    if (bits[0] !== "api") return serveFile(res, bits.join("/"));
+    if (bits[0] !== "api")
+      return bits.length === 1 && /^[a-z0-9]{6}$/i.test(bits[0])
+        ? serveFile(res, "index.html")
+        : serveFile(res, bits.join("/"));
     await storageReady;
 
     if (bits[1] === "owner" && bits[2] === "auctions") {
       requireOwner(req);
+      if (bits[3]) throw Error("Operazione proprietario non disponibile");
       if (req.method === "GET") {
         let summaries;
         if (supabase) {
@@ -573,6 +593,33 @@ const server = http.createServer(async (req, res) => {
       db.auctions[bits[2]] || (await restoreAuctionFromSupabase(bits[2]));
     if (!auction) throw Error("Asta non trovata");
     ensureTierSettings(auction);
+    if (req.method === "POST" && bits[3] === "access") {
+      const participant = own(auction, body.token);
+      if (!participant) throw Error("Link di accesso non valido");
+      return json(res, {
+        code: auction.code,
+        name: participant.name,
+        role: participant.role,
+      });
+    }
+    if (req.method === "POST" && bits[3] === "admin-link") {
+      const administrator = requireAdmin(auction, body.token);
+      const previousToken = administrator.token;
+      const nextToken = id();
+      if (atomicBidEnabled && supabase) {
+        const { error } = await supabase.rpc("rotate_admin_token", {
+          p_auction_code: auction.code,
+          p_new_token: nextToken,
+        });
+        if (error) throw Error(error.message);
+      }
+      replaceAdminTokenInState(auction, previousToken, nextToken);
+      auction.history?.forEach((snapshot) =>
+        replaceAdminTokenInState(snapshot, previousToken, nextToken),
+      );
+      save(auction.code);
+      return json(res, { code: auction.code, token: nextToken });
+    }
     if (req.method === "GET" && bits[3] === "events")
       return openAuctionStream(
         req,

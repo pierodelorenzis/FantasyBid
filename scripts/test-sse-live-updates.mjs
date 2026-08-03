@@ -47,6 +47,7 @@ const server = spawn(process.execPath, ["server.mjs"], {
     SUPABASE_URL: "",
     SUPABASE_SECRET_KEY: "",
     USE_ATOMIC_BID: "false",
+    OWNER_DASHBOARD_TOKEN: "test-owner-token",
   },
   stdio: ["ignore", "pipe", "pipe"],
 });
@@ -135,6 +136,134 @@ try {
   assert.equal(initialEvent.auction.currentPlayer.highestBid, undefined);
 
   browser = await chromium.launch({ headless: true });
+  const creationContext = await browser.newContext();
+  await creationContext.addInitScript(() => {
+    Object.defineProperty(navigator, "clipboard", {
+      configurable: true,
+      value: {
+        writeText: async (value) => {
+          window.__copiedAdminLink = value;
+        },
+      },
+    });
+  });
+  const creationPage = await creationContext.newPage();
+  await creationPage.goto(baseUrl, { waitUntil: "networkidle" });
+  await creationPage.locator("#showCreate").click();
+  await creationPage.locator('#create [name="name"]').fill("Lega popup test");
+  await creationPage.locator('#create [name="adminName"]').fill("Admin popup");
+  await creationPage.locator("#create button.primary").click();
+  await creationPage.locator("#adminLinkTitle").waitFor();
+  assert.match(
+    await creationPage.locator(".confirm-card").textContent(),
+    /Gestione asta.*Link di accesso/s,
+  );
+  assert.match(
+    await creationPage.locator(".confirm-card").textContent(),
+    /senza il link amministratore.*non sarà più possibile accedere/s,
+  );
+  await creationPage.locator("[data-copy-admin]").click();
+  const copiedCreationLink = await creationPage.evaluate(
+    () => window.__copiedAdminLink,
+  );
+  assert.match(copiedCreationLink, /#[^#]*admin=/);
+  await creationPage.locator("[data-continue]").click();
+  await creationPage.locator(".shell").waitFor();
+  await creationContext.close();
+
+  const adminContext = await browser.newContext();
+  const adminPage = await adminContext.newPage();
+  await adminPage.goto(
+    `${baseUrl}/${auction.code}#admin=${encodeURIComponent(administrator.token)}`,
+    { waitUntil: "networkidle" },
+  );
+  assert.equal(new URL(adminPage.url()).pathname, `/${auction.code}`);
+  assert.equal(new URL(adminPage.url()).hash, "");
+  const recoveredAdminSession = await adminPage.evaluate(
+    (code) => JSON.parse(localStorage.getItem("fantabid-sessions"))[code],
+    auction.code,
+  );
+  assert.equal(recoveredAdminSession.role, "admin");
+  assert.equal(recoveredAdminSession.token, administrator.token);
+
+  const invalidAccess = await fetch(
+    `${baseUrl}/api/auctions/${auction.code}/access`,
+    {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ token: "invalid-admin-token" }),
+    },
+  );
+  assert.equal(invalidAccess.status, 400);
+
+  const participantRotation = await fetch(
+    `${baseUrl}/api/auctions/${auction.code}/admin-link`,
+    {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ token: browserParticipant.token }),
+    },
+  );
+  assert.equal(participantRotation.status, 400);
+
+  await adminPage.locator('[data-page="admin"]').click();
+  await adminPage.locator("#rotateAdminLink").click();
+  await adminPage.locator("[data-confirm]").click();
+  await adminPage.waitForFunction(
+    ({ code, previousToken }) =>
+      JSON.parse(localStorage.getItem("fantabid-sessions"))[code]?.token !==
+      previousToken,
+    { code: auction.code, previousToken: administrator.token },
+  );
+  await adminPage.locator("#rotateAdminLink").waitFor();
+  const rotatedAdminLink = await adminPage.evaluate((code) => {
+    const recovered = JSON.parse(localStorage.getItem("fantabid-sessions"))[code];
+    return { code, token: recovered.token };
+  }, auction.code);
+  assert.notEqual(rotatedAdminLink.token, administrator.token);
+  const rotationEvent = await stream.next();
+  assert.equal(rotationEvent.auction.code, auction.code);
+  await adminPage.locator("#rotateAdminLink").waitFor();
+  await adminContext.close();
+
+  const expiredAdminAccess = await fetch(
+    `${baseUrl}/api/auctions/${auction.code}/access`,
+    {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ token: administrator.token }),
+    },
+  );
+  assert.equal(expiredAdminAccess.status, 400);
+  administrator.token = rotatedAdminLink.token;
+  const rotatedAdminAccess = await fetch(
+    `${baseUrl}/api/auctions/${auction.code}/access`,
+    {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ token: administrator.token }),
+    },
+  );
+  assert.equal(rotatedAdminAccess.status, 200);
+
+  const ownerContext = await browser.newContext();
+  await ownerContext.addInitScript(() =>
+    sessionStorage.setItem("fantabid-owner-token", "test-owner-token"),
+  );
+  const ownerPage = await ownerContext.newPage();
+  await ownerPage.goto(`${baseUrl}/?owner`, { waitUntil: "networkidle" });
+  await ownerPage.locator(".owner-table").waitFor();
+  assert.equal(
+    await ownerPage.locator("[data-owner-copy-admin], [data-owner-rotate-admin]").count(),
+    0,
+  );
+  const ownerAdminLinkResponse = await fetch(
+    `${baseUrl}/api/owner/auctions/${auction.code}/admin-link`,
+    { headers: { "x-owner-token": "test-owner-token" } },
+  );
+  assert.equal(ownerAdminLinkResponse.status, 400);
+  await ownerContext.close();
+
   const context = await browser.newContext();
   await context.addInitScript(
     ({ code, token, name }) =>
@@ -159,7 +288,41 @@ try {
       snapshotRequests += 1;
   });
   await page.goto(baseUrl, { waitUntil: "networkidle" });
+  await page.locator("#showCreate").waitFor();
+  assert.equal(new URL(page.url()).pathname, "/");
+  assert.equal(
+    snapshotRequests,
+    0,
+    "La homepage non deve riaprire automaticamente l'ultima asta",
+  );
+
+  await page.goto(`${baseUrl}/${auction.code}`, { waitUntil: "networkidle" });
   await page.locator(".current-bid").waitFor();
+  assert.equal(new URL(page.url()).pathname, `/${auction.code}`);
+  const migratedSessions = await page.evaluate(() => ({
+    legacy: localStorage.getItem("fantabid-session"),
+    sessions: JSON.parse(localStorage.getItem("fantabid-sessions")),
+  }));
+  assert.equal(migratedSessions.legacy, null);
+  assert.equal(migratedSessions.sessions[auction.code].token, browserParticipant.token);
+
+  await page.evaluate(() =>
+    save({
+      code: "ZZZ999",
+      token: "other-session-token",
+      role: "admin",
+      name: "Altro admin",
+    }),
+  );
+  const separateSessions = await page.evaluate(() =>
+    JSON.parse(localStorage.getItem("fantabid-sessions")),
+  );
+  assert.equal(separateSessions[auction.code].token, browserParticipant.token);
+  assert.equal(separateSessions.ZZZ999.token, "other-session-token");
+
+  await page.goto(`${baseUrl}/${auction.code}`, { waitUntil: "networkidle" });
+  await page.locator(".current-bid").waitFor();
+  const snapshotRequestsAfterNavigation = snapshotRequests;
 
   await page.setViewportSize({ width: 1440, height: 900 });
   const wideMain = await page.locator(".live-main").boundingBox();
@@ -265,7 +428,7 @@ try {
   await page.waitForTimeout(2200);
   assert.equal(
     snapshotRequests,
-    1,
+    snapshotRequestsAfterNavigation,
     "Il frontend sta ancora interrogando lo snapshot periodicamente",
   );
   console.log("SSE live update test: OK");

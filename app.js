@@ -1,7 +1,28 @@
 const $ = (s) => document.querySelector(s),
   $$ = (s) => document.querySelectorAll(s),
   app = $("#app");
-let session = JSON.parse(localStorage.getItem("fantabid-session") || "null"),
+const auctionPath = (code) => `/${encodeURIComponent(String(code).toUpperCase())}`;
+const auctionUrl = (code) => location.origin + auctionPath(code);
+const adminAccessUrl = (code, token) =>
+  `${auctionUrl(code)}#admin=${encodeURIComponent(token)}`;
+const sessionStoreKey = "fantabid-sessions";
+const legacySessionKey = "fantabid-session";
+const readLocalJson = (key, fallback) => {
+  try {
+    return JSON.parse(localStorage.getItem(key) || "null") || fallback;
+  } catch {
+    return fallback;
+  }
+};
+let storedSessions = readLocalJson(sessionStoreKey, {});
+const legacySession = readLocalJson(legacySessionKey, null);
+if (legacySession?.code && !storedSessions[legacySession.code.toUpperCase()]) {
+  storedSessions[legacySession.code.toUpperCase()] = legacySession;
+  localStorage.setItem(sessionStoreKey, JSON.stringify(storedSessions));
+}
+if (legacySession) localStorage.removeItem(legacySessionKey);
+
+let session = null,
   auction = null,
   refresh,
   auctionEvents,
@@ -157,6 +178,27 @@ function confirmDialog(title, message, confirmLabel = "Rimuovi") {
     modal.querySelector("[data-cancel]").focus();
   });
 }
+function adminLinkCreatedDialog(code, token) {
+  return new Promise((resolve) => {
+    const modal = document.createElement("div");
+    const link = adminAccessUrl(code, token);
+    modal.className = "confirm-modal";
+    modal.innerHTML = `<section class="confirm-card" role="dialog" aria-modal="true" aria-labelledby="adminLinkTitle"><p class="eyebrow">LEGA CREATA</p><h2 id="adminLinkTitle">Salva il tuo link amministratore</h2><p><b>Conserva questo link:</b> senza il link amministratore e senza una sessione admin già aperta non sarà più possibile accedere alla gestione dell’asta creata.</p><p>Potrai copiarlo nuovamente e, se necessario, rigenerarlo in <b>Gestione asta → Link di accesso</b>.</p><div class="linkbox admin-created-link"><span>${link}</span></div><div class="confirm-actions"><button class="ghost" data-copy-admin>Copia link admin</button><button class="primary" data-continue>Continua</button></div></section>`;
+    modal.querySelector("[data-copy-admin]").onclick = async () => {
+      try {
+        await navigator.clipboard?.writeText(link);
+        toast("Link admin copiato");
+      } catch {
+        toast("Copia non riuscita: seleziona e salva il link mostrato");
+      }
+    };
+    modal.querySelector("[data-continue]").onclick = () => {
+      modal.remove();
+      resolve();
+    };
+    document.body.append(modal);
+  });
+}
 function creditDialog(participantName) {
   return new Promise((resolve) => {
     const modal = document.createElement("div");
@@ -216,6 +258,7 @@ function catalogPlayerDialog(tiers) {
 const money = (n) => "ƒ " + n;
 function landing() {
   stop();
+  history.replaceState(null, "", "/");
   app.innerHTML = `<main class="landing"><nav class="land-nav"><a class="brand"><span class="brand-mark">F</span><span class="brand-name">Fanta<span>Bid</span></span></a><button id="showJoin" class="ghost">Entra in un'asta <i data-lucide="arrow-right"></i></button></nav><section class="hero"><p class="eyebrow">L'ASTA DEL FANTACALCIO, SEMPLIFICATA</p><h1>Tutta la tua lega.<br><em>Un'unica asta.</em></h1><p class="lead">Crea una stanza, condividi il link e gestisci ogni rilancio in tempo reale.</p><button class="primary big" id="showCreate">Crea una nuova asta <i data-lucide="arrow-right"></i></button></section><div class="features"><span><i data-lucide="circle-check"></i> Nessuna registrazione</span><span><i data-lucide="sliders-horizontal"></i> Regole personalizzabili</span><span><i data-lucide="download"></i> Export CSV incluso</span></div></main>`;
   renderIcons();
   $("#showCreate").onclick = createForm;
@@ -238,8 +281,8 @@ function createForm() {
         role: "admin",
         name: d.adminName,
       });
-      toast("Asta creata");
-      load();
+      await adminLinkCreatedDialog(d.code, d.adminToken);
+      await load();
     } catch (x) {
       toast(x.message);
     }
@@ -270,8 +313,15 @@ function joinForm() {
   };
 }
 function save(s) {
-  session = s;
-  localStorage.setItem("fantabid-session", JSON.stringify(s));
+  const code = s.code.toUpperCase();
+  session = { ...s, code };
+  storedSessions[code] = session;
+  localStorage.setItem(sessionStoreKey, JSON.stringify(storedSessions));
+  history.replaceState(null, "", auctionPath(code));
+}
+function forgetSession(code) {
+  delete storedSessions[String(code).toUpperCase()];
+  localStorage.setItem(sessionStoreKey, JSON.stringify(storedSessions));
 }
 function stop() {
   clearInterval(refresh);
@@ -324,6 +374,14 @@ function startAuctionEvents() {
       applyAuctionUpdate(update.auction);
     } catch {}
   });
+  auctionEvents.addEventListener("session-invalid", () => {
+    const expiredCode = session?.code;
+    stop();
+    if (expiredCode) forgetSession(expiredCode);
+    session = null;
+    landing();
+    toast("Sessione scaduta. Usa un nuovo link di accesso.");
+  });
   auctionEvents.onopen = () => {
     clearInterval(refresh);
     refresh = null;
@@ -340,11 +398,20 @@ async function load() {
     render(activePage);
     startAuctionEvents();
   } catch (e) {
-    localStorage.removeItem("fantabid-session");
+    forgetSession(session.code);
     session = null;
     landing();
     toast("Asta non trovata");
   }
+}
+async function activateAdminLink(code, token) {
+  const access = await api(`/auctions/${code}/access`, {
+    method: "POST",
+    body: JSON.stringify({ token }),
+  });
+  if (access.role !== "admin") throw Error("Il link non appartiene a un admin");
+  save({ code, token, role: access.role, name: access.name });
+  await load();
 }
 function nav(page = "live") {
   const admin = session.role === "admin";
@@ -378,13 +445,13 @@ function render(page = "live") {
       ))
     )
       return;
-    localStorage.removeItem("fantabid-session");
+    forgetSession(session.code);
     session = null;
     landing();
   };
   if ($("#share"))
     $("#share").onclick = () => {
-      navigator.clipboard?.writeText(location.origin + "/?asta=" + auction.code);
+      navigator.clipboard?.writeText(auctionUrl(auction.code));
       toast("Link copiato: condividilo con la lega");
     };
   wire(page);
@@ -452,7 +519,7 @@ function tierRowMarkup(tier = {}) {
 }
 function admin() {
   let tiers = auction.tierSettings || [];
-  return `<div class="title-row"><div><p class="eyebrow">AMMINISTRAZIONE</p><h1>Gestisci l'<em>asta.</em></h1></div><button id="exportAll" class="ghost"><i data-lucide="download"></i> Resoconto CSV</button></div><div class="admin-card"><h2>Importa giocatori</h2><p>Carica il listone XLSX scaricato da <b>Fantacalcio.it</b>: verrà importato automaticamente solo il foglio <b>Tutti</b>. Puoi anche usare un CSV o XLSX FantaBid con le colonne <b>Nome</b>, <b>Ruolo</b>, <b>Squadra</b> e <b>Quotazione</b>; <b>Nazione</b> è facoltativa. Ogni giocatore deve comparire una sola volta.</p><input id="playerFile" type="file" accept=".csv,.xlsx"><div class="import-actions"><button id="importPlayers" class="primary">Importa catalogo <i data-lucide="upload"></i></button><span id="importLoader" class="import-loader" hidden role="status"><i data-lucide="loader-circle"></i> Caricamento…</span></div><p id="importResult" class="muted"></p></div><div class="admin-card"><h2>Fasce e regole d’asta</h2><p>Definisci soglia di quotazione, prezzo base, rilancio e tetto. Le fasce sono ordinate automaticamente dalla soglia più alta.</p><form id="rules"><div id="tierRows">${tiers.map(tierRowMarkup).join("")}</div><button type="button" id="addTier" class="ghost">+ Aggiungi fascia</button><div class="tier-actions"><button class="primary">Salva fasce e regole</button><button type="button" id="recalculateTiers" class="ghost"><i data-lucide="rotate-ccw"></i> Ricalcola fasce dei giocatori</button></div></form></div><div class="admin-card"><h2>Link partecipanti</h2><p>Per entrare basta il codice dell'asta e il proprio nome: non è richiesta alcuna password.</p><div class="linkbox">${location.origin}/?asta=${auction.code}<button id="copyCode">Copia</button></div></div>`;
+  return `<div class="title-row"><div><p class="eyebrow">AMMINISTRAZIONE</p><h1>Gestisci l'<em>asta.</em></h1></div><button id="exportAll" class="ghost"><i data-lucide="download"></i> Resoconto CSV</button></div><div class="admin-card"><h2>Importa giocatori</h2><p>Carica il listone XLSX scaricato da <b>Fantacalcio.it</b>: verrà importato automaticamente solo il foglio <b>Tutti</b>. Puoi anche usare un CSV o XLSX FantaBid con le colonne <b>Nome</b>, <b>Ruolo</b>, <b>Squadra</b> e <b>Quotazione</b>; <b>Nazione</b> è facoltativa. Ogni giocatore deve comparire una sola volta.</p><input id="playerFile" type="file" accept=".csv,.xlsx"><div class="import-actions"><button id="importPlayers" class="primary">Importa catalogo <i data-lucide="upload"></i></button><span id="importLoader" class="import-loader" hidden role="status"><i data-lucide="loader-circle"></i> Caricamento…</span></div><p id="importResult" class="muted"></p></div><div class="admin-card"><h2>Fasce e regole d’asta</h2><p>Definisci soglia di quotazione, prezzo base, rilancio e tetto. Le fasce sono ordinate automaticamente dalla soglia più alta.</p><form id="rules"><div id="tierRows">${tiers.map(tierRowMarkup).join("")}</div><button type="button" id="addTier" class="ghost">+ Aggiungi fascia</button><div class="tier-actions"><button class="primary">Salva fasce e regole</button><button type="button" id="recalculateTiers" class="ghost"><i data-lucide="rotate-ccw"></i> Ricalcola fasce dei giocatori</button></div></form></div><div class="admin-card"><h2>Link di accesso</h2><p>Condividi il link partecipanti con la lega. Conserva il link amministratore in un luogo sicuro: permette di accedere alla gestione da un altro dispositivo.</p><div class="access-links"><div><small>PARTECIPANTI</small><div class="linkbox">${auctionUrl(auction.code)}<button id="copyCode">Copia</button></div></div><div><small>AMMINISTRATORE</small><div class="admin-link-actions"><button id="copyAdminLink" class="ghost">Copia link admin</button><button id="rotateAdminLink" class="danger">Rigenera link</button></div></div></div></div>`;
 }
 function wire(page) {
   if (page === "live") showCountdown();
@@ -673,9 +740,32 @@ function wire(page) {
   if (page === "admin") {
     $("#copyCode").onclick = () => {
       navigator.clipboard?.writeText(
-        location.origin + "/?asta=" + auction.code,
+        auctionUrl(auction.code),
       );
       toast("Link copiato");
+    };
+    $("#copyAdminLink").onclick = () => {
+      navigator.clipboard?.writeText(adminAccessUrl(auction.code, session.token));
+      toast("Link admin copiato: conservalo in modo sicuro");
+    };
+    $("#rotateAdminLink").onclick = async () => {
+      if (!(await confirmDialog("Rigenerare il link amministratore?", "Il link precedente e le altre sessioni admin smetteranno di funzionare. Questa sessione resterà collegata con il nuovo link.", "Rigenera link"))) return;
+      try {
+        stop();
+        const access = await api(`/auctions/${session.code}/admin-link`, {
+          method: "POST",
+          body: JSON.stringify({ token: session.token }),
+        });
+        save({ ...session, token: access.token });
+        await load();
+        activePage = "admin";
+        render(activePage);
+        await navigator.clipboard?.writeText(adminAccessUrl(access.code, access.token));
+        toast("Nuovo link admin copiato");
+      } catch (error) {
+        toast(error.message);
+        await load();
+      }
     };
     $("#exportAll").onclick = () =>
       download(
@@ -1109,12 +1199,27 @@ function initials(n) {
     .join("")
     .toUpperCase();
 }
-window.addEventListener("load", () => {
-  let params = new URLSearchParams(location.search),
-    code = params.get("asta");
+window.addEventListener("load", async () => {
+  const params = new URLSearchParams(location.search);
+  const pathMatch = location.pathname.match(/^\/([A-Z0-9]{6})\/?$/i);
+  const code = (pathMatch?.[1] || params.get("asta") || "").toUpperCase();
+  const fragment = new URLSearchParams(location.hash.slice(1));
+  const adminToken = fragment.get("admin");
   if (params.has("owner")) return ownerDashboard();
-  if (code && !session) {
+  if (!code) return landing();
+  history.replaceState(null, "", auctionPath(code));
+  if (adminToken) {
+    try {
+      await activateAdminLink(code, adminToken);
+      toast("Accesso amministratore verificato");
+      return;
+    } catch (error) {
+      toast(error.message);
+    }
+  }
+  session = storedSessions[code] || null;
+  if (!session) {
     joinForm();
-    $("#join [name=code]").value = code.toUpperCase();
+    $("#join [name=code]").value = code;
   } else load();
 });
