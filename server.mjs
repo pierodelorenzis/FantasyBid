@@ -4,6 +4,7 @@ import path from "node:path";
 import { randomBytes } from "node:crypto";
 import { fileURLToPath } from "node:url";
 import { createClient } from "@supabase/supabase-js";
+import { parseAuctionCatalog } from "./catalog-import.mjs";
 
 const root = path.dirname(fileURLToPath(import.meta.url));
 const store = process.env.FANTABID_STORE_PATH || path.join(root, "data.json");
@@ -1385,72 +1386,10 @@ const server = http.createServer(async (req, res) => {
       const workbook = XLSX.read(Buffer.from(body.data, "base64"), {
         type: "buffer",
       });
-      if (workbook.SheetNames.length !== 1)
-        throw Error("Il file XLSX deve contenere un solo foglio con il catalogo");
-      const list = [];
-      const sheetName = workbook.SheetNames[0];
-      const grid = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], {
-        header: 1,
-        defval: "",
+      const { players: list } = parseAuctionCatalog(XLSX, workbook, {
+        createId: id,
+        normalizeRole,
       });
-      const requiredColumns = ["Nome", "Ruolo", "Squadra", "Quotazione"];
-      const header = grid.findIndex((row) =>
-        requiredColumns.every((column) => row.includes(column)),
-      );
-      if (header < 0)
-        throw Error(
-          "Intestazioni non valide. Usa: Nome, Ruolo, Squadra, Quotazione",
-        );
-      const nameIndex = grid[header].indexOf("Nome");
-      const roleIndex = grid[header].indexOf("Ruolo");
-      const teamIndex = grid[header].indexOf("Squadra");
-      const quoteIndex = grid[header].indexOf("Quotazione");
-      const nationIndex = grid[header].indexOf("Nazione");
-      const importedPlayers = new Set();
-      const invalidRows = [];
-      grid.slice(header + 1).forEach((row, index) => {
-        if (row.every((cell) => String(cell).trim() === "")) return;
-        const name = String(row[nameIndex] || "").trim();
-        const role = normalizeRole(row[roleIndex]);
-        const team = String(row[teamIndex] || "").trim();
-        const quoteValue = String(row[quoteIndex] ?? "").trim();
-        const quote = Number(quoteValue);
-        const line = header + index + 2;
-        if (
-          name.length < 3 ||
-          !role ||
-          !team ||
-          !quoteValue ||
-          !Number.isFinite(quote) ||
-          quote < 0
-        ) {
-          invalidRows.push(line);
-          return;
-        }
-        const playerKey = [role, name, team]
-          .map((value) => value.toLocaleLowerCase("it"))
-          .join("|");
-        if (importedPlayers.has(playerKey)) {
-          invalidRows.push(line);
-          return;
-        }
-        importedPlayers.add(playerKey);
-        list.push({
-          id: id(),
-          name,
-          role,
-          team,
-          nation: nationIndex >= 0 ? String(row[nationIndex] || "").trim() : "",
-          tier: "",
-          quote,
-          number: "",
-        });
-      });
-      if (invalidRows.length)
-        throw Error(
-          `Righe non valide o duplicate nel catalogo: ${invalidRows.slice(0, 10).join(", ")}${invalidRows.length > 10 ? "…" : ""}`,
-        );
-      if (!list.length) throw Error("Nessun giocatore riconosciuto");
       let importHistory = null;
       if (atomicBidEnabled && supabase) {
         const { history, ...snapshot } = auction;

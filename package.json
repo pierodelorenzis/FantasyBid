@@ -26,6 +26,7 @@
     "test:countdown-on-bid": "node --env-file=.env scripts/test-cancel-pause-countdown-on-bid-rpc.mjs",
     "test:atomic-credits": "node --env-file=.env scripts/test-add-participant-credits-rpc.mjs",
     "test:initial-player-call": "node --env-file=.env scripts/test-log-initial-player-on-start-rpc.mjs",
+    "test:catalog-import": "node scripts/test-catalog-import-formats.mjs",
     "test:sse": "node scripts/test-sse-live-updates.mjs"
   },
   "dependencies": {

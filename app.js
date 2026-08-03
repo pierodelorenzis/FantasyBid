@@ -22,6 +22,13 @@ const api = async (path, opts = {}) => {
   if (!r.ok) throw new Error(d.error || "Operazione non riuscita");
   return d;
 };
+const fileToBase64 = (file) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result).split(",", 2)[1]);
+    reader.onerror = () => reject(Error("Impossibile leggere il file selezionato"));
+    reader.readAsDataURL(file);
+  });
 const toast = (t) => {
   const e = $("#toast");
   e.textContent = t;
@@ -445,7 +452,7 @@ function tierRowMarkup(tier = {}) {
 }
 function admin() {
   let tiers = auction.tierSettings || [];
-  return `<div class="title-row"><div><p class="eyebrow">AMMINISTRAZIONE</p><h1>Gestisci l'<em>asta.</em></h1></div><button id="exportAll" class="ghost"><i data-lucide="download"></i> Resoconto CSV</button></div><div class="admin-card"><h2>Importa giocatori</h2><p>Carica un CSV oppure un XLSX con un solo foglio, contenente tutti i giocatori. La riga delle intestazioni deve usare: <b>Nome</b>, <b>Ruolo</b> (POR, DIF, CEN o ATT), <b>Squadra</b>, <b>Quotazione</b>. La colonna <b>Nazione</b> è facoltativa. Ogni giocatore deve comparire una sola volta.</p><input id="playerFile" type="file" accept=".csv,.xlsx"><div class="import-actions"><button id="importPlayers" class="primary">Importa catalogo <i data-lucide="upload"></i></button><span id="importLoader" class="import-loader" hidden role="status"><i data-lucide="loader-circle"></i> Caricamento…</span></div><p id="importResult" class="muted"></p></div><div class="admin-card"><h2>Fasce e regole d’asta</h2><p>Definisci soglia di quotazione, prezzo base, rilancio e tetto. Le fasce sono ordinate automaticamente dalla soglia più alta.</p><form id="rules"><div id="tierRows">${tiers.map(tierRowMarkup).join("")}</div><button type="button" id="addTier" class="ghost">+ Aggiungi fascia</button><div class="tier-actions"><button class="primary">Salva fasce e regole</button><button type="button" id="recalculateTiers" class="ghost"><i data-lucide="rotate-ccw"></i> Ricalcola fasce dei giocatori</button></div></form></div><div class="admin-card"><h2>Link partecipanti</h2><p>Per entrare basta il codice dell'asta e il proprio nome: non è richiesta alcuna password.</p><div class="linkbox">${location.origin}/?asta=${auction.code}<button id="copyCode">Copia</button></div></div>`;
+  return `<div class="title-row"><div><p class="eyebrow">AMMINISTRAZIONE</p><h1>Gestisci l'<em>asta.</em></h1></div><button id="exportAll" class="ghost"><i data-lucide="download"></i> Resoconto CSV</button></div><div class="admin-card"><h2>Importa giocatori</h2><p>Carica il listone XLSX scaricato da <b>Fantacalcio.it</b>: verrà importato automaticamente solo il foglio <b>Tutti</b>. Puoi anche usare un CSV o XLSX FantaBid con le colonne <b>Nome</b>, <b>Ruolo</b>, <b>Squadra</b> e <b>Quotazione</b>; <b>Nazione</b> è facoltativa. Ogni giocatore deve comparire una sola volta.</p><input id="playerFile" type="file" accept=".csv,.xlsx"><div class="import-actions"><button id="importPlayers" class="primary">Importa catalogo <i data-lucide="upload"></i></button><span id="importLoader" class="import-loader" hidden role="status"><i data-lucide="loader-circle"></i> Caricamento…</span></div><p id="importResult" class="muted"></p></div><div class="admin-card"><h2>Fasce e regole d’asta</h2><p>Definisci soglia di quotazione, prezzo base, rilancio e tetto. Le fasce sono ordinate automaticamente dalla soglia più alta.</p><form id="rules"><div id="tierRows">${tiers.map(tierRowMarkup).join("")}</div><button type="button" id="addTier" class="ghost">+ Aggiungi fascia</button><div class="tier-actions"><button class="primary">Salva fasce e regole</button><button type="button" id="recalculateTiers" class="ghost"><i data-lucide="rotate-ccw"></i> Ricalcola fasce dei giocatori</button></div></form></div><div class="admin-card"><h2>Link partecipanti</h2><p>Per entrare basta il codice dell'asta e il proprio nome: non è richiesta alcuna password.</p><div class="linkbox">${location.origin}/?asta=${auction.code}<button id="copyCode">Copia</button></div></div>`;
 }
 function wire(page) {
   if (page === "live") showCountdown();
@@ -752,13 +759,12 @@ function wire(page) {
       result.textContent = `Caricamento di ${file.name}…`;
       setImportBusy(true);
       try {
-        let data = await file.arrayBuffer();
         let x = await api(`/auctions/${session.code}/import`, {
           method: "POST",
           body: JSON.stringify({
             token: session.token,
             fileName: file.name,
-            data: btoa(String.fromCharCode(...new Uint8Array(data))),
+            data: await fileToBase64(file),
           }),
         });
         selectedImportFile = null;
