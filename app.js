@@ -4,6 +4,7 @@ const $ = (s) => document.querySelector(s),
 let session = JSON.parse(localStorage.getItem("fantabid-session") || "null"),
   auction = null,
   refresh,
+  auctionEvents,
   activePage = "live",
   selectedImportFile = null,
   catalogRole = "POR",
@@ -267,36 +268,65 @@ function save(s) {
 }
 function stop() {
   clearInterval(refresh);
+  refresh = null;
+  auctionEvents?.close();
+  auctionEvents = null;
+}
+function applyAuctionUpdate(nextAuction) {
+  auction = nextAuction;
+  if (activePage !== "live") return;
+  const activityScroll = $(".auction-sidebar .recent")?.scrollTop || 0;
+  const pendingAmount = $("#amount")?.value;
+  const wasEditingAmount = document.activeElement?.id === "amount";
+  render(activePage);
+  const activityTable = $(".auction-sidebar .recent");
+  if (activityTable) activityTable.scrollTop = activityScroll;
+  const amountInput = $("#amount");
+  if (amountInput && pendingAmount && Number.isFinite(+pendingAmount)) {
+    amountInput.value = Math.max(+amountInput.min, +pendingAmount);
+    $("#offerAmount").textContent = money(amountInput.value);
+    if (wasEditingAmount) amountInput.focus();
+  }
+}
+async function refreshAuction() {
+  const nextAuction = await api(
+    "/auctions/" + session.code + "?token=" + session.token,
+  );
+  applyAuctionUpdate(nextAuction);
+}
+function startFallbackPolling() {
+  if (refresh) return;
+  refresh = setInterval(async () => {
+    try {
+      await refreshAuction();
+    } catch {}
+  }, 30000);
+}
+function startAuctionEvents() {
+  auctionEvents = new EventSource(
+    `/api/auctions/${encodeURIComponent(session.code)}/events?token=${encodeURIComponent(session.token)}`,
+  );
+  auctionEvents.addEventListener("auction", (event) => {
+    try {
+      const update = JSON.parse(event.data);
+      applyAuctionUpdate(update.auction);
+    } catch {}
+  });
+  auctionEvents.onopen = () => {
+    clearInterval(refresh);
+    refresh = null;
+  };
+  auctionEvents.onerror = startFallbackPolling;
 }
 async function load() {
   if (!session) return landing();
+  stop();
   try {
     auction = await api(
       "/auctions/" + session.code + "?token=" + session.token,
     );
     render(activePage);
-    stop();
-    refresh = setInterval(async () => {
-      try {
-        auction = await api(
-          "/auctions/" + session.code + "?token=" + session.token,
-        );
-        if (activePage === "live") {
-          const activityScroll = $(".auction-sidebar .recent")?.scrollTop || 0;
-          const pendingAmount = $("#amount")?.value;
-          const wasEditingAmount = document.activeElement?.id === "amount";
-          render(activePage);
-          const activityTable = $(".auction-sidebar .recent");
-          if (activityTable) activityTable.scrollTop = activityScroll;
-          const amountInput = $("#amount");
-          if (amountInput && pendingAmount && Number.isFinite(+pendingAmount)) {
-            amountInput.value = Math.max(+amountInput.min, +pendingAmount);
-            $("#offerAmount").textContent = money(amountInput.value);
-            if (wasEditingAmount) amountInput.focus();
-          }
-        }
-      } catch {}
-    }, 1000);
+    startAuctionEvents();
   } catch (e) {
     localStorage.removeItem("fantabid-session");
     session = null;

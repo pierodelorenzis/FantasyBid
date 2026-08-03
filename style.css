@@ -442,6 +442,19 @@ button svg,
   top: 24px;
   margin-top: 0;
 }
+@media (max-width: 1320px) {
+  .live-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .auction-sidebar {
+    position: static;
+  }
+}
+@media (min-width: 751px) and (max-width: 1024px) {
+  .live-main .auction-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
 .live-status-row {
   margin-bottom: 16px;
 }
@@ -799,6 +812,11 @@ button svg,
   max-width: none;
   height: calc(100vh - 124px);
   overflow: auto;
+}
+@media (max-width: 1320px) {
+  .auction-sidebar .recent {
+    height: auto;
+  }
 }
 .recent h2 {
   font-size: 19px;

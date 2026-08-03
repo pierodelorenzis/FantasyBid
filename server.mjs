@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 import { createClient } from "@supabase/supabase-js";
 
 const root = path.dirname(fileURLToPath(import.meta.url));
-const store = path.join(root, "data.json");
+const store = process.env.FANTABID_STORE_PATH || path.join(root, "data.json");
 let db = fs.existsSync(store)
   ? JSON.parse(fs.readFileSync(store))
   : { auctions: {} };
@@ -119,6 +119,7 @@ async function flushSupabaseMirror() {
 function save(auctionCode) {
   fs.writeFileSync(store, JSON.stringify(db, null, 2));
   scheduleSupabaseMirror(auctionCode);
+  broadcastAuction(auctionCode);
 }
 async function saveNewAuction(auctionCode) {
   const auction = db.auctions[auctionCode];
@@ -279,6 +280,58 @@ const publicAuction = (auction, requester) => {
     ),
   };
 };
+
+const auctionStreams = new Map();
+const auctionEventVersions = new Map();
+
+function writeAuctionEvent(stream, auction, version) {
+  stream.res.write(`id: ${version}\n`);
+  stream.res.write("event: auction\n");
+  stream.res.write(
+    `data: ${JSON.stringify({ version, auction: publicAuction(auction, stream.token) })}\n\n`,
+  );
+}
+
+function broadcastAuction(auctionCode) {
+  const auction = db.auctions[auctionCode];
+  const streams = auctionStreams.get(auctionCode);
+  if (!auction || !streams?.size) return;
+  const version = (auctionEventVersions.get(auctionCode) || 0) + 1;
+  auctionEventVersions.set(auctionCode, version);
+  streams.forEach((stream) => writeAuctionEvent(stream, auction, version));
+}
+
+function openAuctionStream(req, res, auction, token) {
+  if (!own(auction, token)) throw Error("Sessione non valida");
+  res.writeHead(200, {
+    "content-type": "text/event-stream",
+    "cache-control": "no-cache, no-transform",
+    connection: "keep-alive",
+    "x-accel-buffering": "no",
+  });
+  res.flushHeaders?.();
+
+  const stream = { res, token };
+  const streams = auctionStreams.get(auction.code) || new Set();
+  streams.add(stream);
+  auctionStreams.set(auction.code, streams);
+  writeAuctionEvent(
+    stream,
+    auction,
+    auctionEventVersions.get(auction.code) || 0,
+  );
+
+  req.on("close", () => {
+    streams.delete(stream);
+    if (!streams.size) auctionStreams.delete(auction.code);
+  });
+}
+
+setInterval(() => {
+  auctionStreams.forEach((streams) =>
+    streams.forEach(({ res }) => res.write(": heartbeat\n\n")),
+  );
+}, 25000).unref();
 const own = (auction, token) =>
   auction.participants.find((participant) => participant.token === token);
 function requireAdmin(auction, token) {
@@ -519,6 +572,13 @@ const server = http.createServer(async (req, res) => {
       db.auctions[bits[2]] || (await restoreAuctionFromSupabase(bits[2]));
     if (!auction) throw Error("Asta non trovata");
     ensureTierSettings(auction);
+    if (req.method === "GET" && bits[3] === "events")
+      return openAuctionStream(
+        req,
+        res,
+        auction,
+        url.searchParams.get("token"),
+      );
     if (req.method === "GET" && bits.length === 3)
       return json(res, publicAuction(auction, url.searchParams.get("token")));
     if (req.method === "POST" && bits[3] === "join") {
