@@ -1,0 +1,153 @@
+:root {
+  --ink: #18223a;
+  --muted: #71809a;
+  --blue: #315efb;
+  --bg: #f7f8fb;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background:
+    radial-gradient(circle at 20% 15%, #e8edff 0, transparent 34%),
+    radial-gradient(circle at 85% 80%, #eef1ff 0, transparent 30%),
+    var(--bg);
+  color: var(--ink);
+  font-family: Outfit, Arial, sans-serif;
+}
+
+.courtesy-card {
+  width: min(100%, 520px);
+  padding: 44px;
+  border: 1px solid #e7eaf0;
+  border-radius: 22px;
+  background: rgb(255 255 255 / 92%);
+  box-shadow: 0 24px 70px rgb(24 34 58 / 10%);
+  text-align: center;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 48px;
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.brand-mark {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 9px;
+  background: var(--blue);
+  color: white;
+  font-size: 16px;
+}
+
+.brand-name span,
+.eyebrow {
+  color: var(--blue);
+}
+
+.loader {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 26px;
+  border: 5px solid #e7ebff;
+  border-top-color: var(--blue);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.loader span {
+  position: absolute;
+  inset: 14px;
+  border-radius: 50%;
+  background: #f0f3ff;
+}
+
+.eyebrow {
+  margin: 0 0 10px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+}
+
+h1 {
+  margin: 0 0 14px;
+  font-size: clamp(28px, 7vw, 38px);
+  line-height: 1.1;
+}
+
+.status {
+  margin: 0 auto;
+  color: var(--muted);
+  font-size: 17px;
+  line-height: 1.55;
+}
+
+.attempts {
+  min-height: 20px;
+  margin: 18px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+button,
+.continue {
+  display: block;
+  width: 100%;
+  margin-top: 20px;
+  padding: 12px 18px;
+  border-radius: 9px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button {
+  border: 0;
+  background: var(--blue);
+  color: white;
+}
+
+.continue {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.continue:hover {
+  color: var(--blue);
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 560px) {
+  .courtesy-card {
+    padding: 32px 22px;
+  }
+
+  .brand {
+    margin-bottom: 38px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loader {
+    animation-duration: 2.5s;
+  }
+}

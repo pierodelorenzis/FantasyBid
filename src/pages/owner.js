@@ -46,7 +46,7 @@ function ownerEmptyDatabaseDialog() {
 export function createOwnerPage({ app, stop }) {
   function ownerLogin() {
     stop();
-    app.innerHTML = `<main class="auth owner-auth"><a class="brand"><span class="brand-mark">F</span><span class="brand-name">Fanta<span>Bid</span></span></a><section class="auth-card"><button class="back" id="ownerBack"><i data-lucide="arrow-left"></i> Torna all'app</button><p class="eyebrow">AREA PROPRIETARIO</p><h1>Panoramica globale</h1><p>Inserisci il token privato configurato sul server per accedere alle statistiche di tutte le aste.</p><form id="ownerLogin"><label>Token proprietario<input name="token" type="password" autocomplete="current-password" required autofocus></label><button class="primary">Accedi</button></form></section></main>`;
+    app.innerHTML = `<main class="auth owner-auth"><a class="brand"><span class="brand-mark">F</span><span class="brand-name">Fantasy<span>Bid</span></span></a><section class="auth-card"><button class="back" id="ownerBack"><i data-lucide="arrow-left"></i> Torna all'app</button><p class="eyebrow">AREA PROPRIETARIO</p><h1>Panoramica globale</h1><p>Inserisci il token privato configurato sul server per accedere alle statistiche di tutte le aste.</p><form id="ownerLogin"><label>Token proprietario<input name="token" type="password" autocomplete="current-password" required autofocus></label><button class="primary">Accedi</button></form></section></main>`;
     renderIcons();
     $("#ownerBack").onclick = () => (location.href = "/");
     $("#ownerLogin").onsubmit = async (event) => {
@@ -60,7 +60,7 @@ export function createOwnerPage({ app, stop }) {
   async function ownerDashboard() {
     stop();
     if (!sessionStorage.getItem("fantabid-owner-token")) return ownerLogin();
-    app.innerHTML = `<main class="owner-dashboard"><header class="owner-header"><a class="brand"><span class="brand-mark">F</span><span class="brand-name">Fanta<span>Bid</span></span></a><div><button class="ghost" id="ownerRefresh"><i data-lucide="refresh-cw"></i> Aggiorna</button><button class="ghost" id="ownerLogout"><i data-lucide="log-out"></i> Esci</button></div></header><section class="owner-title"><p class="eyebrow">AREA PROPRIETARIO</p><h1>Tutte le aste</h1><p>Panoramica globale delle aste salvate nel database.</p></section><div id="ownerContent" class="owner-loading">Caricamento dati…</div></main>`;
+    app.innerHTML = `<main class="owner-dashboard"><header class="owner-header"><a class="brand"><span class="brand-mark">F</span><span class="brand-name">Fantasy<span>Bid</span></span></a><div><button class="ghost" id="ownerRefresh"><i data-lucide="refresh-cw"></i> Aggiorna</button><button class="ghost" id="ownerLogout"><i data-lucide="log-out"></i> Esci</button></div></header><section class="owner-title"><p class="eyebrow">AREA PROPRIETARIO</p><h1>Tutte le aste</h1><p>Panoramica globale delle aste salvate nel database.</p></section><div id="ownerContent" class="owner-loading">Caricamento dati…</div></main>`;
     renderIcons();
     $("#ownerLogout").onclick = () => {
       sessionStorage.removeItem("fantabid-owner-token");

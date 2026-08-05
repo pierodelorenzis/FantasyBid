@@ -98613,6 +98613,5455 @@
       ],
       "remainingSlots": 25
     },
+    "0D7EC8": {
+      "code": "0D7EC8",
+      "name": "Test lega",
+      "rules": {
+        "A": {
+          "cap": 150,
+          "minPrice": 20,
+          "increment": 3
+        },
+        "B": {
+          "cap": 100,
+          "minPrice": 8,
+          "increment": 2
+        },
+        "C": {
+          "cap": 50,
+          "minPrice": 1,
+          "increment": 1
+        }
+      },
+      "budget": 300,
+      "status": "paused",
+      "history": [
+        {
+          "code": "0D7EC8",
+          "name": "Test lega",
+          "rules": {
+            "A": {
+              "cap": 150,
+              "minPrice": 20,
+              "increment": 3
+            },
+            "B": {
+              "cap": 100,
+              "minPrice": 8,
+              "increment": 2
+            },
+            "C": {
+              "cap": 50,
+              "minPrice": 1,
+              "increment": 1
+            }
+          },
+          "budget": 300,
+          "status": "paused",
+          "players": [],
+          "activity": [],
+          "totalSlots": 25,
+          "orderByRole": false,
+          "playerOrder": null,
+          "currentIndex": 0,
+          "participants": [
+            {
+              "name": "Piero",
+              "role": "admin",
+              "token": "defafe6b1eb6527b64a329048e72",
+              "budget": 300,
+              "players": [],
+              "committed": 0
+            }
+          ],
+          "tierSettings": [
+            {
+              "cap": 150,
+              "name": "A",
+              "minPrice": 20,
+              "minQuote": 20,
+              "increment": 3
+            },
+            {
+              "cap": 100,
+              "name": "B",
+              "minPrice": 8,
+              "minQuote": 8,
+              "increment": 2
+            },
+            {
+              "cap": 50,
+              "name": "C",
+              "minPrice": 1,
+              "minQuote": 0,
+              "increment": 1
+            }
+          ],
+          "remainingSlots": 25
+        }
+      ],
+      "players": [
+        {
+          "id": "85cff8a785ac9feb6dc7131f4bb7",
+          "name": "Carnesecchi",
+          "role": "POR",
+          "team": "Atalanta",
+          "tier": "B",
+          "quote": 18,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "e46f11711ebeedbc344f0e7b4532",
+          "name": "Milinkovic-Savic V.",
+          "role": "POR",
+          "team": "Napoli",
+          "tier": "B",
+          "quote": 17,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "3eee5236f07d85ea080d1cbf4377",
+          "name": "Svilar",
+          "role": "POR",
+          "team": "Roma",
+          "tier": "B",
+          "quote": 17,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "16d7fa1dc9a7f99072ef84da58e1",
+          "name": "Butez",
+          "role": "POR",
+          "team": "Como",
+          "tier": "B",
+          "quote": 16,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "629433e29497e21182988706877c",
+          "name": "Maignan",
+          "role": "POR",
+          "team": "Milan",
+          "tier": "B",
+          "quote": 16,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "2da2b78eb0f86356ec843224cdd5",
+          "name": "Di Gregorio",
+          "role": "POR",
+          "team": "Juventus",
+          "tier": "B",
+          "quote": 15,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "f4d307fad7b67fa660d24f012d8b",
+          "name": "Falcone",
+          "role": "POR",
+          "team": "Lecce",
+          "tier": "B",
+          "quote": 15,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "26dd5980d5641c8e9b1e75fe81dd",
+          "name": "Okoye",
+          "role": "POR",
+          "team": "Udinese",
+          "tier": "B",
+          "quote": 14,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "6d5413ab59c68d2c6f69a2f28bab",
+          "name": "Sommer",
+          "role": "POR",
+          "team": "Inter",
+          "tier": "B",
+          "quote": 13,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "e319287469c53a9c8d7bf11d1376",
+          "name": "Caprile",
+          "role": "POR",
+          "team": "Cagliari",
+          "tier": "B",
+          "quote": 12,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "60e72fa0233be387bab2b928b1ad",
+          "name": "Audero",
+          "role": "POR",
+          "team": "Cremonese",
+          "tier": "B",
+          "quote": 12,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "5eeeebda3cc09730bd255d9cce2f",
+          "name": "De Gea",
+          "role": "POR",
+          "team": "Fiorentina",
+          "tier": "B",
+          "quote": 12,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "41570d62b4c938e3866d1fd4643f",
+          "name": "Montipò",
+          "role": "POR",
+          "team": "Verona",
+          "tier": "B",
+          "quote": 12,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "d88591414f34f64d59267679147c",
+          "name": "Skorupski",
+          "role": "POR",
+          "team": "Bologna",
+          "tier": "B",
+          "quote": 11,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "ad156ad5f870a09ef6704b5155d4",
+          "name": "Provedel",
+          "role": "POR",
+          "team": "Lazio",
+          "tier": "B",
+          "quote": 11,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "430aa0cf1cb00ed756095b392138",
+          "name": "Suzuki",
+          "role": "POR",
+          "team": "Parma",
+          "tier": "B",
+          "quote": 11,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "cdbce16099d9a94a8164a4cd3041",
+          "name": "Muric",
+          "role": "POR",
+          "team": "Sassuolo",
+          "tier": "B",
+          "quote": 10,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "b524a232fd0d55aaed1320f572c0",
+          "name": "Bijlow",
+          "role": "POR",
+          "team": "Genoa",
+          "tier": "B",
+          "quote": 10,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "80776287fdd7bfffcc6f47987124",
+          "name": "Leali",
+          "role": "POR",
+          "team": "Genoa",
+          "tier": "B",
+          "quote": 9,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "8d00340f1f88825c6c2c09cc5286",
+          "name": "Corvi",
+          "role": "POR",
+          "team": "Parma",
+          "tier": "B",
+          "quote": 9,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "2b9169c742aec072586e44ddc75c",
+          "name": "Paleari",
+          "role": "POR",
+          "team": "Torino",
+          "tier": "B",
+          "quote": 9,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "bb8fd342a77651e9d2f9ee216027",
+          "name": "Perin",
+          "role": "POR",
+          "team": "Juventus",
+          "tier": "B",
+          "quote": 8,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "3b3b3da7273904012b2657047ae7",
+          "name": "Meret",
+          "role": "POR",
+          "team": "Napoli",
+          "tier": "B",
+          "quote": 8,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "2587a1f9dd34ad5fa04e6d888469",
+          "name": "Turati",
+          "role": "POR",
+          "team": "Sassuolo",
+          "tier": "B",
+          "quote": 8,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "a1f73c5cb1ca91043b556d407b44",
+          "name": "Semper",
+          "role": "POR",
+          "team": "Pisa",
+          "tier": "C",
+          "quote": 7,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "33e98a18a6617b27e98aca255b5c",
+          "name": "Pessina Mas.",
+          "role": "POR",
+          "team": "Bologna",
+          "tier": "C",
+          "quote": 6,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "f7c1a0f8f61f9eddef18a484625a",
+          "name": "Martinez Jo.",
+          "role": "POR",
+          "team": "Inter",
+          "tier": "C",
+          "quote": 5,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "6c1006ec06b124f2dbcb51caf9be",
+          "name": "Motta",
+          "role": "POR",
+          "team": "Lazio",
+          "tier": "C",
+          "quote": 5,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "4bd0778709a332f91e1854b7a92f",
+          "name": "Ravaglia F.",
+          "role": "POR",
+          "team": "Bologna",
+          "tier": "C",
+          "quote": 4,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "b4886b0bebd988daeead8f2c0253",
+          "name": "Furlanetto",
+          "role": "POR",
+          "team": "Lazio",
+          "tier": "C",
+          "quote": 3,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "b322dacaca83cff7a3ef4edf6838",
+          "name": "Christensen O.",
+          "role": "POR",
+          "team": "Fiorentina",
+          "tier": "C",
+          "quote": 2,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "ebda78c915b2a9d2ee3c330bfa3e",
+          "name": "Rossi F.",
+          "role": "POR",
+          "team": "Atalanta",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "44e83f1070bf4f34fe81ca29dc9f",
+          "name": "Sportiello",
+          "role": "POR",
+          "team": "Atalanta",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "700f2c4c8e2fee3030e07a924015",
+          "name": "Ciocci",
+          "role": "POR",
+          "team": "Cagliari",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "65a805064da8c25f4a3ad6ca348a",
+          "name": "Vigorito",
+          "role": "POR",
+          "team": "Como",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "54ff0b07746ac02dee00edb0c4a8",
+          "name": "Nava",
+          "role": "POR",
+          "team": "Cremonese",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "f478a393eb2ddff9880b52ab04e6",
+          "name": "Siegrist",
+          "role": "POR",
+          "team": "Genoa",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "f002137ff1b0299f6bb3832722a0",
+          "name": "Sommariva",
+          "role": "POR",
+          "team": "Genoa",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "03c56f2f2707d00be1ae5c3f8767",
+          "name": "Di Gennaro",
+          "role": "POR",
+          "team": "Inter",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "798a4f8c99242ddc6d7cec39dfd9",
+          "name": "Pinsoglio",
+          "role": "POR",
+          "team": "Juventus",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "2dfc0d3792ae7bcbf4d9e04d1be9",
+          "name": "Fruchtl",
+          "role": "POR",
+          "team": "Lecce",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "c3284f24b442284874f131f8ec3e",
+          "name": "Samooja",
+          "role": "POR",
+          "team": "Lecce",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "0d335b7030434fbf2676f8784cfa",
+          "name": "Terracciano",
+          "role": "POR",
+          "team": "Milan",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "c21ab23e62b5cd24214b5135aa77",
+          "name": "Torriani",
+          "role": "POR",
+          "team": "Milan",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "7ea1c8447eb341b236024ab634a8",
+          "name": "Contini",
+          "role": "POR",
+          "team": "Napoli",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "e8610944df1b59016444c9e6894c",
+          "name": "Rinaldi",
+          "role": "POR",
+          "team": "Parma",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "3f4ab7ecfd4e0f0463262b846e94",
+          "name": "Nicolas",
+          "role": "POR",
+          "team": "Pisa",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "6512b07b05a564d2f074525385fc",
+          "name": "Scuffet",
+          "role": "POR",
+          "team": "Pisa",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "8883f200fa922cd8facaa1c897a4",
+          "name": "Zelezny",
+          "role": "POR",
+          "team": "Roma",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "ead5ff18199071d2bf2d6984d5ff",
+          "name": "Gollini",
+          "role": "POR",
+          "team": "Roma",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "8cec863434a03d828564f7d60bea",
+          "name": "Satalino",
+          "role": "POR",
+          "team": "Sassuolo",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "57478c965cb21b747dd1ebfb413d",
+          "name": "Israel",
+          "role": "POR",
+          "team": "Torino",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "e155f563a3681c3fd444c9b28ae0",
+          "name": "Padelli",
+          "role": "POR",
+          "team": "Udinese",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "394079c9a626e2a4f6e8fb0537ad",
+          "name": "Sava",
+          "role": "POR",
+          "team": "Udinese",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "efc3b42fec1943a1e5cc38e92e61",
+          "name": "Perilli",
+          "role": "POR",
+          "team": "Verona",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "8573e512d00eca2f08b4c2fcd3f7",
+          "name": "Nunziante",
+          "role": "POR",
+          "team": "Udinese",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "ce558efc303a1a4354fc65b1cfb1",
+          "name": "Lezzerini",
+          "role": "POR",
+          "team": "Fiorentina",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "91b22f1d24d99e67f36794fb8976",
+          "name": "Silvestri",
+          "role": "POR",
+          "team": "Cremonese",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "7370e53eb260606ccc8b0a0957b9",
+          "name": "Toniolo",
+          "role": "POR",
+          "team": "Verona",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "791f31b3d5f49dfba77fb72ab95b",
+          "name": "Cavlina",
+          "role": "POR",
+          "team": "Como",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "356764107d37641380915fcae8e1",
+          "name": "Ferrante",
+          "role": "POR",
+          "team": "Napoli",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "0fd0753e2a8d83481d3eeb61ba54",
+          "name": "Calligaris",
+          "role": "POR",
+          "team": "Inter",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "1c54374c3a0ab027a5fe7641b62a",
+          "name": "Tornqvist",
+          "role": "POR",
+          "team": "Como",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "88973d0408e7296db9ab8fb56aba",
+          "name": "Sherri",
+          "role": "POR",
+          "team": "Cagliari",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "95279d85be37bc4bc891fbdd9e00",
+          "name": "Siviero",
+          "role": "POR",
+          "team": "Torino",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "d2bda6614d40597cbc1d30350ad1",
+          "name": "Pannozzo",
+          "role": "POR",
+          "team": "Lazio",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "2e92b9da1be223e6cad99538c3ec",
+          "name": "Giacomone",
+          "role": "POR",
+          "team": "Lazio",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "448b4cbca41ce880c4c86a0a4eab",
+          "name": "Dimarco",
+          "role": "DIF",
+          "team": "Inter",
+          "tier": "A",
+          "quote": 30,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "39b553faacea129ab37e34de66e2",
+          "name": "Bremer",
+          "role": "DIF",
+          "team": "Juventus",
+          "tier": "A",
+          "quote": 20,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "2a19eedde96263c0447a0bcd82a7",
+          "name": "Pavlovic",
+          "role": "DIF",
+          "team": "Milan",
+          "tier": "B",
+          "quote": 17,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "db0728feca7e50f93ef2fce428d9",
+          "name": "Palestra",
+          "role": "DIF",
+          "team": "Cagliari",
+          "tier": "B",
+          "quote": 16,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "f5a5d14d513f71090273ac8c2162",
+          "name": "Kempf",
+          "role": "DIF",
+          "team": "Como",
+          "tier": "B",
+          "quote": 16,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "2bd4a9e6a8380c4ea8c1895230c4",
+          "name": "Spinazzola",
+          "role": "DIF",
+          "team": "Napoli",
+          "tier": "B",
+          "quote": 16,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "2e352e7242c982534e6e2d812165",
+          "name": "Scalvini",
+          "role": "DIF",
+          "team": "Atalanta",
+          "tier": "B",
+          "quote": 15,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "a95dc1f925e8a54a64af4c57b30f",
+          "name": "Bisseck",
+          "role": "DIF",
+          "team": "Inter",
+          "tier": "B",
+          "quote": 15,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "1a8a4374f076ccfed8a5f4156162",
+          "name": "Mancini",
+          "role": "DIF",
+          "team": "Roma",
+          "tier": "B",
+          "quote": 15,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "33fac172eac55c57b226d45af905",
+          "name": "Ostigard",
+          "role": "DIF",
+          "team": "Genoa",
+          "tier": "B",
+          "quote": 15,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "087d0e544ee23cee21e9b94a5513",
+          "name": "Kalulu",
+          "role": "DIF",
+          "team": "Juventus",
+          "tier": "B",
+          "quote": 14,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "e316f20a5bab74a6ce1d1603dcba",
+          "name": "Celik",
+          "role": "DIF",
+          "team": "Roma",
+          "tier": "B",
+          "quote": 14,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "e43cd2cb42fcd00b50c703b82578",
+          "name": "Wesley",
+          "role": "DIF",
+          "team": "Roma",
+          "tier": "B",
+          "quote": 14,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "3fe289142f28756ac5115a37e87d",
+          "name": "Solet",
+          "role": "DIF",
+          "team": "Udinese",
+          "tier": "B",
+          "quote": 14,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "bcf163869d9bd6348c22c216fef0",
+          "name": "Bastoni",
+          "role": "DIF",
+          "team": "Inter",
+          "tier": "B",
+          "quote": 13,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "68e5b0edd3114225d24fc1237ba0",
+          "name": "Hermoso",
+          "role": "DIF",
+          "team": "Roma",
+          "tier": "B",
+          "quote": 13,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "a52e70dfa3dc349ed9ac8b162d52",
+          "name": "Rensch",
+          "role": "DIF",
+          "team": "Roma",
+          "tier": "B",
+          "quote": 13,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "901024b37809e173995d77b60492",
+          "name": "Akanji",
+          "role": "DIF",
+          "team": "Inter",
+          "tier": "B",
+          "quote": 13,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "a0b8e787b7e4abe39dc8142ac336",
+          "name": "Zappacosta",
+          "role": "DIF",
+          "team": "Atalanta",
+          "tier": "B",
+          "quote": 12,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "71a4e010ac478723316697b18b2f",
+          "name": "Dumfries",
+          "role": "DIF",
+          "team": "Inter",
+          "tier": "B",
+          "quote": 12,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "950ca90a04418b12a483e2768a02",
+          "name": "N'Dicka",
+          "role": "DIF",
+          "team": "Roma",
+          "tier": "B",
+          "quote": 12,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "092883ded072131d90d342968f5d",
+          "name": "Gosens",
+          "role": "DIF",
+          "team": "Fiorentina",
+          "tier": "B",
+          "quote": 11,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "3190386ad285d79cf5ee29d0cc8a",
+          "name": "Vasquez",
+          "role": "DIF",
+          "team": "Genoa",
+          "tier": "B",
+          "quote": 11,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "f2eb0072f0698fc642ed5dd455d1",
+          "name": "Kelly L.",
+          "role": "DIF",
+          "team": "Juventus",
+          "tier": "B",
+          "quote": 11,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "507861f4ebfccff9e4c89aa2bf77",
+          "name": "Rrahmani",
+          "role": "DIF",
+          "team": "Napoli",
+          "tier": "B",
+          "quote": 11,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "3dcc11d055d1bc8852897fdc11c1",
+          "name": "Valeri",
+          "role": "DIF",
+          "team": "Parma",
+          "tier": "B",
+          "quote": 11,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "4340379467d1b12c40bb31e5a27f",
+          "name": "Kristensen T.",
+          "role": "DIF",
+          "team": "Udinese",
+          "tier": "B",
+          "quote": 11,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "22c461f3250309efed35e2cdbff0",
+          "name": "Athekame",
+          "role": "DIF",
+          "team": "Milan",
+          "tier": "B",
+          "quote": 11,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "657f34449faa6a5f4876230e7997",
+          "name": "Holm",
+          "role": "DIF",
+          "team": "Juventus",
+          "tier": "B",
+          "quote": 10,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "7cdf525b40a84aae10242361c2eb",
+          "name": "Miranda J.",
+          "role": "DIF",
+          "team": "Bologna",
+          "tier": "B",
+          "quote": 10,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "e6f164ed121fab91d374700b4698",
+          "name": "Vojvoda",
+          "role": "DIF",
+          "team": "Como",
+          "tier": "B",
+          "quote": 10,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "fbb61901b04753d722ce3b4ca283",
+          "name": "Valle",
+          "role": "DIF",
+          "team": "Como",
+          "tier": "B",
+          "quote": 10,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "f4842ba60654ee94853dc1bdf05b",
+          "name": "Dodò",
+          "role": "DIF",
+          "team": "Fiorentina",
+          "tier": "B",
+          "quote": 10,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "2a781b392ec81961270dcd920919",
+          "name": "Martin",
+          "role": "DIF",
+          "team": "Genoa",
+          "tier": "B",
+          "quote": 10,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "847fd0530584c22552be6f4b6556",
+          "name": "Carlos Augusto",
+          "role": "DIF",
+          "team": "Inter",
+          "tier": "B",
+          "quote": 10,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "e24f895b4472710ca2937eb64e40",
+          "name": "Tiago Gabriel",
+          "role": "DIF",
+          "team": "Lecce",
+          "tier": "B",
+          "quote": 10,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "cacf550d0ba1b60e8edb5394acef",
+          "name": "Gallo",
+          "role": "DIF",
+          "team": "Lecce",
+          "tier": "B",
+          "quote": 10,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "84e51723ac066f85b9fef9de7f96",
+          "name": "Bartesaghi",
+          "role": "DIF",
+          "team": "Milan",
+          "tier": "B",
+          "quote": 10,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "807b50b49e00777d7ec6fc4aa8ff",
+          "name": "Beukema",
+          "role": "DIF",
+          "team": "Napoli",
+          "tier": "B",
+          "quote": 10,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "140d2e4b2c01a2bbe9e20f560eca",
+          "name": "Di Lorenzo",
+          "role": "DIF",
+          "team": "Napoli",
+          "tier": "B",
+          "quote": 10,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "7fabdbd13885cbe65236c73d409d",
+          "name": "Delprato",
+          "role": "DIF",
+          "team": "Parma",
+          "tier": "B",
+          "quote": 10,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "53859a8eb4b91c9115163f1b89be",
+          "name": "Kabasele",
+          "role": "DIF",
+          "team": "Udinese",
+          "tier": "B",
+          "quote": 10,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "9fd9a8c1df2ed104a1fa5958d0d8",
+          "name": "Ramon",
+          "role": "DIF",
+          "team": "Como",
+          "tier": "B",
+          "quote": 10,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "f89b30c91d5c091686df7a05cf82",
+          "name": "Belghali",
+          "role": "DIF",
+          "team": "Verona",
+          "tier": "B",
+          "quote": 10,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "7665b750884f4aed25bbaca7c98b",
+          "name": "Gutierrez",
+          "role": "DIF",
+          "team": "Napoli",
+          "tier": "B",
+          "quote": 10,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "db88d5f7b6403859d2d8883f4a8f",
+          "name": "Obrador",
+          "role": "DIF",
+          "team": "Torino",
+          "tier": "B",
+          "quote": 10,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "863a8807ad1dd213efa159adc83f",
+          "name": "Mina",
+          "role": "DIF",
+          "team": "Cagliari",
+          "tier": "B",
+          "quote": 9,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "0283a81a0c59426fb9d855b1f1f6",
+          "name": "Moreno Alb.",
+          "role": "DIF",
+          "team": "Como",
+          "tier": "B",
+          "quote": 9,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "3c3be93ac5844bba93c2de0d5029",
+          "name": "Cambiaso",
+          "role": "DIF",
+          "team": "Juventus",
+          "tier": "B",
+          "quote": 9,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "3b496c6b3bac3cce385035f16e3d",
+          "name": "Baschirotto",
+          "role": "DIF",
+          "team": "Cremonese",
+          "tier": "B",
+          "quote": 9,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "1f5084a765b4afa303ec3181340e",
+          "name": "Angori",
+          "role": "DIF",
+          "team": "Pisa",
+          "tier": "B",
+          "quote": 9,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "987b95417a76084a9cbbbdbc5242",
+          "name": "Coco",
+          "role": "DIF",
+          "team": "Torino",
+          "tier": "B",
+          "quote": 9,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "5dbf736962cfcb1b96215ff2af4c",
+          "name": "Bernasconi",
+          "role": "DIF",
+          "team": "Atalanta",
+          "tier": "B",
+          "quote": 9,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "f7a9a43c2d8a11fa0516d85fc406",
+          "name": "Luperto",
+          "role": "DIF",
+          "team": "Cremonese",
+          "tier": "B",
+          "quote": 8,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "ebcac2e7dcff2aa27035e0449205",
+          "name": "Zortea",
+          "role": "DIF",
+          "team": "Bologna",
+          "tier": "B",
+          "quote": 8,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "706d81bd8e6a274d960f7e1fb3cc",
+          "name": "Gila",
+          "role": "DIF",
+          "team": "Lazio",
+          "tier": "B",
+          "quote": 8,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "518caa1a8534d88a3a8faa5da08c",
+          "name": "Romagnoli",
+          "role": "DIF",
+          "team": "Lazio",
+          "tier": "B",
+          "quote": 8,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "26274599bb7b19acb0a9974d331a",
+          "name": "Marusic",
+          "role": "DIF",
+          "team": "Lazio",
+          "tier": "B",
+          "quote": 8,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "732655437eb6c3eb7c392e9eaf95",
+          "name": "Tomori",
+          "role": "DIF",
+          "team": "Milan",
+          "tier": "B",
+          "quote": 8,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "c9c38d93558ccf0e3887b2e688a2",
+          "name": "Buongiorno",
+          "role": "DIF",
+          "team": "Napoli",
+          "tier": "B",
+          "quote": 8,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "c317589a166e79cd17b7c019389a",
+          "name": "Circati",
+          "role": "DIF",
+          "team": "Parma",
+          "tier": "B",
+          "quote": 8,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "4c0a24fed8abd6ef05961d507b74",
+          "name": "Muharemovic",
+          "role": "DIF",
+          "team": "Sassuolo",
+          "tier": "B",
+          "quote": 8,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "5d0fdb447bf915d5c020aded0445",
+          "name": "Maripan",
+          "role": "DIF",
+          "team": "Torino",
+          "tier": "B",
+          "quote": 8,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "6da77e84b82b48ec280c17154acf",
+          "name": "Ghilardi",
+          "role": "DIF",
+          "team": "Roma",
+          "tier": "B",
+          "quote": 8,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "af5c8353d8651c5bebf5f82e7340",
+          "name": "Idzes",
+          "role": "DIF",
+          "team": "Sassuolo",
+          "tier": "B",
+          "quote": 8,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "14f19b1becd93236dd7401063ae5",
+          "name": "Diego Carlos",
+          "role": "DIF",
+          "team": "Como",
+          "tier": "B",
+          "quote": 8,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "e82b9f928f3e300a7efd41c979f8",
+          "name": "Garcia U.",
+          "role": "DIF",
+          "team": "Sassuolo",
+          "tier": "B",
+          "quote": 8,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "21bad8375bd8c0b92a6c28dddd7f",
+          "name": "Djimsiti",
+          "role": "DIF",
+          "team": "Atalanta",
+          "tier": "C",
+          "quote": 7,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "ccc248b5d8cacda0f9389c182aec",
+          "name": "Kolasinac",
+          "role": "DIF",
+          "team": "Atalanta",
+          "tier": "C",
+          "quote": 7,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "4b7223f0fdc16ce2f53eabb811f0",
+          "name": "Lucumì",
+          "role": "DIF",
+          "team": "Bologna",
+          "tier": "C",
+          "quote": 7,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "2fb6ec83f5092a90c2c7f6416d93",
+          "name": "Obert",
+          "role": "DIF",
+          "team": "Cagliari",
+          "tier": "C",
+          "quote": 7,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "ec84a5bd41cd882d11585452febb",
+          "name": "Marcandalli",
+          "role": "DIF",
+          "team": "Genoa",
+          "tier": "C",
+          "quote": 7,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "1d08b0f1ba4aaa4663e5605aa482",
+          "name": "Norton-Cuffy",
+          "role": "DIF",
+          "team": "Genoa",
+          "tier": "C",
+          "quote": 7,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "a6b0f115851dda104b89db0fe385",
+          "name": "Provstgaard",
+          "role": "DIF",
+          "team": "Lazio",
+          "tier": "C",
+          "quote": 7,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "4098986abbfe8fcf9609f5ef6d20",
+          "name": "Terracciano F.",
+          "role": "DIF",
+          "team": "Cremonese",
+          "tier": "C",
+          "quote": 7,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "40f82638fb41e9c11ed97fd415ed",
+          "name": "Angelino",
+          "role": "DIF",
+          "team": "Roma",
+          "tier": "C",
+          "quote": 7,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "ac1245798047ff89545aff872753",
+          "name": "Pedersen",
+          "role": "DIF",
+          "team": "Torino",
+          "tier": "C",
+          "quote": 7,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "75245b36028c75f2e074ed91e6a2",
+          "name": "Ehizibue",
+          "role": "DIF",
+          "team": "Udinese",
+          "tier": "C",
+          "quote": 7,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "34e21dc798f67030fc2bf25f7c6b",
+          "name": "Frese",
+          "role": "DIF",
+          "team": "Verona",
+          "tier": "C",
+          "quote": 7,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "1ee6d4faf8a9e52b138f0a50d987",
+          "name": "Hien",
+          "role": "DIF",
+          "team": "Atalanta",
+          "tier": "C",
+          "quote": 6,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "9a31efeec9bd6a3106b4ebfed1ae",
+          "name": "Kossounou",
+          "role": "DIF",
+          "team": "Atalanta",
+          "tier": "C",
+          "quote": 6,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "39b358a90ca03ac66d9259f28396",
+          "name": "Bellanova",
+          "role": "DIF",
+          "team": "Atalanta",
+          "tier": "C",
+          "quote": 6,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "4ec60d7e57ee97d49fbfc7758b7a",
+          "name": "Zappa",
+          "role": "DIF",
+          "team": "Cagliari",
+          "tier": "C",
+          "quote": 6,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "337c6e62350d4d0a180bcb8e74d2",
+          "name": "Smolcic I.",
+          "role": "DIF",
+          "team": "Como",
+          "tier": "C",
+          "quote": 6,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "73aa13b4a50c9ae5dcf2a40f0930",
+          "name": "Barbieri",
+          "role": "DIF",
+          "team": "Cremonese",
+          "tier": "C",
+          "quote": 6,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "1c284a0659f50408f836c24d3344",
+          "name": "Ranieri L.",
+          "role": "DIF",
+          "team": "Fiorentina",
+          "tier": "C",
+          "quote": 6,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "a6ffcf0778b89f28fa26044c3658",
+          "name": "Parisi",
+          "role": "DIF",
+          "team": "Fiorentina",
+          "tier": "C",
+          "quote": 6,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "3a7b79eee65fef7282ac1e3c071f",
+          "name": "De Winter",
+          "role": "DIF",
+          "team": "Milan",
+          "tier": "C",
+          "quote": 6,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "032f1adef667534ef9b892633560",
+          "name": "Cabal",
+          "role": "DIF",
+          "team": "Juventus",
+          "tier": "C",
+          "quote": 6,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "8e6b6016b9b469875a299b1a17fd",
+          "name": "Joao Mario",
+          "role": "DIF",
+          "team": "Bologna",
+          "tier": "C",
+          "quote": 6,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "3a802c31d4600599dd4f0edf2fc1",
+          "name": "Tavares N.",
+          "role": "DIF",
+          "team": "Lazio",
+          "tier": "C",
+          "quote": 6,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "39f3165850a7035cf9440195b648",
+          "name": "Zanoli",
+          "role": "DIF",
+          "team": "Udinese",
+          "tier": "C",
+          "quote": 6,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "37316fc66dfd67456ea41984b067",
+          "name": "Caracciolo A.",
+          "role": "DIF",
+          "team": "Pisa",
+          "tier": "C",
+          "quote": 6,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "a5bb83f2c5bd259ab90fa89ddc47",
+          "name": "Ismajli",
+          "role": "DIF",
+          "team": "Torino",
+          "tier": "C",
+          "quote": 6,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "7e312630ea53ed150ab9b4b19ba4",
+          "name": "Kamara H.",
+          "role": "DIF",
+          "team": "Udinese",
+          "tier": "C",
+          "quote": 6,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "37b2a9897ecbc1aec100db1fd743",
+          "name": "Bradaric",
+          "role": "DIF",
+          "team": "Verona",
+          "tier": "C",
+          "quote": 6,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "412a28411105f3ebb0d4098d6955",
+          "name": "Siebert",
+          "role": "DIF",
+          "team": "Lecce",
+          "tier": "C",
+          "quote": 6,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "e9e944e27044e4a048ce4534a757",
+          "name": "Edmundsson",
+          "role": "DIF",
+          "team": "Verona",
+          "tier": "C",
+          "quote": 6,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "33957dcc8e5e6af3bb39f0afdb8a",
+          "name": "Idrissi R.",
+          "role": "DIF",
+          "team": "Cagliari",
+          "tier": "C",
+          "quote": 5,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "c7f94e5442feb19602f4ae32ccb3",
+          "name": "Dossena",
+          "role": "DIF",
+          "team": "Cagliari",
+          "tier": "C",
+          "quote": 5,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "dfd359ea572b3562ab09c7671698",
+          "name": "Van Der Brempt",
+          "role": "DIF",
+          "team": "Como",
+          "tier": "C",
+          "quote": 5,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "c3744aeac7c26a2b1914cb521566",
+          "name": "Floriani Mussolini",
+          "role": "DIF",
+          "team": "Cremonese",
+          "tier": "C",
+          "quote": 5,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "e96042ce288ea6b3a06338ec4a26",
+          "name": "Pongracic",
+          "role": "DIF",
+          "team": "Fiorentina",
+          "tier": "C",
+          "quote": 5,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "287fa5401e11ddcee7031621f0ed",
+          "name": "Acerbi",
+          "role": "DIF",
+          "team": "Inter",
+          "tier": "C",
+          "quote": 5,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "c0f94df577470bdc954e58234de5",
+          "name": "Gatti",
+          "role": "DIF",
+          "team": "Juventus",
+          "tier": "C",
+          "quote": 5,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "29c42e7f55d247ce6a098856f856",
+          "name": "Pellegrini Lu.",
+          "role": "DIF",
+          "team": "Lazio",
+          "tier": "C",
+          "quote": 5,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "8d773490fd091d908f738ca39f41",
+          "name": "Veiga D.",
+          "role": "DIF",
+          "team": "Lecce",
+          "tier": "C",
+          "quote": 5,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "6f25ba360cc10db69ce4433506c2",
+          "name": "Gabbia",
+          "role": "DIF",
+          "team": "Milan",
+          "tier": "C",
+          "quote": 5,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "0555af2b0ff974c8be8d797d31fd",
+          "name": "Olivera",
+          "role": "DIF",
+          "team": "Napoli",
+          "tier": "C",
+          "quote": 5,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "42e649cca937d53cb5026453ae65",
+          "name": "Valenti",
+          "role": "DIF",
+          "team": "Parma",
+          "tier": "C",
+          "quote": 5,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "042294c38de41b0db55c31defcb6",
+          "name": "Canestrelli",
+          "role": "DIF",
+          "team": "Pisa",
+          "tier": "C",
+          "quote": 5,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "bf0c09f0abe9e4ce0d090093b09a",
+          "name": "Walukiewicz",
+          "role": "DIF",
+          "team": "Sassuolo",
+          "tier": "C",
+          "quote": 5,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "675dfb50ffc3a2ff88f2d5af461d",
+          "name": "Bertola",
+          "role": "DIF",
+          "team": "Udinese",
+          "tier": "C",
+          "quote": 5,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "88bb0249a2bb006ae1c5e77d889d",
+          "name": "Ebosse",
+          "role": "DIF",
+          "team": "Torino",
+          "tier": "C",
+          "quote": 5,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "83142841e8786fd74addbbe15c26",
+          "name": "Cuadrado",
+          "role": "DIF",
+          "team": "Pisa",
+          "tier": "C",
+          "quote": 5,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "9fd97408029414ae0cb4314ec06c",
+          "name": "Nelsson",
+          "role": "DIF",
+          "team": "Verona",
+          "tier": "C",
+          "quote": 5,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "d955bf08ebf422522aac4c6aa77c",
+          "name": "Troilo",
+          "role": "DIF",
+          "team": "Parma",
+          "tier": "C",
+          "quote": 5,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "882f571483a2464c1b242edbfa25",
+          "name": "Zè Pedro",
+          "role": "DIF",
+          "team": "Cagliari",
+          "tier": "C",
+          "quote": 5,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "af22e4ba68a7f1fab1bc28319b4b",
+          "name": "Ahanor",
+          "role": "DIF",
+          "team": "Atalanta",
+          "tier": "C",
+          "quote": 4,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "b2cb6635de0185a0bc61fc5e6caa",
+          "name": "Vitik",
+          "role": "DIF",
+          "team": "Bologna",
+          "tier": "C",
+          "quote": 4,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "9334f553d7037cd091b35d25fb84",
+          "name": "Bianchetti",
+          "role": "DIF",
+          "team": "Cremonese",
+          "tier": "C",
+          "quote": 4,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "1f830d7885a8b6bd085010dc8a73",
+          "name": "Folino",
+          "role": "DIF",
+          "team": "Cremonese",
+          "tier": "C",
+          "quote": 4,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "e46db4314afb06c17c0bb6b05151",
+          "name": "Pezzella Giu.",
+          "role": "DIF",
+          "team": "Cremonese",
+          "tier": "C",
+          "quote": 4,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "f009250b61ed8e8530ed2c904740",
+          "name": "Comuzzo",
+          "role": "DIF",
+          "team": "Fiorentina",
+          "tier": "C",
+          "quote": 4,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "0b888ea3bb012ef8bfd60ba5df52",
+          "name": "Juan Jesus",
+          "role": "DIF",
+          "team": "Napoli",
+          "tier": "C",
+          "quote": 4,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "bad2f481e899151497ef19871ebc",
+          "name": "Mazzocchi",
+          "role": "DIF",
+          "team": "Napoli",
+          "tier": "C",
+          "quote": 4,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "c07c7231a029664479148e2838b4",
+          "name": "Doig",
+          "role": "DIF",
+          "team": "Sassuolo",
+          "tier": "C",
+          "quote": 4,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "420b4130460d7ae8b44dd135ac68",
+          "name": "Lazaro",
+          "role": "DIF",
+          "team": "Torino",
+          "tier": "C",
+          "quote": 4,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "2de078c3cefb4ffecb4d3dea78e4",
+          "name": "Oyegoke",
+          "role": "DIF",
+          "team": "Verona",
+          "tier": "C",
+          "quote": 4,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "35894353618b2fd855aa03b67667",
+          "name": "Heggem",
+          "role": "DIF",
+          "team": "Bologna",
+          "tier": "C",
+          "quote": 4,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "179025d1ea13c6462ae17d7b206a",
+          "name": "Britschgi",
+          "role": "DIF",
+          "team": "Parma",
+          "tier": "C",
+          "quote": 4,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "84b03c024981ce85cfcd0f62dc06",
+          "name": "Rodriguez Ju.",
+          "role": "DIF",
+          "team": "Cagliari",
+          "tier": "C",
+          "quote": 4,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "9c34cb217612980439fd8761cd52",
+          "name": "Coulibaly W.",
+          "role": "DIF",
+          "team": "Sassuolo",
+          "tier": "C",
+          "quote": 4,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "38121edbb0a620de296d579d572f",
+          "name": "De Silvestri",
+          "role": "DIF",
+          "team": "Bologna",
+          "tier": "C",
+          "quote": 3,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "7172fb2f62a045958eb1f8e428bc",
+          "name": "Sabelli",
+          "role": "DIF",
+          "team": "Genoa",
+          "tier": "C",
+          "quote": 3,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "7a969a4cb902b7d68ea55490f73e",
+          "name": "De Vrij",
+          "role": "DIF",
+          "team": "Inter",
+          "tier": "C",
+          "quote": 3,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "812d590d96cef13b0e33d7afc1f3",
+          "name": "Darmian",
+          "role": "DIF",
+          "team": "Inter",
+          "tier": "C",
+          "quote": 3,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "9c492c696a58186d93a576ee6791",
+          "name": "Patric",
+          "role": "DIF",
+          "team": "Lazio",
+          "tier": "C",
+          "quote": 3,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "fec9050d2142bdac9932029785f0",
+          "name": "Lazzari",
+          "role": "DIF",
+          "team": "Lazio",
+          "tier": "C",
+          "quote": 3,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "68b9a69566d7590ba2650a9bcac0",
+          "name": "Marianucci",
+          "role": "DIF",
+          "team": "Torino",
+          "tier": "C",
+          "quote": 3,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "91293d9a8e6d1a12f05261af9209",
+          "name": "Calabresi",
+          "role": "DIF",
+          "team": "Pisa",
+          "tier": "C",
+          "quote": 3,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "086d364e4130ffadb663d115557c",
+          "name": "Zemura",
+          "role": "DIF",
+          "team": "Udinese",
+          "tier": "C",
+          "quote": 3,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "ab6a195ab641fcf5ffa32b716df4",
+          "name": "Valentini N.",
+          "role": "DIF",
+          "team": "Verona",
+          "tier": "C",
+          "quote": 3,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "d6fdc83645e1edef55aea5ffe3ac",
+          "name": "Bella-Kotchap",
+          "role": "DIF",
+          "team": "Verona",
+          "tier": "C",
+          "quote": 3,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "11af55b7edc06658d32a0df10c17",
+          "name": "Tsimikas",
+          "role": "DIF",
+          "team": "Roma",
+          "tier": "C",
+          "quote": 3,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "8f7eba32b69c8635548bf8e78c14",
+          "name": "Zatterstrom",
+          "role": "DIF",
+          "team": "Genoa",
+          "tier": "C",
+          "quote": 3,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "d0422e3e355710af8e077497e220",
+          "name": "Carboni F.",
+          "role": "DIF",
+          "team": "Parma",
+          "tier": "C",
+          "quote": 3,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "a8fb20406e4a1d6b8888a19e0085",
+          "name": "Pedro Felipe",
+          "role": "DIF",
+          "team": "Sassuolo",
+          "tier": "C",
+          "quote": 3,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "12ce189c549b87081b33ad201a3a",
+          "name": "Lykogiannis",
+          "role": "DIF",
+          "team": "Bologna",
+          "tier": "C",
+          "quote": 2,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "650ce83fb263046d3e75104df290",
+          "name": "Fortini",
+          "role": "DIF",
+          "team": "Fiorentina",
+          "tier": "C",
+          "quote": 2,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "1d707910313e92f7d4644cfdd309",
+          "name": "Otoa",
+          "role": "DIF",
+          "team": "Genoa",
+          "tier": "C",
+          "quote": 2,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "bd662a12631c643d3cefa22ee7d3",
+          "name": "Rugani",
+          "role": "DIF",
+          "team": "Fiorentina",
+          "tier": "C",
+          "quote": 2,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "e5ca3dad3d86bb664288431f6091",
+          "name": "Gaspar K.",
+          "role": "DIF",
+          "team": "Lecce",
+          "tier": "C",
+          "quote": 2,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "d0557d3540f1677af5c71e93c37a",
+          "name": "Jean",
+          "role": "DIF",
+          "team": "Lecce",
+          "tier": "C",
+          "quote": 2,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "2d9003950f25c003463321cd79b2",
+          "name": "Estupinan",
+          "role": "DIF",
+          "team": "Milan",
+          "tier": "C",
+          "quote": 2,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "4fa3e4f649648ba75c50112bbd64",
+          "name": "Biraghi",
+          "role": "DIF",
+          "team": "Torino",
+          "tier": "C",
+          "quote": 2,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "b14559e7760e23a1d90aa4715abe",
+          "name": "Slotsager",
+          "role": "DIF",
+          "team": "Verona",
+          "tier": "C",
+          "quote": 2,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "8649a32c65a2d584fcc0004f922f",
+          "name": "Ndiaye",
+          "role": "DIF",
+          "team": "Parma",
+          "tier": "C",
+          "quote": 2,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "b4025009662fe8965ff58f52852e",
+          "name": "Cham",
+          "role": "DIF",
+          "team": "Verona",
+          "tier": "C",
+          "quote": 2,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "13d2b1d640cdf66e4c7fe2be6af2",
+          "name": "Ziolkowski",
+          "role": "DIF",
+          "team": "Roma",
+          "tier": "C",
+          "quote": 2,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "ce731cff205d65bf153072386211",
+          "name": "Nkounkou",
+          "role": "DIF",
+          "team": "Torino",
+          "tier": "C",
+          "quote": 2,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "d8891820babe01ceea8938679ab6",
+          "name": "Arizala",
+          "role": "DIF",
+          "team": "Udinese",
+          "tier": "C",
+          "quote": 2,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "20fa8f13ba332f0143fc8b2bd3b2",
+          "name": "Helland",
+          "role": "DIF",
+          "team": "Bologna",
+          "tier": "C",
+          "quote": 2,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "6d2b94b458ecbfab30f65f5e1bfe",
+          "name": "Lirola",
+          "role": "DIF",
+          "team": "Verona",
+          "tier": "C",
+          "quote": 2,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "6e05d034c3a8a75d004e1113cf93",
+          "name": "Mlacic",
+          "role": "DIF",
+          "team": "Udinese",
+          "tier": "C",
+          "quote": 2,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "fbf54d1c777095426a88e4b03546",
+          "name": "Balbo",
+          "role": "DIF",
+          "team": "Fiorentina",
+          "tier": "C",
+          "quote": 2,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "86a0178013270ae366c260493e7d",
+          "name": "Casale",
+          "role": "DIF",
+          "team": "Bologna",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "1229c36c990bd3a7cfb24642f4ec",
+          "name": "Goldaniga",
+          "role": "DIF",
+          "team": "Como",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "b942b4c52698a0d4633d988693e9",
+          "name": "Ceccherini",
+          "role": "DIF",
+          "team": "Cremonese",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "66fc59a87afaf18c534aed5d5f3c",
+          "name": "Gigot",
+          "role": "DIF",
+          "team": "Lazio",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "3b1b8976eee9f8873f9653d0610a",
+          "name": "Hysaj",
+          "role": "DIF",
+          "team": "Lazio",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "deccbf60976b8acb7d7418c996ec",
+          "name": "Perez M.",
+          "role": "DIF",
+          "team": "Lecce",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "3ae29266c599545e35c3fc61b86f",
+          "name": "Ndaba",
+          "role": "DIF",
+          "team": "Lecce",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "81fc9fc63ad4d7c2fadecfd6f0ed",
+          "name": "Coppola F.",
+          "role": "DIF",
+          "team": "Pisa",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "d53a6e7c5c2db9e2aba80c2df1f0",
+          "name": "Romagna",
+          "role": "DIF",
+          "team": "Sassuolo",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "babd914a31256bb8518307ea6cdc",
+          "name": "Pieragnolo",
+          "role": "DIF",
+          "team": "Sassuolo",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "7575957dcbf8d2535fa8af448c82",
+          "name": "Denoon",
+          "role": "DIF",
+          "team": "Pisa",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "5682779bb7d040b128578b43645c",
+          "name": "Candè",
+          "role": "DIF",
+          "team": "Sassuolo",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "a4d19ef526ebe1c77d658f99649a",
+          "name": "Kouadio",
+          "role": "DIF",
+          "team": "Fiorentina",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "c6e8d95e8d44542166baa1ae26ff",
+          "name": "Faye",
+          "role": "DIF",
+          "team": "Cremonese",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "98fb4d473b4cd760494e514fbfb1",
+          "name": "Odogu",
+          "role": "DIF",
+          "team": "Milan",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "ff9c12763bedbaf1705302600d15",
+          "name": "Albiol",
+          "role": "DIF",
+          "team": "Pisa",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "ad34b3e3022b87177a0f5cc5d246",
+          "name": "Bozhinov",
+          "role": "DIF",
+          "team": "Pisa",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "79c23ba60287ba373fdac5c5c232",
+          "name": "Raterink",
+          "role": "DIF",
+          "team": "Cagliari",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "96795558a0806ead694323fcd088",
+          "name": "Paz N.",
+          "role": "CEN",
+          "team": "Como",
+          "tier": "A",
+          "quote": 26,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "d112cd6b151e4aa378d8ee9035ab",
+          "name": "McTominay",
+          "role": "CEN",
+          "team": "Napoli",
+          "tier": "A",
+          "quote": 25,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "912e5349beec834e0cba3bedd8e7",
+          "name": "Baturina",
+          "role": "CEN",
+          "team": "Como",
+          "tier": "A",
+          "quote": 24,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "30b1119360d7492caed3536e5e5b",
+          "name": "Calhanoglu",
+          "role": "CEN",
+          "team": "Inter",
+          "tier": "A",
+          "quote": 24,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "6b04634f4e6b4c0761bad9f163b9",
+          "name": "Pulisic",
+          "role": "CEN",
+          "team": "Milan",
+          "tier": "A",
+          "quote": 24,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "d32062455cbf5dec9342c1b8702e",
+          "name": "Rabiot",
+          "role": "CEN",
+          "team": "Milan",
+          "tier": "A",
+          "quote": 23,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "bc7b75ea017ec9fd32601c57ba64",
+          "name": "De Bruyne",
+          "role": "CEN",
+          "team": "Napoli",
+          "tier": "A",
+          "quote": 21,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "2fa69b28eb1c6c1dd886b883ac8f",
+          "name": "Da Cunha",
+          "role": "CEN",
+          "team": "Como",
+          "tier": "A",
+          "quote": 20,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "6b0d10363cf20003671ba9343d33",
+          "name": "Zielinski",
+          "role": "CEN",
+          "team": "Inter",
+          "tier": "A",
+          "quote": 20,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "67f9c937bd0c1a04e94d24e3cf0a",
+          "name": "Atta",
+          "role": "CEN",
+          "team": "Udinese",
+          "tier": "A",
+          "quote": 20,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "ed9ecd9cbeb42e22dc400963db09",
+          "name": "Orsolini",
+          "role": "CEN",
+          "team": "Bologna",
+          "tier": "B",
+          "quote": 19,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "bf72763900911bef40e1441561ea",
+          "name": "Zaniolo",
+          "role": "CEN",
+          "team": "Udinese",
+          "tier": "B",
+          "quote": 19,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "d20e840c596984e1f8146fd456a3",
+          "name": "Barella",
+          "role": "CEN",
+          "team": "Inter",
+          "tier": "B",
+          "quote": 18,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "0df73b103d38caa1c98b68443c7e",
+          "name": "McKennie",
+          "role": "CEN",
+          "team": "Juventus",
+          "tier": "B",
+          "quote": 18,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "066de1ac26678963d1f4ab9028c7",
+          "name": "Conceicao",
+          "role": "CEN",
+          "team": "Juventus",
+          "tier": "B",
+          "quote": 18,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "ce181fd5e3bc442958ef1a457964",
+          "name": "Modric",
+          "role": "CEN",
+          "team": "Milan",
+          "tier": "B",
+          "quote": 18,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "4fc491ceaf17893caa4a1ba4252e",
+          "name": "Mandragora",
+          "role": "CEN",
+          "team": "Fiorentina",
+          "tier": "B",
+          "quote": 17,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "99afd15becf0aba35a2c6098e9db",
+          "name": "Konè I.",
+          "role": "CEN",
+          "team": "Sassuolo",
+          "tier": "B",
+          "quote": 17,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "8aa1b8dd19fc21c70d75662a32f8",
+          "name": "Vlasic",
+          "role": "CEN",
+          "team": "Torino",
+          "tier": "B",
+          "quote": 17,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "8d6d56c66a4454fb1a683f971c7f",
+          "name": "Perrone",
+          "role": "CEN",
+          "team": "Como",
+          "tier": "B",
+          "quote": 16,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "c64cb17ed38f3e428ec5b9c7597c",
+          "name": "Messias",
+          "role": "CEN",
+          "team": "Genoa",
+          "tier": "B",
+          "quote": 16,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "99454ef55f999d5dd355b9684010",
+          "name": "Isaksen",
+          "role": "CEN",
+          "team": "Lazio",
+          "tier": "B",
+          "quote": 16,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "22304a05bef2e723edd4a6d75c21",
+          "name": "Malinovskyi",
+          "role": "CEN",
+          "team": "Genoa",
+          "tier": "B",
+          "quote": 15,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "6b08f1c07d8b7f130d84cd7750f3",
+          "name": "Saelemaekers",
+          "role": "CEN",
+          "team": "Milan",
+          "tier": "B",
+          "quote": 15,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "e0580346590d4c3e0f2595136d78",
+          "name": "Zambo Anguissa",
+          "role": "CEN",
+          "team": "Napoli",
+          "tier": "B",
+          "quote": 15,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "251b2c357bfbea30b313226b8c3f",
+          "name": "Bernabè",
+          "role": "CEN",
+          "team": "Parma",
+          "tier": "B",
+          "quote": 15,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "a6aff24477ffe0da98c1915bad40",
+          "name": "Thorstvedt",
+          "role": "CEN",
+          "team": "Sassuolo",
+          "tier": "B",
+          "quote": 15,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "1e9053b0fb4082027eaa95492634",
+          "name": "Rowe",
+          "role": "CEN",
+          "team": "Bologna",
+          "tier": "B",
+          "quote": 15,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "a0a7a5f757f41a06cedcb211becd",
+          "name": "Zalewski",
+          "role": "CEN",
+          "team": "Atalanta",
+          "tier": "B",
+          "quote": 14,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "9c6f5e096042f30505a1556e3023",
+          "name": "Mkhitaryan",
+          "role": "CEN",
+          "team": "Inter",
+          "tier": "B",
+          "quote": 14,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "7075d15ea2047139af4df3b5bdc4",
+          "name": "Thuram K.",
+          "role": "CEN",
+          "team": "Juventus",
+          "tier": "B",
+          "quote": 14,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "187b91c8b231393a1b78fca25fb4",
+          "name": "Pisilli",
+          "role": "CEN",
+          "team": "Roma",
+          "tier": "B",
+          "quote": 14,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "a45cacda2516dc328e102b71287a",
+          "name": "Ekkelenkamp",
+          "role": "CEN",
+          "team": "Udinese",
+          "tier": "B",
+          "quote": 14,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "bbb4eedd04ebd86957ce89fd97a2",
+          "name": "Taylor K.",
+          "role": "CEN",
+          "team": "Lazio",
+          "tier": "B",
+          "quote": 14,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "80df4eb2bae947d350220f55c57c",
+          "name": "Ederson D.S.",
+          "role": "CEN",
+          "team": "Atalanta",
+          "tier": "B",
+          "quote": 13,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "f426a8d05876d6cff344b1b0cd7c",
+          "name": "Bernardeschi",
+          "role": "CEN",
+          "team": "Bologna",
+          "tier": "B",
+          "quote": 13,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "ac93908faa09a41511a84f731985",
+          "name": "Odgaard",
+          "role": "CEN",
+          "team": "Bologna",
+          "tier": "B",
+          "quote": 13,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "93a94350919df498ed83a9fc5dde",
+          "name": "Gaetano",
+          "role": "CEN",
+          "team": "Cagliari",
+          "tier": "B",
+          "quote": 13,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "65714d1ad860c341ab9dbfdc74ae",
+          "name": "Caqueret",
+          "role": "CEN",
+          "team": "Como",
+          "tier": "B",
+          "quote": 13,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "446a2f162886c50e4f1110875fe0",
+          "name": "Strefezza",
+          "role": "CEN",
+          "team": "Parma",
+          "tier": "B",
+          "quote": 13,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "d62c671a4b9e555a23045a596b51",
+          "name": "Gudmundsson A.",
+          "role": "CEN",
+          "team": "Fiorentina",
+          "tier": "B",
+          "quote": 13,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "b889bba92fb5245716f8c951d0b5",
+          "name": "Zaccagni",
+          "role": "CEN",
+          "team": "Lazio",
+          "tier": "B",
+          "quote": 13,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "90fce28c2373acbe9d7bc64cf715",
+          "name": "Coulibaly L.",
+          "role": "CEN",
+          "team": "Lecce",
+          "tier": "B",
+          "quote": 13,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "2853941cf34b3811c411bab50868",
+          "name": "Politano",
+          "role": "CEN",
+          "team": "Napoli",
+          "tier": "B",
+          "quote": 13,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "345162975ebf03d46e41306765ed",
+          "name": "Cristante",
+          "role": "CEN",
+          "team": "Roma",
+          "tier": "B",
+          "quote": 13,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "2c38a157aec2528fb64069b6bbac",
+          "name": "Konè M.",
+          "role": "CEN",
+          "team": "Roma",
+          "tier": "B",
+          "quote": 13,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "1a501e15e426a69fae61e86eb68e",
+          "name": "Pellegrini Lo.",
+          "role": "CEN",
+          "team": "Roma",
+          "tier": "B",
+          "quote": 13,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "02c95a5d23f3d086183061157ad4",
+          "name": "Volpato",
+          "role": "CEN",
+          "team": "Sassuolo",
+          "tier": "B",
+          "quote": 13,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "f07f9fa2e5fedefbea3710f3815f",
+          "name": "Casadei",
+          "role": "CEN",
+          "team": "Torino",
+          "tier": "B",
+          "quote": 13,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "7c1f2e1ba82cb349ac888752e614",
+          "name": "Pasalic",
+          "role": "CEN",
+          "team": "Atalanta",
+          "tier": "B",
+          "quote": 12,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "23117ac11dbecc58d6856cf64312",
+          "name": "Thorsby",
+          "role": "CEN",
+          "team": "Cremonese",
+          "tier": "B",
+          "quote": 12,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "937b6acb9479882f6f2914f68765",
+          "name": "Locatelli",
+          "role": "CEN",
+          "team": "Juventus",
+          "tier": "B",
+          "quote": 12,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "3019709cb5e187a4c37a6afa654a",
+          "name": "Santos A.",
+          "role": "CEN",
+          "team": "Napoli",
+          "tier": "B",
+          "quote": 12,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "adddc645891496efee454ac79be1",
+          "name": "Vandeputte",
+          "role": "CEN",
+          "team": "Cremonese",
+          "tier": "B",
+          "quote": 11,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "d8e85ca0a408558a8ff5b51a8356",
+          "name": "Fagioli",
+          "role": "CEN",
+          "team": "Fiorentina",
+          "tier": "B",
+          "quote": 11,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "16655bb3b8c2821643b0953381c5",
+          "name": "Sucic P.",
+          "role": "CEN",
+          "team": "Inter",
+          "tier": "B",
+          "quote": 11,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "697903e203b4c6e4b027395ae397",
+          "name": "Cataldi",
+          "role": "CEN",
+          "team": "Lazio",
+          "tier": "B",
+          "quote": 11,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "ca0b5656484b00c540c284b7c344",
+          "name": "Basic",
+          "role": "CEN",
+          "team": "Lazio",
+          "tier": "B",
+          "quote": 11,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "72a850e598a037c389ab78ce66db",
+          "name": "Ricci S.",
+          "role": "CEN",
+          "team": "Milan",
+          "tier": "B",
+          "quote": 11,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "b5374d2568dafc1e7da0159e393c",
+          "name": "Keita M.",
+          "role": "CEN",
+          "team": "Parma",
+          "tier": "B",
+          "quote": 11,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "aaf763b43cf115071005469c9f1e",
+          "name": "Harrison",
+          "role": "CEN",
+          "team": "Fiorentina",
+          "tier": "B",
+          "quote": 11,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "5ee80c5149fd5f93fff873d7236c",
+          "name": "Brescianini",
+          "role": "CEN",
+          "team": "Fiorentina",
+          "tier": "B",
+          "quote": 10,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "d2482f6a32fa704ee378eeeb8d8e",
+          "name": "Maldini",
+          "role": "CEN",
+          "team": "Lazio",
+          "tier": "B",
+          "quote": 10,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "cd328a60ac9f1f138b83d9f4f95a",
+          "name": "Folorunsho",
+          "role": "CEN",
+          "team": "Cagliari",
+          "tier": "B",
+          "quote": 10,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "1a7df50a7dd1eafd1605338271ab",
+          "name": "Fofana Y.",
+          "role": "CEN",
+          "team": "Milan",
+          "tier": "B",
+          "quote": 10,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "78c4d3a6acae53731d925e2b9893",
+          "name": "Loftus-Cheek",
+          "role": "CEN",
+          "team": "Milan",
+          "tier": "B",
+          "quote": 10,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "a427736fb05d78369877de2dbc66",
+          "name": "Lobotka",
+          "role": "CEN",
+          "team": "Napoli",
+          "tier": "B",
+          "quote": 10,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "a0f0d2514593c444a327da613458",
+          "name": "Neres",
+          "role": "CEN",
+          "team": "Napoli",
+          "tier": "B",
+          "quote": 10,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "6f51fda79b93644ad951dd13dfe1",
+          "name": "Leris",
+          "role": "CEN",
+          "team": "Pisa",
+          "tier": "B",
+          "quote": 10,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "8c2d4e66735db3f62c28871e4b27",
+          "name": "Mazzitelli",
+          "role": "CEN",
+          "team": "Cagliari",
+          "tier": "B",
+          "quote": 10,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "192ba28ee84263ee228928143875",
+          "name": "De Roon",
+          "role": "CEN",
+          "team": "Atalanta",
+          "tier": "B",
+          "quote": 9,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "c58ec425395e4c65c41025e20d54",
+          "name": "Samardzic",
+          "role": "CEN",
+          "team": "Atalanta",
+          "tier": "B",
+          "quote": 9,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "a5448318f1b275ee5c7d3e76cf07",
+          "name": "Moro N.",
+          "role": "CEN",
+          "team": "Bologna",
+          "tier": "B",
+          "quote": 9,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "6664cef8e7925eb886f642719ab6",
+          "name": "Ndour",
+          "role": "CEN",
+          "team": "Fiorentina",
+          "tier": "B",
+          "quote": 9,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "cfa1bcfaf795b990f2966b697ec9",
+          "name": "Frendrup",
+          "role": "CEN",
+          "team": "Genoa",
+          "tier": "B",
+          "quote": 9,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "702c25f914526cf40d9c215b338d",
+          "name": "Kostic",
+          "role": "CEN",
+          "team": "Juventus",
+          "tier": "B",
+          "quote": 9,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "05fcdaf2cc42b9d43c5b4a4d044f",
+          "name": "El Shaarawy",
+          "role": "CEN",
+          "team": "Roma",
+          "tier": "B",
+          "quote": 9,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "5200d8564b090e22a4c0924873ba",
+          "name": "Baldanzi",
+          "role": "CEN",
+          "team": "Genoa",
+          "tier": "B",
+          "quote": 9,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "a53d71e42d0fef9162e5ea1f1b69",
+          "name": "Karlstrom",
+          "role": "CEN",
+          "team": "Udinese",
+          "tier": "B",
+          "quote": 9,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "1707999925a7f675013b5aa857b1",
+          "name": "Zhegrova",
+          "role": "CEN",
+          "team": "Juventus",
+          "tier": "B",
+          "quote": 9,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "2097fafcc019e8c5d1afd28a8d83",
+          "name": "Gandelman",
+          "role": "CEN",
+          "team": "Lecce",
+          "tier": "B",
+          "quote": 9,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "a82ba35d7c0bb0d217245fbc2f82",
+          "name": "Freuler",
+          "role": "CEN",
+          "team": "Bologna",
+          "tier": "B",
+          "quote": 8,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "c30cb7c32bddcb0c36296a3b715e",
+          "name": "Pobega",
+          "role": "CEN",
+          "team": "Bologna",
+          "tier": "B",
+          "quote": 8,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "29ed8471476676f04bf00e025e06",
+          "name": "Adopo",
+          "role": "CEN",
+          "team": "Cagliari",
+          "tier": "B",
+          "quote": 8,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "88c33ef587458e989e8bc504f169",
+          "name": "Ellertsson",
+          "role": "CEN",
+          "team": "Genoa",
+          "tier": "B",
+          "quote": 8,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "c300b75e46903129c351194a2ba7",
+          "name": "Luis Henrique",
+          "role": "CEN",
+          "team": "Inter",
+          "tier": "B",
+          "quote": 8,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "61bd956a47043fca89f7b8cb0e76",
+          "name": "Ramadani",
+          "role": "CEN",
+          "team": "Lecce",
+          "tier": "B",
+          "quote": 8,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "bd086a98695c0a3de6505777adb9",
+          "name": "El Aynaoui",
+          "role": "CEN",
+          "team": "Roma",
+          "tier": "B",
+          "quote": 8,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "7fafcb98eab4a389769411ade760",
+          "name": "Fadera",
+          "role": "CEN",
+          "team": "Sassuolo",
+          "tier": "B",
+          "quote": 8,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "fe44022737c028d127ad68a95f98",
+          "name": "Sottil",
+          "role": "CEN",
+          "team": "Lecce",
+          "tier": "B",
+          "quote": 8,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "856462341715922155f0bbd0073e",
+          "name": "Vergara",
+          "role": "CEN",
+          "team": "Napoli",
+          "tier": "B",
+          "quote": 8,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "cdee35606799a244e49f00367473",
+          "name": "Matic",
+          "role": "CEN",
+          "team": "Sassuolo",
+          "tier": "B",
+          "quote": 8,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "30408348eccf5261939871b08161",
+          "name": "Nicolussi Caviglia",
+          "role": "CEN",
+          "team": "Parma",
+          "tier": "B",
+          "quote": 8,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "56af6221207bf3e752616b73f34b",
+          "name": "Prati",
+          "role": "CEN",
+          "team": "Torino",
+          "tier": "C",
+          "quote": 7,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "c44fd7d20b4fc6a84c7afc0e37e2",
+          "name": "Felici",
+          "role": "CEN",
+          "team": "Cagliari",
+          "tier": "C",
+          "quote": 7,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "b5dbb3185d41398154f27618da33",
+          "name": "Miretti",
+          "role": "CEN",
+          "team": "Juventus",
+          "tier": "C",
+          "quote": 7,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "4b777f4f2b2fbbd7d1071ae1499e",
+          "name": "Berisha M.",
+          "role": "CEN",
+          "team": "Lecce",
+          "tier": "C",
+          "quote": 7,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "0c5b190078f14484a766f1a52265",
+          "name": "Pierotti",
+          "role": "CEN",
+          "team": "Lecce",
+          "tier": "C",
+          "quote": 7,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "c2a1db58bbbf58deaa1fef74df3a",
+          "name": "Gilmour",
+          "role": "CEN",
+          "team": "Napoli",
+          "tier": "C",
+          "quote": 7,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "42286afe93d2ae86bbc7448b2ed2",
+          "name": "Gineitis",
+          "role": "CEN",
+          "team": "Torino",
+          "tier": "C",
+          "quote": 7,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "7f85146ee4f15342325696dc51ef",
+          "name": "Bernede",
+          "role": "CEN",
+          "team": "Verona",
+          "tier": "C",
+          "quote": 7,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "f0751b1a8116509424f6207cd9d5",
+          "name": "Piotrowski",
+          "role": "CEN",
+          "team": "Udinese",
+          "tier": "C",
+          "quote": 7,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "1d863669c82d36171f4af8f29a4a",
+          "name": "Miller L.",
+          "role": "CEN",
+          "team": "Udinese",
+          "tier": "C",
+          "quote": 7,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "c1889a0c5c6efe75907f6a139944",
+          "name": "Sorensen O.",
+          "role": "CEN",
+          "team": "Parma",
+          "tier": "C",
+          "quote": 7,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "0f40d4166ea424791b6e7ef199be",
+          "name": "Ilkhan",
+          "role": "CEN",
+          "team": "Torino",
+          "tier": "C",
+          "quote": 7,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "d26bee9c3d11166deaeefa524f06",
+          "name": "Diouf",
+          "role": "CEN",
+          "team": "Inter",
+          "tier": "C",
+          "quote": 7,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "0ed0c457be6a2d46cd30cb8043c8",
+          "name": "Elmas",
+          "role": "CEN",
+          "team": "Napoli",
+          "tier": "C",
+          "quote": 7,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "f956f958659c1b695d097938047c",
+          "name": "Gagliardini",
+          "role": "CEN",
+          "team": "Verona",
+          "tier": "C",
+          "quote": 7,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "18cb3de71f6b9c7e9529a5ba645c",
+          "name": "Sulemana I.",
+          "role": "CEN",
+          "team": "Cagliari",
+          "tier": "C",
+          "quote": 6,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "d073f9a215c5711f41dcc204fe64",
+          "name": "Aebischer",
+          "role": "CEN",
+          "team": "Pisa",
+          "tier": "C",
+          "quote": 6,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "b3b166f6744b28263cb97b0a0207",
+          "name": "Fabbian",
+          "role": "CEN",
+          "team": "Fiorentina",
+          "tier": "C",
+          "quote": 6,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "bcb3dbac725aa4dfd48f3fbed1ef",
+          "name": "Deiola",
+          "role": "CEN",
+          "team": "Cagliari",
+          "tier": "C",
+          "quote": 6,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "716ebee431ae05b70f0ccd4d0ef8",
+          "name": "Dele-Bashiru",
+          "role": "CEN",
+          "team": "Lazio",
+          "tier": "C",
+          "quote": 6,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "bfe16f52bcfc069546f04a395b94",
+          "name": "Zerbin",
+          "role": "CEN",
+          "team": "Cremonese",
+          "tier": "C",
+          "quote": 6,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "3a4266e2e6def5df06fc6b0eacfa",
+          "name": "Ordonez C.",
+          "role": "CEN",
+          "team": "Parma",
+          "tier": "C",
+          "quote": 6,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "211d99142eedd1edf10d3a34fbef",
+          "name": "Tramoni M.",
+          "role": "CEN",
+          "team": "Pisa",
+          "tier": "C",
+          "quote": 6,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "da3bed9e07fb5971658e4e17a50d",
+          "name": "Lipani",
+          "role": "CEN",
+          "team": "Sassuolo",
+          "tier": "C",
+          "quote": 6,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "aba6368c66234174b06b14d0b6d5",
+          "name": "Serdar",
+          "role": "CEN",
+          "team": "Verona",
+          "tier": "C",
+          "quote": 6,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "a9b354c4308dfe15dafd1cd91fcc",
+          "name": "Ferguson",
+          "role": "CEN",
+          "team": "Bologna",
+          "tier": "C",
+          "quote": 5,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "651a235fcbb5bd8664e8a93a1b9f",
+          "name": "Grassi",
+          "role": "CEN",
+          "team": "Cremonese",
+          "tier": "C",
+          "quote": 5,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "caa5e8d9d33000f7f2bb006a7ace",
+          "name": "Masini",
+          "role": "CEN",
+          "team": "Genoa",
+          "tier": "C",
+          "quote": 5,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "e6f6e1635eba215934a8b5f31e86",
+          "name": "Maleh",
+          "role": "CEN",
+          "team": "Cremonese",
+          "tier": "C",
+          "quote": 5,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "ef0e1e79ea848fc6868fcae5cc6c",
+          "name": "Bondo",
+          "role": "CEN",
+          "team": "Cremonese",
+          "tier": "C",
+          "quote": 5,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "3312d63901214b60702b10bc1188",
+          "name": "Musah",
+          "role": "CEN",
+          "team": "Atalanta",
+          "tier": "C",
+          "quote": 5,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "7436cfafa32eb455a97c88f45788",
+          "name": "Estevez",
+          "role": "CEN",
+          "team": "Parma",
+          "tier": "C",
+          "quote": 5,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "17f777ff2d56d090ed97f688600c",
+          "name": "Tourè I.",
+          "role": "CEN",
+          "team": "Pisa",
+          "tier": "C",
+          "quote": 5,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "2ce6f24c0c7e9dded2473d5207f8",
+          "name": "Akinsanmiro",
+          "role": "CEN",
+          "team": "Pisa",
+          "tier": "C",
+          "quote": 5,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "abdeb8c4fde0c5bc454b8ac1904d",
+          "name": "Payero",
+          "role": "CEN",
+          "team": "Cremonese",
+          "tier": "C",
+          "quote": 5,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "7100c017c1e3170a1999b099383f",
+          "name": "Akpa Akpro",
+          "role": "CEN",
+          "team": "Verona",
+          "tier": "C",
+          "quote": 5,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "4621f863590ae6c882b15802aec6",
+          "name": "Ngom",
+          "role": "CEN",
+          "team": "Lecce",
+          "tier": "C",
+          "quote": 5,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "f3e85f11f095e82e002cecac1ac0",
+          "name": "Loyola",
+          "role": "CEN",
+          "team": "Pisa",
+          "tier": "C",
+          "quote": 5,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "e0135e9f838ab4898af9724768a2",
+          "name": "Amorim",
+          "role": "CEN",
+          "team": "Genoa",
+          "tier": "C",
+          "quote": 5,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "040cde6f4ca37b1c9cc1e610d38d",
+          "name": "Frattesi",
+          "role": "CEN",
+          "team": "Inter",
+          "tier": "C",
+          "quote": 4,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "6f624648d06dd78e7cd95fb89e8e",
+          "name": "Koopmeiners",
+          "role": "CEN",
+          "team": "Juventus",
+          "tier": "C",
+          "quote": 4,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "ba6ca7a9350081594dc421ea781d",
+          "name": "Sohm",
+          "role": "CEN",
+          "team": "Bologna",
+          "tier": "C",
+          "quote": 4,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "61da68e365ca2ee9185f418aef39",
+          "name": "Piccinini G.",
+          "role": "CEN",
+          "team": "Pisa",
+          "tier": "C",
+          "quote": 4,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "e5a0614b9498a529b0199e67c93a",
+          "name": "Harroui",
+          "role": "CEN",
+          "team": "Verona",
+          "tier": "C",
+          "quote": 4,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "242ffc3eed746032d8998d14c7e4",
+          "name": "Suslov",
+          "role": "CEN",
+          "team": "Verona",
+          "tier": "C",
+          "quote": 4,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "81032801aec0f2cc541c35c12691",
+          "name": "Jashari",
+          "role": "CEN",
+          "team": "Milan",
+          "tier": "C",
+          "quote": 4,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "3794b3e5862d30075a9b6a070201",
+          "name": "Oristanio",
+          "role": "CEN",
+          "team": "Parma",
+          "tier": "C",
+          "quote": 4,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "923df6979d2f940e1757f0533f6a",
+          "name": "Zaragoza",
+          "role": "CEN",
+          "team": "Roma",
+          "tier": "C",
+          "quote": 4,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "af918248eff9bc3b0a4a3d40f64a",
+          "name": "Sergi Roberto",
+          "role": "CEN",
+          "team": "Como",
+          "tier": "C",
+          "quote": 3,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "9a0dd693bda2e2257323ed412daa",
+          "name": "Fazzini",
+          "role": "CEN",
+          "team": "Fiorentina",
+          "tier": "C",
+          "quote": 3,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "6a73ec81535ec1be75c848099343",
+          "name": "Belahyane",
+          "role": "CEN",
+          "team": "Lazio",
+          "tier": "C",
+          "quote": 3,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "7dd6a0e4b0e25ceff4fb69d64366",
+          "name": "Ondrejka",
+          "role": "CEN",
+          "team": "Parma",
+          "tier": "C",
+          "quote": 3,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "bffd26e814a36263a9d2e30f5980",
+          "name": "Hojholt",
+          "role": "CEN",
+          "team": "Pisa",
+          "tier": "C",
+          "quote": 3,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "6f3211f830387ea812aac141104d",
+          "name": "Vural",
+          "role": "CEN",
+          "team": "Pisa",
+          "tier": "C",
+          "quote": 3,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "e67e15a62216cc44bc50430decb0",
+          "name": "Iannoni",
+          "role": "CEN",
+          "team": "Sassuolo",
+          "tier": "C",
+          "quote": 3,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "6937ec5cc3d091a4b52d74feaffa",
+          "name": "Zarraga",
+          "role": "CEN",
+          "team": "Udinese",
+          "tier": "C",
+          "quote": 3,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "18cf6868454baf9d69e8871b3e77",
+          "name": "Lovric",
+          "role": "CEN",
+          "team": "Verona",
+          "tier": "C",
+          "quote": 3,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "260a86cdab598bff7020ce68ac3c",
+          "name": "Lorran",
+          "role": "CEN",
+          "team": "Pisa",
+          "tier": "C",
+          "quote": 3,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "be6a48317f588e7b9a9d91a897cd",
+          "name": "Iling Junior",
+          "role": "CEN",
+          "team": "Pisa",
+          "tier": "C",
+          "quote": 3,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "e33623e5b1019fa9c19ed5c8dc97",
+          "name": "Collocolo",
+          "role": "CEN",
+          "team": "Cremonese",
+          "tier": "C",
+          "quote": 2,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "ba216f022c487696698e3c96fc1d",
+          "name": "Sabiri",
+          "role": "CEN",
+          "team": "Fiorentina",
+          "tier": "C",
+          "quote": 2,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "de9476c61cdc40a489c4447ca84c",
+          "name": "Venturino",
+          "role": "CEN",
+          "team": "Roma",
+          "tier": "C",
+          "quote": 2,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "50fb7cd4829f5a0de6732cce14f9",
+          "name": "Rovella",
+          "role": "CEN",
+          "team": "Lazio",
+          "tier": "C",
+          "quote": 2,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "5e8e7fb10027b6f220d2825fa43a",
+          "name": "Helgason",
+          "role": "CEN",
+          "team": "Lecce",
+          "tier": "C",
+          "quote": 2,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "5cc520475e35f8c0361c756ea7d8",
+          "name": "Marin M.",
+          "role": "CEN",
+          "team": "Pisa",
+          "tier": "C",
+          "quote": 2,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "208439b0ce33efd4701a96538ef9",
+          "name": "Boloca",
+          "role": "CEN",
+          "team": "Sassuolo",
+          "tier": "C",
+          "quote": 2,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "6bae5dadf03c334539e51ef03b5f",
+          "name": "Anjorin",
+          "role": "CEN",
+          "team": "Torino",
+          "tier": "C",
+          "quote": 2,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "ab1cd64518f4da8f1b519b75326b",
+          "name": "Niasse",
+          "role": "CEN",
+          "team": "Verona",
+          "tier": "C",
+          "quote": 2,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "50475dce3cad6eb3591ae9aad9f5",
+          "name": "Gorter",
+          "role": "CEN",
+          "team": "Lecce",
+          "tier": "C",
+          "quote": 2,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "bdc960e1211b7d1f8a89cb3a9d1a",
+          "name": "Al-Musrati",
+          "role": "CEN",
+          "team": "Verona",
+          "tier": "C",
+          "quote": 2,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "44466bf04e002684fb066fc1f71d",
+          "name": "Cornet",
+          "role": "CEN",
+          "team": "Genoa",
+          "tier": "C",
+          "quote": 2,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "8cdaf6e58e2182393d3f140f9b6f",
+          "name": "Bakola",
+          "role": "CEN",
+          "team": "Sassuolo",
+          "tier": "C",
+          "quote": 2,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "9a6b8c4e382b5ff4e8641156a8fb",
+          "name": "Liteta",
+          "role": "CEN",
+          "team": "Cagliari",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "760b4b6e23d8ada73c0250330be3",
+          "name": "Marchwinski",
+          "role": "CEN",
+          "team": "Lecce",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "7112725d456ecae714d43138351b",
+          "name": "Tameze",
+          "role": "CEN",
+          "team": "Torino",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "336c7f1c61c1a60c4eb3b113eb1b",
+          "name": "Ilic",
+          "role": "CEN",
+          "team": "Torino",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "1f6cf30b9786dca67e7fe9ed03fa",
+          "name": "Adzic",
+          "role": "CEN",
+          "team": "Juventus",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "5afed9d3ce1bfd1ff2ebdd7683aa",
+          "name": "Vranckx",
+          "role": "CEN",
+          "team": "Sassuolo",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "eb34c2ec018a967f7fb663de6a17",
+          "name": "Sala A.",
+          "role": "CEN",
+          "team": "Lecce",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "4eef18f3e8f95d2cbd4a0f3a27cc",
+          "name": "Stengs",
+          "role": "CEN",
+          "team": "Pisa",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "02b2d1c30426143459fa19065711",
+          "name": "Onana J.",
+          "role": "CEN",
+          "team": "Genoa",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "dda125f4c89933157bcf5ebf30c4",
+          "name": "Cremaschi",
+          "role": "CEN",
+          "team": "Parma",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "c19ebd9d4c98d8ce0f36b6a0124f",
+          "name": "Fofana Sa.",
+          "role": "CEN",
+          "team": "Lecce",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "849ee3441c5b73f3a8fc33772ffe",
+          "name": "Przyborek",
+          "role": "CEN",
+          "team": "Lazio",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "3aed8e45be128d81e80f07d0eff0",
+          "name": "Lahdo",
+          "role": "CEN",
+          "team": "Como",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "fe84341c98512d888afcd178d469",
+          "name": "Martinez L.",
+          "role": "ATT",
+          "team": "Inter",
+          "tier": "A",
+          "quote": 33,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "447331dbe8e3ae5fdc4eaabc8229",
+          "name": "Thuram",
+          "role": "ATT",
+          "team": "Inter",
+          "tier": "A",
+          "quote": 32,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "530864b79773905a85c463d5e397",
+          "name": "Hojlund",
+          "role": "ATT",
+          "team": "Napoli",
+          "tier": "A",
+          "quote": 27,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "69c888ee99e953e284d15c0c571a",
+          "name": "Douvikas",
+          "role": "ATT",
+          "team": "Como",
+          "tier": "A",
+          "quote": 26,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "3fbe79cbff15736d58e881f443c2",
+          "name": "Yildiz",
+          "role": "ATT",
+          "team": "Juventus",
+          "tier": "A",
+          "quote": 26,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "e2b75a4ac4aba70913a33666ef51",
+          "name": "Berardi",
+          "role": "ATT",
+          "team": "Sassuolo",
+          "tier": "A",
+          "quote": 25,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "a3ec842398d1bbb637a59e737731",
+          "name": "Malen",
+          "role": "ATT",
+          "team": "Roma",
+          "tier": "A",
+          "quote": 25,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "774da71d48d560ef9dc33a978f19",
+          "name": "Krstovic",
+          "role": "ATT",
+          "team": "Atalanta",
+          "tier": "A",
+          "quote": 24,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "68c3af314abcee37d77b50ccc5da",
+          "name": "Davis K.",
+          "role": "ATT",
+          "team": "Udinese",
+          "tier": "A",
+          "quote": 24,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "588b11c63968b872f340a0a8cc48",
+          "name": "Scamacca",
+          "role": "ATT",
+          "team": "Atalanta",
+          "tier": "A",
+          "quote": 23,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "750e8cb46e0c37850507efb1046c",
+          "name": "Bonazzoli",
+          "role": "ATT",
+          "team": "Cremonese",
+          "tier": "A",
+          "quote": 22,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "c590b3f105533f499729be3f932e",
+          "name": "Esposito F.P.",
+          "role": "ATT",
+          "team": "Inter",
+          "tier": "A",
+          "quote": 22,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "b7c8fc2e75b24a85de3ab00990e9",
+          "name": "Simeone",
+          "role": "ATT",
+          "team": "Torino",
+          "tier": "A",
+          "quote": 22,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "06412f7db28ef84ee1fd73b87941",
+          "name": "Esposito Se.",
+          "role": "ATT",
+          "team": "Cagliari",
+          "tier": "A",
+          "quote": 21,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "b5a0e9296eaafd167b5906633bb5",
+          "name": "Laurientè",
+          "role": "ATT",
+          "team": "Sassuolo",
+          "tier": "A",
+          "quote": 21,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "400c321bdf9f0a0ca62900194a86",
+          "name": "Bonny",
+          "role": "ATT",
+          "team": "Inter",
+          "tier": "A",
+          "quote": 20,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "5a3ccf47f537607392f5e812bbf0",
+          "name": "Leao",
+          "role": "ATT",
+          "team": "Milan",
+          "tier": "A",
+          "quote": 20,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "33629867cac5562bbe0946db9d1e",
+          "name": "Soulè",
+          "role": "ATT",
+          "team": "Roma",
+          "tier": "A",
+          "quote": 20,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "571468d67d3863c6914148eb909e",
+          "name": "Pellegrino M.",
+          "role": "ATT",
+          "team": "Parma",
+          "tier": "B",
+          "quote": 18,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "55166651151a9cfcb86da09a7343",
+          "name": "Nkunku",
+          "role": "ATT",
+          "team": "Milan",
+          "tier": "B",
+          "quote": 18,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "988c9f97985f72ead78c25dd6aa7",
+          "name": "Castro S.",
+          "role": "ATT",
+          "team": "Bologna",
+          "tier": "B",
+          "quote": 17,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "3d7fd16c86c0611917d7a48aca4d",
+          "name": "De Ketelaere",
+          "role": "ATT",
+          "team": "Atalanta",
+          "tier": "B",
+          "quote": 16,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "617fb0786064342ed506c58b6d7d",
+          "name": "Kean",
+          "role": "ATT",
+          "team": "Fiorentina",
+          "tier": "B",
+          "quote": 16,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "7fa25331c3b5ea8c90d4a7876bfd",
+          "name": "Vlahovic",
+          "role": "ATT",
+          "team": "Juventus",
+          "tier": "B",
+          "quote": 16,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "3cd2297160bcf8db6df7322f1080",
+          "name": "Pedro",
+          "role": "ATT",
+          "team": "Lazio",
+          "tier": "B",
+          "quote": 16,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "fa0134da30ffacac48dc91b01ce1",
+          "name": "Moreo",
+          "role": "ATT",
+          "team": "Pisa",
+          "tier": "B",
+          "quote": 16,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "345bebf4c28a831024c2621024d5",
+          "name": "Pinamonti",
+          "role": "ATT",
+          "team": "Sassuolo",
+          "tier": "B",
+          "quote": 16,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "df0a6721998790fe0c8178eca956",
+          "name": "Adams C.",
+          "role": "ATT",
+          "team": "Torino",
+          "tier": "B",
+          "quote": 16,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "0852f2953a44f880e87b31c61771",
+          "name": "Vardy",
+          "role": "ATT",
+          "team": "Cremonese",
+          "tier": "B",
+          "quote": 16,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "6ddacb984fa780c16296de976669",
+          "name": "Rodriguez Je.",
+          "role": "ATT",
+          "team": "Como",
+          "tier": "B",
+          "quote": 15,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "40f720642807735bf2bfca8c2edc",
+          "name": "Banda",
+          "role": "ATT",
+          "team": "Lecce",
+          "tier": "B",
+          "quote": 15,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "cbf9f5d3be9c97df5e2f8671b95e",
+          "name": "Raspadori",
+          "role": "ATT",
+          "team": "Atalanta",
+          "tier": "B",
+          "quote": 15,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "87e84e7d92806a38fb20f5dfee63",
+          "name": "Lukaku",
+          "role": "ATT",
+          "team": "Napoli",
+          "tier": "B",
+          "quote": 15,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "24c4136556e0cacf88dff955fbcf",
+          "name": "Colombo",
+          "role": "ATT",
+          "team": "Genoa",
+          "tier": "B",
+          "quote": 14,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "00ebc3ff648249384ea626fbb4c8",
+          "name": "Noslin",
+          "role": "ATT",
+          "team": "Lazio",
+          "tier": "B",
+          "quote": 14,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "6c1748efb9d49a451d8edaa8f01d",
+          "name": "Orban G.",
+          "role": "ATT",
+          "team": "Verona",
+          "tier": "B",
+          "quote": 14,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "24e38ed56d8cad73e2e5b1a9942f",
+          "name": "Vitinha O.",
+          "role": "ATT",
+          "team": "Genoa",
+          "tier": "B",
+          "quote": 13,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "c471ecd40b5447763216ffe2ecf9",
+          "name": "David",
+          "role": "ATT",
+          "team": "Juventus",
+          "tier": "B",
+          "quote": 13,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "00c8adffa9ab737e39f4e1ac573b",
+          "name": "Dybala",
+          "role": "ATT",
+          "team": "Roma",
+          "tier": "B",
+          "quote": 13,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "ab5fc5e8f0588d4d2b67e88e5f19",
+          "name": "Giovane",
+          "role": "ATT",
+          "team": "Napoli",
+          "tier": "B",
+          "quote": 13,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "1a6b00d315b7a1fb3eb3c99ef5f0",
+          "name": "Kilicsoy",
+          "role": "ATT",
+          "team": "Cagliari",
+          "tier": "B",
+          "quote": 13,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "983c09ea06444e507394d0a86736",
+          "name": "Cambiaghi",
+          "role": "ATT",
+          "team": "Bologna",
+          "tier": "B",
+          "quote": 12,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "21bcb223878c60bab00b12dd2952",
+          "name": "Diao",
+          "role": "ATT",
+          "team": "Como",
+          "tier": "B",
+          "quote": 12,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "4c2148f2367ea718c488c564eda5",
+          "name": "Ekuban",
+          "role": "ATT",
+          "team": "Genoa",
+          "tier": "B",
+          "quote": 12,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "ac695049e88a640589c39b5082f1",
+          "name": "Gimenez",
+          "role": "ATT",
+          "team": "Milan",
+          "tier": "B",
+          "quote": 12,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "91989c474f4e605d379ce96c72fe",
+          "name": "Borrelli",
+          "role": "ATT",
+          "team": "Cagliari",
+          "tier": "B",
+          "quote": 11,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "fb6dedf51aebf410e031f9c6996d",
+          "name": "Cancellieri",
+          "role": "ATT",
+          "team": "Lazio",
+          "tier": "B",
+          "quote": 11,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "2d439d0f75fcce2fb81430e1612e",
+          "name": "Cheddira",
+          "role": "ATT",
+          "team": "Lecce",
+          "tier": "B",
+          "quote": 11,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "339ed5f00854ff6acc5ff1b2ac88",
+          "name": "Boga",
+          "role": "ATT",
+          "team": "Juventus",
+          "tier": "B",
+          "quote": 11,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "c8e1011f5e1d44f0b520eb34dcbf",
+          "name": "Okereke",
+          "role": "ATT",
+          "team": "Cremonese",
+          "tier": "B",
+          "quote": 10,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "9c38d1ddc4adf8488996e1a0bb8c",
+          "name": "Ekhator",
+          "role": "ATT",
+          "team": "Genoa",
+          "tier": "B",
+          "quote": 10,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "93ec4ed8e753a3ca5079de12eb55",
+          "name": "Dovbyk",
+          "role": "ATT",
+          "team": "Roma",
+          "tier": "B",
+          "quote": 10,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "d2d06e96d3ba029cc45d718d20ac",
+          "name": "Ferguson E.",
+          "role": "ATT",
+          "team": "Roma",
+          "tier": "B",
+          "quote": 10,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "30ead3a30f5824eaf0936bafebf9",
+          "name": "Nzola",
+          "role": "ATT",
+          "team": "Sassuolo",
+          "tier": "B",
+          "quote": 10,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "4c967047bfef37b582478411449c",
+          "name": "Fullkrug",
+          "role": "ATT",
+          "team": "Milan",
+          "tier": "B",
+          "quote": 10,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "2993cf081ab838e02aca60d3ee3e",
+          "name": "Durosinmi",
+          "role": "ATT",
+          "team": "Pisa",
+          "tier": "B",
+          "quote": 10,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "d5282615f6e678216ba702092df2",
+          "name": "Bowie",
+          "role": "ATT",
+          "team": "Verona",
+          "tier": "B",
+          "quote": 10,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "98ff236b10d4bf28e87a4d2dea6a",
+          "name": "Sulemana K.",
+          "role": "ATT",
+          "team": "Atalanta",
+          "tier": "B",
+          "quote": 9,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "4190804c0610aa12b5429c85a81d",
+          "name": "Piccoli",
+          "role": "ATT",
+          "team": "Fiorentina",
+          "tier": "B",
+          "quote": 9,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "4455425c37ce26988249a480a047",
+          "name": "Ratkov",
+          "role": "ATT",
+          "team": "Lazio",
+          "tier": "B",
+          "quote": 9,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "08d2b59e6f2c38dba93391de90e2",
+          "name": "Zapata D.",
+          "role": "ATT",
+          "team": "Torino",
+          "tier": "B",
+          "quote": 8,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "81c0715492e4c11c897205fdd5cf",
+          "name": "Stulic",
+          "role": "ATT",
+          "team": "Lecce",
+          "tier": "B",
+          "quote": 8,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "887839e825ee9b01348f640a5a4e",
+          "name": "Solomon",
+          "role": "ATT",
+          "team": "Fiorentina",
+          "tier": "B",
+          "quote": 8,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "67b67f2d34f6d65a3b5125f72ab3",
+          "name": "Vaz",
+          "role": "ATT",
+          "team": "Roma",
+          "tier": "B",
+          "quote": 8,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "dccb7eba3960de2974f28a6fb92a",
+          "name": "N'Dri",
+          "role": "ATT",
+          "team": "Lecce",
+          "tier": "C",
+          "quote": 7,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "9b531f7e76ca9b6d7b4db9ed3620",
+          "name": "Buksa",
+          "role": "ATT",
+          "team": "Udinese",
+          "tier": "C",
+          "quote": 7,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "ecc495e5f26eb6a8bb89901167d9",
+          "name": "Dallinga",
+          "role": "ATT",
+          "team": "Bologna",
+          "tier": "C",
+          "quote": 6,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "fab346fa7516d3a91d604cdbe5ae",
+          "name": "Addai",
+          "role": "ATT",
+          "team": "Como",
+          "tier": "C",
+          "quote": 6,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "23c728c5c1506030fe110e00585a",
+          "name": "Dia",
+          "role": "ATT",
+          "team": "Lazio",
+          "tier": "C",
+          "quote": 6,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "30ed7de6493976ce81107c4e1cd0",
+          "name": "Njie",
+          "role": "ATT",
+          "team": "Torino",
+          "tier": "C",
+          "quote": 6,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "0336157eec44888158426c32d0eb",
+          "name": "Elphege",
+          "role": "ATT",
+          "team": "Parma",
+          "tier": "C",
+          "quote": 6,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "8125d175ec401ff6149148f3127c",
+          "name": "Kuhn",
+          "role": "ATT",
+          "team": "Como",
+          "tier": "C",
+          "quote": 5,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "76f80abc5eb7b849442183847e76",
+          "name": "Djuric",
+          "role": "ATT",
+          "team": "Cremonese",
+          "tier": "C",
+          "quote": 5,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "86d8d201f6f3e2583237e906c161",
+          "name": "Meister",
+          "role": "ATT",
+          "team": "Pisa",
+          "tier": "C",
+          "quote": 5,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "2968326e7af3593582f595c71469",
+          "name": "Belotti",
+          "role": "ATT",
+          "team": "Cagliari",
+          "tier": "C",
+          "quote": 5,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "39ceaeb4f74609b82c782f881b90",
+          "name": "Gueye",
+          "role": "ATT",
+          "team": "Udinese",
+          "tier": "C",
+          "quote": 5,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "edce2b9d428b23a5e76716809d47",
+          "name": "Mendy P.",
+          "role": "ATT",
+          "team": "Cagliari",
+          "tier": "C",
+          "quote": 5,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "eafcb545a3eee86c818134f4a400",
+          "name": "Sanabria",
+          "role": "ATT",
+          "team": "Cremonese",
+          "tier": "C",
+          "quote": 4,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "b14150e8fa2a9b502b6e872e1d2c",
+          "name": "Sarr A.",
+          "role": "ATT",
+          "team": "Verona",
+          "tier": "C",
+          "quote": 4,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "005357d45e3f5d780780c2961b93",
+          "name": "Mosquera",
+          "role": "ATT",
+          "team": "Verona",
+          "tier": "C",
+          "quote": 4,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "ea021a7d8eca9783e82f3c217a4c",
+          "name": "Openda",
+          "role": "ATT",
+          "team": "Juventus",
+          "tier": "C",
+          "quote": 4,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "e1b43e0c6e679caeb233480fae1d",
+          "name": "Stojilkovic",
+          "role": "ATT",
+          "team": "Pisa",
+          "tier": "C",
+          "quote": 4,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "06e014569004fb3b8ac151e35eb1",
+          "name": "Kulenovic",
+          "role": "ATT",
+          "team": "Torino",
+          "tier": "C",
+          "quote": 4,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "ef2f40eac783990d6a8752b2d179",
+          "name": "Dominguez B.",
+          "role": "ATT",
+          "team": "Bologna",
+          "tier": "C",
+          "quote": 3,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "826cc0c1abd027e10f594add53f5",
+          "name": "Pavoletti",
+          "role": "ATT",
+          "team": "Cagliari",
+          "tier": "C",
+          "quote": 3,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "52e81d4c448628881be0e228e340",
+          "name": "Almqvist",
+          "role": "ATT",
+          "team": "Parma",
+          "tier": "C",
+          "quote": 3,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "e8ecdecd4134f6be1909dcc3f044",
+          "name": "Camarda",
+          "role": "ATT",
+          "team": "Lecce",
+          "tier": "C",
+          "quote": 2,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "780024663741cc321e6e3ed8fb3d",
+          "name": "Bayo V.",
+          "role": "ATT",
+          "team": "Udinese",
+          "tier": "C",
+          "quote": 2,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "3fceff4c73314e42606af00fd9a7",
+          "name": "Morata",
+          "role": "ATT",
+          "team": "Como",
+          "tier": "C",
+          "quote": 2,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "4c8378641bd63ea7ea4907ed3732",
+          "name": "Braschi",
+          "role": "ATT",
+          "team": "Fiorentina",
+          "tier": "C",
+          "quote": 2,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "bae8892d222e7e62b67776a12f8c",
+          "name": "Moumbagna",
+          "role": "ATT",
+          "team": "Cremonese",
+          "tier": "C",
+          "quote": 2,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "1dd42f2ce2029450400d7e49901c",
+          "name": "Albarracin",
+          "role": "ATT",
+          "team": "Cagliari",
+          "tier": "C",
+          "quote": 2,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "5607a430462386bf475d88db693a",
+          "name": "Mikolajewski",
+          "role": "ATT",
+          "team": "Parma",
+          "tier": "C",
+          "quote": 2,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "cd2ae40caba50ad78d3aa426ef25",
+          "name": "Milik",
+          "role": "ATT",
+          "team": "Juventus",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "cd32775ec78214bfc74030d5f3f6",
+          "name": "Moro L.",
+          "role": "ATT",
+          "team": "Sassuolo",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "107502d8565c941ed740358744df",
+          "name": "Aboukhlal",
+          "role": "ATT",
+          "team": "Torino",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "c7d0653b154055b6fa17f1b9787b",
+          "name": "Frigan",
+          "role": "ATT",
+          "team": "Parma",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "82d881cd63ec8c3e7713591acf9b",
+          "name": "Balentien",
+          "role": "ATT",
+          "team": "Milan",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "d861521ec8bb9adaf703413b5afb",
+          "name": "Arena A.",
+          "role": "ATT",
+          "team": "Roma",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "aac81201c7c2f1c1fbfb81b2c626",
+          "name": "Isaac",
+          "role": "ATT",
+          "team": "Verona",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "cb0b54cd4acb12b26e2896038010",
+          "name": "Trepy",
+          "role": "ATT",
+          "team": "Cagliari",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "894ba4961eb5bbaafa053bad4380",
+          "name": "Vermesan",
+          "role": "ATT",
+          "team": "Verona",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        },
+        {
+          "id": "0cb894b72132ec336e8c2616edf2",
+          "name": "Mosconi",
+          "role": "ATT",
+          "team": "Inter",
+          "tier": "C",
+          "quote": 1,
+          "nation": "",
+          "number": ""
+        }
+      ],
+      "activity": [],
+      "totalSlots": 25,
+      "orderByRole": false,
+      "playerOrder": null,
+      "currentIndex": 0,
+      "participants": [
+        {
+          "name": "Piero",
+          "role": "admin",
+          "token": "defafe6b1eb6527b64a329048e72",
+          "budget": 300,
+          "players": [],
+          "committed": 0
+        }
+      ],
+      "tierSettings": [
+        {
+          "cap": 150,
+          "name": "A",
+          "minPrice": 20,
+          "minQuote": 20,
+          "increment": 3
+        },
+        {
+          "cap": 100,
+          "name": "B",
+          "minPrice": 8,
+          "minQuote": 8,
+          "increment": 2
+        },
+        {
+          "cap": 50,
+          "name": "C",
+          "minPrice": 1,
+          "minQuote": 0,
+          "increment": 1
+        }
+      ],
+      "remainingSlots": 25
+    },
     "A281F8": {
       "code": "A281F8",
       "name": "testtttttt",

@@ -22,6 +22,8 @@ let db = fs.existsSync(store)
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseSecretKey = process.env.SUPABASE_SECRET_KEY;
 const ownerDashboardToken = process.env.OWNER_DASHBOARD_TOKEN;
+const githubPagesOrigin =
+  process.env.GITHUB_PAGES_ORIGIN || "https://pierodelorenzis.github.io";
 const atomicBidEnabled = process.env.USE_ATOMIC_BID === "true";
 const supabase =
   supabaseUrl && supabaseSecretKey
@@ -496,6 +498,21 @@ const server = http.createServer(async (req, res) => {
   try {
     const url = new URL(req.url, "http://x");
     const bits = url.pathname.split("/").filter(Boolean);
+    if (req.method === "GET" && bits[0] === "health" && bits.length === 1) {
+      await storageReady;
+      const headers = {
+        "content-type": "application/json",
+        "cache-control": "no-store, max-age=0",
+      };
+      if (req.headers.origin === githubPagesOrigin) {
+        headers["access-control-allow-origin"] = githubPagesOrigin;
+        headers.vary = "Origin";
+      }
+      res.writeHead(200, headers);
+      return res.end(
+        JSON.stringify({ status: "ready", version: deployedVersion }),
+      );
+    }
     const body = ["POST", "PUT", "DELETE"].includes(req.method)
       ? await read(req)
       : {};

@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#315efb" />
+    <meta name="robots" content="noindex" />
+    <title>Avvio di FantasyBid…</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="courtesy-card" aria-live="polite">
+      <div class="brand" aria-label="FantasyBid">
+        <span class="brand-mark">F</span>
+        <span class="brand-name">Fantasy<span>Bid</span></span>
+      </div>
+
+      <div class="loader" aria-hidden="true"><span></span></div>
+      <p class="eyebrow">PREPARIAMO L'ASTA</p>
+      <h1>FantasyBid si sta avviando.</h1>
+      <p id="status" class="status">
+        Il server si riattiva automaticamente. Potrebbe volerci circa un minuto.
+      </p>
+      <p id="attempts" class="attempts">Connessione in corso…</p>
+
+      <button id="retry" type="button" hidden>Riprova ora</button>
+      <a id="continue" class="continue" href="https://fantasybid.onrender.com">
+        Continua comunque
+      </a>
+    </main>
+    <script src="app.js"></script>
+  </body>
+</html>
