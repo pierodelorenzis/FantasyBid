@@ -1,6 +1,16 @@
-# FantaBid
+<p align="center">
+  <img src="./favicon.svg" alt="Logo FantaBid" width="96" height="96">
+</p>
 
-Web app completa per aste di fantacalcio, con server Node.js e persistenza locale in `data.json` (creato automaticamente al primo utilizzo).
+<h1 align="center">FantaBid</h1>
+
+<p align="center">
+  La webapp per organizzare e gestire in tempo reale l'asta del fantacalcio.
+</p>
+
+FantaBid riunisce tutta la lega in un'unica stanza d'asta: l'amministratore crea la lega, importa il listone dei giocatori e configura fasce, prezzi di partenza, rilanci e limiti di spesa; i partecipanti accedono tramite un semplice codice, senza registrazione, e fanno le proprie offerte in diretta.
+
+La piattaforma controlla automaticamente budget e validità dei rilanci, aggiorna l'asta per tutti i partecipanti, compone le rose e consente di esportare i risultati in formato CSV.
 
 ## Avvio
 
