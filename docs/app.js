@@ -4,15 +4,23 @@ const retryDelay = 3000;
 const requestTimeout = 10000;
 
 const status = document.querySelector("#status");
-const attempts = document.querySelector("#attempts");
-const retry = document.querySelector("#retry");
-const continueLink = document.querySelector("#continue");
+const waitingMessages = [
+  "Nel frattempo, prepara la lista dei giocatori.",
+  "Fai due palleggi, al resto pensiamo noi.",
+  "Ripassa i tuoi colpi segreti per l'asta.",
+  "Controlla il budget: i crediti finiscono in fretta.",
+  "Scalda la voce per il prossimo rilancio.",
+  "Prometti di non spendere tutto per un solo giocatore.",
+];
 
-let attempt = 0;
 let checking = false;
 let timer;
+let messageIndex = 0;
 
-continueLink.href = appUrl;
+const messageTimer = setInterval(() => {
+  messageIndex = (messageIndex + 1) % waitingMessages.length;
+  status.textContent = waitingMessages[messageIndex];
+}, 3500);
 
 function destinationUrl() {
   const params = new URLSearchParams(location.search);
@@ -29,9 +37,6 @@ async function checkServer() {
   if (checking) return;
   checking = true;
   clearTimeout(timer);
-  retry.hidden = true;
-  attempt += 1;
-  attempts.textContent = `Tentativo di connessione ${attempt}…`;
 
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), requestTimeout);
@@ -45,15 +50,12 @@ async function checkServer() {
     const health = await response.json();
     if (health.status !== "ready") throw new Error("Server non pronto");
 
+    clearInterval(messageTimer);
     status.textContent = "Il server è pronto. Ti portiamo all'asta…";
-    attempts.textContent = "Connessione riuscita";
     location.replace(destinationUrl());
     return;
   } catch {
-    status.textContent =
-      "Il server si sta ancora avviando. La pagina riproverà automaticamente.";
-    attempts.textContent = `Prossimo tentativo tra ${retryDelay / 1000} secondi`;
-    if (attempt >= 10) retry.hidden = false;
+    // Il messaggio di attesa continua a cambiare mentre il server si avvia.
   } finally {
     clearTimeout(timeout);
     checking = false;
@@ -62,5 +64,4 @@ async function checkServer() {
   timer = setTimeout(checkServer, retryDelay);
 }
 
-retry.addEventListener("click", checkServer);
 checkServer();
