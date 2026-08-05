@@ -17,6 +17,16 @@ body {
   color: var(--ink);
   font-family: Outfit, Arial, sans-serif;
 }
+.app-version {
+  position: fixed;
+  z-index: 100;
+  top: 5px;
+  right: 8px;
+  color: #98a2b3;
+  font: 500 9px "DM Mono", monospace;
+  letter-spacing: 0.2px;
+  pointer-events: none;
+}
 .brand {
   color: var(--ink);
   text-decoration: none;
@@ -201,13 +211,50 @@ button svg,
   margin-top: 25px;
   padding: 15px 19px;
 }
-.features {
+.landing-footer {
   position: absolute;
-  bottom: 36px;
+  left: clamp(25px, 8vw, 130px);
+  right: clamp(25px, 8vw, 130px);
+  bottom: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+.features {
   display: flex;
   gap: 30px;
   color: #78849a;
   font-size: 12px;
+}
+.landing-credit {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: #78849a;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.tip-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 12px;
+  border: 1px solid #d9dfea;
+  border-radius: 8px;
+  background: #fff;
+  color: #52627a;
+  font-weight: 600;
+  text-decoration: none;
+}
+.tip-link:hover {
+  border-color: #cbd5e1;
+  background: #f3f6fb;
+}
+.tip-link svg {
+  width: 15px;
+  height: 15px;
+  color: #d6542b;
 }
 .auth {
   min-height: 100vh;
@@ -950,6 +997,20 @@ button svg,
   padding: 6px 8px;
   font-size: 10px;
 }
+.team-table .remove-team-player {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  background: #fff0ec;
+  color: #d6542b;
+  border: 0;
+  text-align: center;
+}
+.team-table .remove-team-player:hover {
+  background: #ffe0d6;
+  color: #d6542b;
+}
 .admin-card > p {
   color: #758198;
   font-size: 12px;
@@ -1327,6 +1388,13 @@ button svg,
   }
   .features {
     display: none;
+  }
+  .landing-footer {
+    justify-content: center;
+  }
+  .landing-credit {
+    flex-direction: column;
+    gap: 8px;
   }
   .hero {
     padding-top: 22vh;

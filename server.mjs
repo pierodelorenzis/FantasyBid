@@ -7,6 +7,14 @@ import { createClient } from "@supabase/supabase-js";
 import { parseAuctionCatalog } from "./catalog-import.mjs";
 
 const root = path.dirname(fileURLToPath(import.meta.url));
+const packageVersion = JSON.parse(
+  fs.readFileSync(path.join(root, "package.json"), "utf8"),
+).version;
+const deployedVersion = `${process.env.APP_VERSION || packageVersion}${
+  process.env.RENDER_GIT_COMMIT
+    ? `+${process.env.RENDER_GIT_COMMIT.slice(0, 7)}`
+    : ""
+}`;
 const store = process.env.FANTABID_STORE_PATH || path.join(root, "data.json");
 let db = fs.existsSync(store)
   ? JSON.parse(fs.readFileSync(store))
@@ -496,6 +504,8 @@ const server = http.createServer(async (req, res) => {
       return bits.length === 1 && /^[a-z0-9]{6}$/i.test(bits[0])
         ? serveFile(res, "index.html")
         : serveFile(res, bits.join("/"));
+    if (req.method === "GET" && bits[1] === "version")
+      return json(res, { version: deployedVersion });
     await storageReady;
 
     if (bits[1] === "owner" && bits[2] === "auctions") {
@@ -1141,6 +1151,7 @@ const server = http.createServer(async (req, res) => {
       }
       auction.participants.forEach((participant) => {
         participant.players = [];
+        participant.budget = auction.budget;
         participant.committed = 0;
       });
       auction.players.forEach((player) => delete player.highestBid);

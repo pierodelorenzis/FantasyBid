@@ -15,7 +15,7 @@ try {
   });
   if (auctionError) throw auctionError;
   const { error: adminError } = await supabase.from("auction_participants").insert({
-    auction_code: code, token: adminToken, name: "Admin test", role: "admin", budget: 100, committed: 0,
+    auction_code: code, token: adminToken, name: "Admin test", role: "admin", budget: 125, committed: 0,
   });
   if (adminError) throw adminError;
   const { error: playerError } = await supabase.from("auction_players").insert({
@@ -43,17 +43,17 @@ try {
     supabase.from("auction_activity").select("*", { count: "exact", head: true }).eq("auction_code", code),
     supabase.from("roster_players").select("*", { count: "exact", head: true }).eq("auction_code", code),
     supabase.from("auction_players").select("highest_bid_amount").eq("auction_code", code).eq("id", "player-1").single(),
-    supabase.from("auction_participants").select("committed").eq("auction_code", code).eq("token", adminToken).single(),
+    supabase.from("auction_participants").select("budget, committed").eq("auction_code", code).eq("token", adminToken).single(),
   ]);
   if (auctionReadError) throw auctionReadError;
   if (countError) throw countError;
   if (rosterCountError) throw rosterCountError;
   if (playerReadError) throw playerReadError;
   if (participantReadError) throw participantReadError;
-  if (cleared.deletedCount !== 2 || count !== 0 || rosterCount !== 0 || player.highest_bid_amount !== null || participant.committed !== 0 || auction.status !== "paused" || auction.current_index !== 0 || auction.remaining_slots !== 2 || auction.roster_warning !== null || Number(auction.version) !== 2) {
+  if (cleared.deletedCount !== 2 || count !== 0 || rosterCount !== 0 || player.highest_bid_amount !== null || participant.budget !== 100 || participant.committed !== 0 || auction.status !== "paused" || auction.current_index !== 0 || auction.remaining_slots !== 2 || auction.roster_warning !== null || Number(auction.version) !== 2) {
     throw Error("Il test della pulizia movimenti non ha prodotto lo stato atteso.");
   }
-  console.log("Test pulizia movimenti superato: cronologia svuotata atomicamente.");
+  console.log("Test pulizia movimenti superato: cronologia e crediti extra azzerati atomicamente.");
 } finally {
   const { error } = await supabase.from("auctions").delete().eq("code", code);
   if (error) console.error("Impossibile rimuovere l’asta di test:", error.message);

@@ -149,6 +149,25 @@ try {
   });
   const creationPage = await creationContext.newPage();
   await creationPage.goto(baseUrl, { waitUntil: "networkidle" });
+  await creationPage.locator("#appVersion").waitFor();
+  assert.equal(await creationPage.locator("#appVersion").textContent(), "v1.0.0");
+  assert.equal(
+    await creationPage.locator("#appVersion").evaluate(
+      (element) => getComputedStyle(element).fontSize,
+    ),
+    "9px",
+  );
+  assert.equal(
+    await creationPage.locator(".landing-credit > span").textContent(),
+    "Made with love by Pedro.",
+  );
+  const tipLink = creationPage.locator(".tip-link");
+  assert.equal(
+    await tipLink.getAttribute("href"),
+    "https://www.paypal.me/pierodelorenzis",
+  );
+  assert.equal(await tipLink.getAttribute("target"), "_blank");
+  assert.match(await tipLink.getAttribute("rel"), /noopener/);
   await creationPage.locator("#showCreate").click();
   await creationPage.locator('#create [name="name"]').fill("Lega popup test");
   await creationPage.locator('#create [name="adminName"]').fill("Admin popup");
@@ -169,6 +188,18 @@ try {
   assert.match(copiedCreationLink, /#[^#]*admin=/);
   await creationPage.locator("[data-continue]").click();
   await creationPage.locator(".shell").waitFor();
+  await creationPage.locator('[data-page="admin"]').click();
+  await creationPage.locator("#playerFile").setInputFiles({
+    name: "catalogo-test.csv",
+    mimeType: "text/csv",
+    buffer: Buffer.from(
+      "Nome,Ruolo,Squadra,Quotazione\nPortiere Test,POR,Test FC,10\nAttaccante Test,ATT,Test FC,20\n",
+    ),
+  });
+  await creationPage.locator("[data-confirm]").click();
+  await creationPage.waitForFunction(() =>
+    document.querySelector(".catalog-heading")?.textContent.includes("2 importati"),
+  );
   await creationContext.close();
 
   const adminContext = await browser.newContext();
@@ -207,6 +238,11 @@ try {
   assert.equal(participantRotation.status, 400);
 
   await adminPage.locator('[data-page="admin"]').click();
+  const initialTierRows = await adminPage.locator(".tier-row").count();
+  await adminPage.locator("#addTier").click();
+  assert.equal(await adminPage.locator(".tier-row").count(), initialTierRows + 1);
+  await adminPage.locator(".tier-row .remove-tier").last().click();
+  assert.equal(await adminPage.locator(".tier-row").count(), initialTierRows);
   await adminPage.locator("#rotateAdminLink").click();
   await adminPage.locator("[data-confirm]").click();
   await adminPage.waitForFunction(
@@ -306,14 +342,16 @@ try {
   assert.equal(migratedSessions.legacy, null);
   assert.equal(migratedSessions.sessions[auction.code].token, browserParticipant.token);
 
-  await page.evaluate(() =>
-    save({
+  await page.evaluate(() => {
+    const sessions = JSON.parse(localStorage.getItem("fantabid-sessions"));
+    sessions.ZZZ999 = {
       code: "ZZZ999",
       token: "other-session-token",
       role: "admin",
       name: "Altro admin",
-    }),
-  );
+    };
+    localStorage.setItem("fantabid-sessions", JSON.stringify(sessions));
+  });
   const separateSessions = await page.evaluate(() =>
     JSON.parse(localStorage.getItem("fantabid-sessions")),
   );
@@ -388,6 +426,7 @@ try {
   assert.equal(touchButtons.secondAccepted, false);
   assert.equal(touchButtons.amount, touchButtons.initialAmount + 2);
 
+  const bidStartedAt = performance.now();
   const bidResponse = await fetch(
     `${baseUrl}/api/auctions/${auction.code}/bid`,
     {
@@ -399,7 +438,12 @@ try {
   assert.equal(bidResponse.status, 200);
 
   const pushedEvent = await stream.next();
+  const bidRealtimeLatency = performance.now() - bidStartedAt;
   assert.equal(pushedEvent.auction.currentPlayer.highestBid.amount, minimum);
+  assert(
+    bidRealtimeLatency < 2000,
+    `Aggiornamento puntata troppo lento: ${Math.round(bidRealtimeLatency)} ms`,
+  );
   await page.waitForFunction(
     (expected) =>
       document.querySelector(".current-bid")?.textContent.includes(String(expected)),
@@ -418,6 +462,57 @@ try {
   assert.equal(closeResponse.status, 200);
   const nextPlayerEvent = await stream.next();
   assert.equal(nextPlayerEvent.auction.currentPlayer.id, auction.players[1].id);
+  const teamStyleContext = await browser.newContext();
+  const teamStylePage = await teamStyleContext.newPage();
+  await teamStylePage.goto(
+    `${baseUrl}/${auction.code}#admin=${encodeURIComponent(administrator.token)}`,
+    { waitUntil: "networkidle" },
+  );
+  await teamStylePage.locator('[data-page="teams"]').click();
+  const removePlayerButton = teamStylePage.locator(".remove-team-player").first();
+  await removePlayerButton.waitFor();
+  const removePlayerStyle = await removePlayerButton.evaluate((button) => {
+    const style = getComputedStyle(button);
+    return {
+      background: style.backgroundColor,
+      color: style.color,
+      display: style.display,
+      justifyContent: style.justifyContent,
+      textAlign: style.textAlign,
+    };
+  });
+  assert.equal(removePlayerStyle.background, "rgb(255, 240, 236)");
+  assert.equal(removePlayerStyle.color, "rgb(214, 84, 43)");
+  assert.equal(removePlayerStyle.display, "flex");
+  assert.equal(removePlayerStyle.justifyContent, "center");
+  assert.equal(removePlayerStyle.textAlign, "center");
+  await teamStylePage
+    .locator(`.add-credits[data-participant="${bidder.token}"]`)
+    .click();
+  await teamStylePage.locator('[name="amount"]').fill("5");
+  await teamStylePage.locator(".confirm-card form button.primary").click();
+  await teamStylePage.locator(".confirm-modal").waitFor({ state: "detached" });
+  await teamStylePage
+    .locator(`.remove-team-player[data-participant="${bidder.token}"]`)
+    .first()
+    .click();
+  await teamStylePage.locator("[data-confirm]").click();
+  await teamStylePage.waitForFunction(
+    (participantToken) =>
+      !document.querySelector(
+        `.remove-team-player[data-participant="${participantToken}"]`,
+      ),
+    bidder.token,
+  );
+  const teamManagementSnapshot = await fetch(
+    `${baseUrl}/api/auctions/${auction.code}?token=${administrator.token}`,
+  ).then((response) => response.json());
+  const managedBidder = teamManagementSnapshot.participants.find(
+    (participant) => participant.token === bidder.token,
+  );
+  assert.equal(managedBidder.players.length, 0);
+  assert.equal(managedBidder.budget, bidder.budget + 5);
+  await teamStyleContext.close();
   await page.waitForFunction(
     ({ playerName, amount }) =>
       document.querySelector(".player-name h2")?.textContent === playerName &&
@@ -430,6 +525,23 @@ try {
     snapshotRequests,
     snapshotRequestsAfterNavigation,
     "Il frontend sta ancora interrogando lo snapshot periodicamente",
+  );
+  const clearActivityResponse = await fetch(
+    `${baseUrl}/api/auctions/${auction.code}/clear-activity`,
+    {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ token: administrator.token }),
+    },
+  );
+  assert.equal(clearActivityResponse.status, 200);
+  const clearedAuction = await clearActivityResponse.json();
+  assert(
+    clearedAuction.auction.participants.every(
+      (participant) =>
+        participant.budget === auction.budget && participant.committed === 0,
+    ),
+    "La cancellazione dei movimenti deve ripristinare i crediti iniziali",
   );
   console.log("SSE live update test: OK");
 } finally {

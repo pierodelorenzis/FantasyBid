@@ -1,6 +1,5 @@
--- Il pulsante "Cancella movimenti" azzera l'avanzamento dell'asta, non solo
--- l'elenco visivo: offerte, assegnazioni, rose e cronologia tornano allo stato
--- iniziale mantenendo catalogo, regole e partecipanti.
+-- Quando si azzerano i movimenti, anche gli accrediti manuali devono essere
+-- annullati: tutte le squadre tornano al budget iniziale configurato per l'asta.
 
 create or replace function public.clear_auction_activity(
   p_auction_code text,
