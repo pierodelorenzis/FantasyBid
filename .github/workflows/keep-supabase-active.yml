@@ -1,0 +1,58 @@
+name: Keep Supabase Active
+
+on:
+  schedule:
+    # Esegue ogni 12 ore per prevenire la sospensione del progetto Supabase.
+    - cron: "0 */12 * * *"
+  workflow_dispatch:
+
+jobs:
+  ping-supabase:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Send keep-alive write request to Supabase
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+          RUN_ID: ${{ github.run_id }}
+          RUN_NUMBER: ${{ github.run_number }}
+          REPOSITORY: ${{ github.repository }}
+          TRIGGER: ${{ github.event_name }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [[ -z "${SUPABASE_URL}" || -z "${SUPABASE_SECRET_KEY}" ]]; then
+            echo "Error: configura i secret SUPABASE_URL e SUPABASE_SECRET_KEY nel repository."
+            exit 1
+          fi
+
+          payload=$(jq -n \
+            --arg run_id "${RUN_ID}" \
+            --arg run_number "${RUN_NUMBER}" \
+            --arg repo "${REPOSITORY}" \
+            --arg trigger "${TRIGGER}" \
+            '{payload: {run_id: $run_id, run_number: $run_number, repo: $repo, trigger: $trigger}}')
+
+          response=$(curl --silent --show-error \
+            --connect-timeout 10 \
+            --max-time 30 \
+            --write-out $'\n%{http_code}' \
+            --request POST "${SUPABASE_URL%/}/rest/v1/keep_alive_logs" \
+            --header "apikey: ${SUPABASE_SECRET_KEY}" \
+            --header "Authorization: Bearer ${SUPABASE_SECRET_KEY}" \
+            --header "Content-Type: application/json" \
+            --data "${payload}")
+
+          http_code=$(tail -n 1 <<< "${response}")
+          body=$(sed '$d' <<< "${response}")
+
+          echo "Response Body: ${body:-<empty>}"
+          echo "HTTP Status Code: ${http_code}"
+
+          if (( http_code < 200 || http_code >= 300 )); then
+            echo "Error: la richiesta di keep-alive è fallita con codice HTTP ${http_code}."
+            exit 1
+          fi
