@@ -94,9 +94,12 @@ function showCountdown(auction) {
   $(".countdown-slot").append(banner);
   renderIcons();
   const counter = banner.querySelector("strong");
+  const visibleDuration = 5000;
+  const startsAt = end - visibleDuration;
   let timer;
   const update = () => {
-    const seconds = Math.max(0, Math.ceil((end - Date.now()) / 1000));
+    const countdownNow = Math.max(Date.now(), startsAt);
+    const seconds = Math.max(0, Math.ceil((end - countdownNow) / 1000));
     counter.textContent = seconds;
     if (!seconds) clearInterval(timer);
   };

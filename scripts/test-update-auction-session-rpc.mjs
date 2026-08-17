@@ -52,14 +52,14 @@ try {
   const start = await call("schedule_start");
   if (start.status !== "paused" || !start.startCountdownEndsAt)
     throw Error("Il countdown di avvio non è stato programmato.");
-  await wait(5100);
+  await wait(7100);
   const started = await call("complete_start");
   if (started.status !== "live") throw Error("L’asta non è stata avviata.");
 
   const pause = await call("schedule_pause");
   if (pause.status !== "live" || !pause.countdownEndsAt)
     throw Error("Il countdown di pausa non è stato programmato.");
-  await wait(5100);
+  await wait(7100);
   const paused = await call("complete_pause");
   if (paused.status !== "paused") throw Error("L’asta non è stata messa in pausa.");
 

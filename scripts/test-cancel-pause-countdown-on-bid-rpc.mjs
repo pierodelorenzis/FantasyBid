@@ -10,7 +10,7 @@ const bidderToken = `bidder-${code}`;
 
 try {
   const { error: auctionError } = await supabase.from("auctions").insert({
-    code, name: "Test annullamento countdown", budget: 100, status: "live", total_slots: 1,
+    code, name: "Test reset countdown", budget: 100, status: "live", total_slots: 1,
     remaining_slots: 1, current_index: 0, countdown_ends_at: Date.now() + 5000,
     rules: { C: { minPrice: 1, increment: 1, cap: 50 } },
     tier_settings: [{ name: "C", minQuote: 0, minPrice: 1, increment: 1, cap: 50 }],
@@ -34,10 +34,11 @@ try {
     .eq("code", code)
     .single();
   if (readError) throw readError;
-  if (auction.status !== "live" || auction.countdown_ends_at !== null) {
-    throw Error("La puntata non ha annullato il countdown di pausa.");
+  const remaining = Number(auction.countdown_ends_at) - Date.now();
+  if (auction.status !== "live" || remaining < 6000 || remaining > 7000) {
+    throw Error("La puntata non ha riavviato il countdown di pausa.");
   }
-  console.log("Test countdown superato: la puntata annulla Ultima chiamata.");
+  console.log("Test countdown superato: la puntata riavvia Ultima chiamata.");
 } finally {
   const { error } = await supabase.from("auctions").delete().eq("code", code);
   if (error) console.error("Impossibile rimuovere l’asta di test:", error.message);

@@ -1,5 +1,5 @@
--- Una puntata valida durante "Ultima chiamata" riavvia il countdown di pausa.
--- Il trigger agisce sulla stessa transazione della puntata atomica.
+-- Keep "Ultima chiamata" active after a valid bid. Every bid moves its shared
+-- deadline forward by five visible seconds plus the two-second delivery grace.
 
 create or replace function public.cancel_pause_countdown_after_bid()
 returns trigger
@@ -18,10 +18,3 @@ begin
   return new;
 end;
 $$;
-
-drop trigger if exists cancel_pause_countdown_after_bid
-  on public.auction_players;
-create trigger cancel_pause_countdown_after_bid
-after update of highest_bid_amount on public.auction_players
-for each row
-execute function public.cancel_pause_countdown_after_bid();

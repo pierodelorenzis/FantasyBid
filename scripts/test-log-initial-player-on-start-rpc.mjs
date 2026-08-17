@@ -27,7 +27,7 @@ try {
     p_auction_code: code, p_admin_token: adminToken, p_action: "schedule_start",
   });
   if (scheduleError) throw scheduleError;
-  await wait(5100);
+  await wait(7100);
   const { error: startError } = await supabase.rpc("update_auction_session", {
     p_auction_code: code, p_admin_token: adminToken, p_action: "complete_start",
   });

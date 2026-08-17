@@ -32,6 +32,9 @@ const supabase =
     })
     : null;
 const production = process.env.NODE_ENV === "production";
+const COUNTDOWN_VISIBLE_MS = 5000;
+const COUNTDOWN_SYNC_GRACE_MS = 2000;
+const COUNTDOWN_TOTAL_MS = COUNTDOWN_VISIBLE_MS + COUNTDOWN_SYNC_GRACE_MS;
 if (production && !supabase)
   throw Error(
     "In produzione sono obbligatorie SUPABASE_URL e SUPABASE_SECRET_KEY",
@@ -718,7 +721,10 @@ const server = http.createServer(async (req, res) => {
       if (auction.countdownEndsAt && auction.countdownEndsAt > Date.now())
         throw Error("Countdown già attivo");
       rememberState(auction);
-      auction.countdownEndsAt = Date.now() + 5000;
+      // The shared deadline includes a short delivery window. Clients hold the
+      // first displayed second during this window, so HTTP/SSE latency does not
+      // make some participants join an already-consumed countdown.
+      auction.countdownEndsAt = Date.now() + COUNTDOWN_TOTAL_MS;
       save(auction.code);
       setTimeout(() => {
         if (auction.countdownEndsAt && auction.countdownEndsAt <= Date.now()) {
@@ -730,7 +736,7 @@ const server = http.createServer(async (req, res) => {
           });
           save(auction.code);
         }
-      }, 5100);
+      }, COUNTDOWN_TOTAL_MS + 100);
       return json(res, { auction: publicAuction(auction, body.token) });
     }
     if (req.method === "POST" && bits[3] === "call" && bits[4]) {
@@ -1059,6 +1065,7 @@ const server = http.createServer(async (req, res) => {
         player = auction.players[auction.currentIndex];
       if (!participant || !player) throw Error("Sessione non valida");
       if (atomicBidEnabled && supabase) {
+        const countdownWasActive = Boolean(auction.countdownEndsAt);
         const { data, error } = await supabase.rpc("place_bid", {
           p_auction_code: auction.code,
           p_participant_token: participant.token,
@@ -1071,7 +1078,25 @@ const server = http.createServer(async (req, res) => {
           participantName: data.participantName,
           amount: data.amount,
         };
-        auction.countdownEndsAt = null;
+        if (countdownWasActive) {
+          const { data: sessionState, error: sessionError } = await supabase
+            .from("auctions")
+            .select("countdown_ends_at")
+            .eq("code", auction.code)
+            .single();
+          if (sessionError) throw Error(sessionError.message);
+          auction.countdownEndsAt = sessionState.countdown_ends_at;
+          const administrator = auction.participants.find(
+            (item) => item.role === "admin",
+          );
+          if (administrator && auction.countdownEndsAt)
+            scheduleAtomicSessionCompletion(
+              auction,
+              administrator,
+              "pause",
+              auction.countdownEndsAt,
+            );
+        }
         auction.rosterWarning = data.rosterWarning || null;
         auction.activity.unshift({
           name: data.participantName,
@@ -1104,6 +1129,27 @@ const server = http.createServer(async (req, res) => {
         participantName: participant.name,
         amount: +body.amount,
       };
+      if (auction.countdownEndsAt) {
+        const resetEndsAt = Date.now() + COUNTDOWN_TOTAL_MS;
+        auction.countdownEndsAt = resetEndsAt;
+        const administrator = auction.participants.find(
+          (item) => item.role === "admin",
+        );
+        setTimeout(() => {
+          if (
+            auction.countdownEndsAt === resetEndsAt &&
+            auction.countdownEndsAt <= Date.now()
+          ) {
+            auction.status = "paused";
+            auction.countdownEndsAt = null;
+            auction.activity.unshift({
+              name: administrator?.name || "Admin",
+              action: "mette in pausa l’asta",
+            });
+            save(auction.code);
+          }
+        }, COUNTDOWN_TOTAL_MS + 100);
+      }
       const remainingCredits =
         participant.budget - participant.committed - +body.amount;
       const remainingSlots = Math.max(
@@ -1318,7 +1364,7 @@ const server = http.createServer(async (req, res) => {
           )
             throw Error("Avvio dell’asta già programmato");
           rememberState(auction);
-          auction.startCountdownEndsAt = Date.now() + 5000;
+          auction.startCountdownEndsAt = Date.now() + COUNTDOWN_TOTAL_MS;
           setTimeout(() => {
             if (
               auction.startCountdownEndsAt &&
@@ -1332,7 +1378,7 @@ const server = http.createServer(async (req, res) => {
               });
               save(auction.code);
             }
-          }, 5100);
+          }, COUNTDOWN_TOTAL_MS + 100);
         }
       }
       if (bits[3] === "pause") {

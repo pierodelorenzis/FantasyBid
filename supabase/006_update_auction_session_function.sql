@@ -74,7 +74,9 @@ begin
       and v_auction.start_countdown_ends_at > v_now then
       raise exception 'Avvio dell’asta già programmato';
     end if;
-    v_countdown_ends_at := v_now + 5000;
+    -- Five visible seconds plus two seconds for the update to reach every
+    -- browser before the shared countdown starts.
+    v_countdown_ends_at := v_now + 7000;
     update public.auctions
     set
       start_countdown_ends_at = v_countdown_ends_at,
@@ -90,7 +92,7 @@ begin
       and v_auction.countdown_ends_at > v_now then
       raise exception 'Countdown già attivo';
     end if;
-    v_countdown_ends_at := v_now + 5000;
+    v_countdown_ends_at := v_now + 7000;
     update public.auctions
     set
       countdown_ends_at = v_countdown_ends_at,
