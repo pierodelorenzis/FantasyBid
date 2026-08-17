@@ -91,6 +91,9 @@ h1 {
 
 .status {
   margin: 0 auto;
+  height: calc(1.55em * 2);
+  display: grid;
+  place-items: start center;
   color: var(--muted);
   font-size: 17px;
   line-height: 1.55;
@@ -109,6 +112,10 @@ h1 {
 
   .brand {
     margin-bottom: 38px;
+  }
+
+  .status {
+    height: calc(1.55em * 3);
   }
 }
 
