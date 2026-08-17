@@ -150,7 +150,7 @@ try {
   const creationPage = await creationContext.newPage();
   await creationPage.goto(baseUrl, { waitUntil: "networkidle" });
   await creationPage.locator("#appVersion").waitFor();
-  assert.equal(await creationPage.locator("#appVersion").textContent(), "v1.0.0");
+  assert.equal(await creationPage.locator("#appVersion").textContent(), "v1.0.1");
   assert.equal(
     await creationPage.locator("#appVersion").evaluate(
       (element) => getComputedStyle(element).fontSize,
@@ -487,9 +487,9 @@ try {
   assert.equal(removePlayerStyle.justifyContent, "center");
   assert.equal(removePlayerStyle.textAlign, "center");
   await teamStylePage
-    .locator(`.add-credits[data-participant="${bidder.token}"]`)
+    .locator(`.edit-credits[data-participant="${bidder.token}"]`)
     .click();
-  await teamStylePage.locator('[name="amount"]').fill("5");
+  await teamStylePage.locator('[name="budget"]').fill("505");
   await teamStylePage.locator(".confirm-card form button.primary").click();
   await teamStylePage.locator(".confirm-modal").waitFor({ state: "detached" });
   await teamStylePage

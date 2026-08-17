@@ -1,4 +1,5 @@
--- Modifica atomica del budget di una squadra partecipante.
+-- Allow an administrator to replace a team's total budget, increasing or
+-- reducing it without ever going below credits already committed to players.
 
 create or replace function public.set_participant_budget(
   p_auction_code text,
@@ -19,14 +20,17 @@ begin
   select * into v_auction from public.auctions
   where code = p_auction_code for update;
   if not found then raise exception 'Asta non trovata'; end if;
+
   select * into v_administrator from public.auction_participants
   where auction_code = p_auction_code and token = p_admin_token and role = 'admin'
   for update;
   if not found then raise exception 'Operazione riservata all’admin'; end if;
+
   select * into v_participant from public.auction_participants
   where auction_code = p_auction_code and token = p_participant_token and role = 'participant'
   for update;
   if not found then raise exception 'Partecipante non trovato'; end if;
+
   if p_budget is null or p_budget < v_participant.committed then
     raise exception 'Il budget non può essere inferiore ai % crediti già impegnati', v_participant.committed;
   end if;
@@ -37,9 +41,11 @@ begin
   update public.auction_participants
   set budget = p_budget
   where auction_code = p_auction_code and token = p_participant_token;
+
   update public.auctions
   set version = version + 1, updated_at = now()
   where code = p_auction_code;
+
   insert into public.auction_activity (auction_code, position, name, action, amount)
   values (
     p_auction_code,
@@ -48,6 +54,7 @@ begin
     'imposta il budget della squadra di ' || v_participant.name,
     p_budget
   );
+
   return jsonb_build_object(
     'participantToken', v_participant.token,
     'participantName', v_participant.name,
@@ -60,3 +67,5 @@ $$;
 
 revoke all on function public.set_participant_budget(text, text, text, integer)
   from anon, authenticated;
+
+drop function if exists public.add_participant_credits(text, text, text, integer);

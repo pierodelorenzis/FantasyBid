@@ -7,15 +7,24 @@
 }
 html {
   touch-action: manipulation;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 * {
   box-sizing: border-box;
 }
 body {
   margin: 0;
+  width: 100%;
+  min-width: 0;
+  overflow-x: clip;
   background: var(--bg);
   color: var(--ink);
   font-family: Outfit, Arial, sans-serif;
+}
+button,
+[role="button"] {
+  touch-action: manipulation;
 }
 .app-version {
   position: fixed;
@@ -731,6 +740,12 @@ button svg,
 .bid-panel .primary {
   width: 100%;
   margin-top: 14px;
+}
+#bid {
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 .admin-control > p:last-of-type {
   margin-top: 0;

@@ -3,23 +3,27 @@ import { confirmDialog, creditDialog } from "../dialogs.js";
 import { $$, money, toast } from "../ui.js";
 
 export function wireTeamManagement({ session, setAuction, renderTeams }) {
-  $$(".add-credits").forEach(
+  $$(".edit-credits").forEach(
     (button) =>
       (button.onclick = async () => {
-        const amount = await creditDialog(button.dataset.participantName);
-        if (amount === null) return;
+        const budget = await creditDialog(
+          button.dataset.participantName,
+          Number(button.dataset.budget),
+          Number(button.dataset.committed),
+        );
+        if (budget === null) return;
         button.disabled = true;
         try {
           const result = await api(
             `/auctions/${session.code}/participants/${button.dataset.participant}/credits`,
             {
               method: "POST",
-              body: JSON.stringify({ token: session.token, amount }),
+              body: JSON.stringify({ token: session.token, budget }),
             },
           );
           setAuction(result.auction);
           renderTeams();
-          toast(`${money(amount)} aggiunti alla squadra`);
+          toast(`Budget della squadra modificato a ${money(budget)}`);
         } catch (error) {
           toast(error.message);
           button.disabled = false;

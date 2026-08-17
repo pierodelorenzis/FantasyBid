@@ -37,7 +37,13 @@ export function wireBidding({
     wireAmountButton($("#minus"), -1);
     amount.oninput = () =>
       ($("#offerAmount").textContent = money(amount.value));
-    $("#bid").onclick = async () => {
+    const bidButton = $("#bid");
+    let bidPending = false;
+    bidButton.ondblclick = (event) => event.preventDefault();
+    bidButton.onclick = async () => {
+      if (bidPending) return;
+      bidPending = true;
+      bidButton.disabled = true;
       try {
         const response = await api(`/auctions/${session.code}/bid`, {
           method: "POST",
@@ -51,6 +57,8 @@ export function wireBidding({
         toast("Offerta registrata");
       } catch (error) {
         toast(error.message);
+        bidPending = false;
+        bidButton.disabled = !auction.canBid;
       }
     };
   }

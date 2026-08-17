@@ -969,26 +969,30 @@ const server = http.createServer(async (req, res) => {
     ) {
       const administrator = requireAdmin(auction, body.token);
       const participant = own(auction, bits[4]);
-      const amount = Number(body.amount);
+      const budget = Number(body.budget);
       if (!participant || participant.role !== "participant")
         throw Error("Partecipante non trovato");
-      if (!Number.isInteger(amount) || amount <= 0)
-        throw Error("Inserisci un numero di crediti maggiore di zero");
+      if (!Number.isInteger(budget) || budget < participant.committed)
+        throw Error(
+          `Il budget non può essere inferiore ai ${participant.committed} crediti già impegnati`,
+        );
+      if (budget === participant.budget)
+        throw Error("Il budget inserito è uguale a quello attuale");
       if (atomicBidEnabled && supabase) {
-        const { error } = await supabase.rpc("add_participant_credits", {
+        const { error } = await supabase.rpc("set_participant_budget", {
           p_auction_code: auction.code,
           p_admin_token: administrator.token,
           p_participant_token: participant.token,
-          p_amount: amount,
+          p_budget: budget,
         });
         if (error) throw Error(error.message);
       }
       rememberState(auction);
-      participant.budget += amount;
+      participant.budget = budget;
       auction.activity.unshift({
         name: administrator.name,
-        action: "aggiunge crediti alla squadra di " + participant.name,
-        amount,
+        action: "imposta il budget della squadra di " + participant.name,
+        amount: budget,
       });
       save(auction.code);
       return json(res, { auction: publicAuction(auction, body.token) });

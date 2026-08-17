@@ -42,23 +42,24 @@ export function adminLinkCreatedDialog(code, token) {
   });
 }
 
-export function creditDialog(participantName) {
+export function creditDialog(participantName, currentBudget, committed) {
   return new Promise((resolve) => {
     const modal = document.createElement("div");
     modal.className = "confirm-modal";
-    modal.innerHTML = `<section class="confirm-card" role="dialog" aria-modal="true" aria-labelledby="creditTitle"><p class="eyebrow">ACCREDITO CREDITI</p><h2 id="creditTitle">Aggiungi crediti a ${participantName}</h2><p>Inserisci il numero di crediti da aggiungere al budget della squadra.</p><form><label class="credit-input">Crediti<input name="amount" type="number" min="1" step="1" value="1" required autofocus></label><div class="confirm-actions"><button type="button" class="ghost" data-cancel>Annulla</button><button class="primary" type="submit">Aggiungi crediti</button></div></form></section>`;
+    modal.innerHTML = `<section class="confirm-card" role="dialog" aria-modal="true" aria-labelledby="creditTitle"><p class="eyebrow">MODIFICA CREDITI</p><h2 id="creditTitle">Modifica crediti di ${participantName}</h2><p>Imposta il budget totale della squadra. Sono già stati impegnati ${committed} crediti, quindi non puoi scendere sotto questa cifra.</p><form><label class="credit-input">Budget totale<input name="budget" type="number" min="${committed}" step="1" value="${currentBudget}" required autofocus></label><div class="confirm-actions"><button type="button" class="ghost" data-cancel>Annulla</button><button class="primary" type="submit">Salva crediti</button></div></form></section>`;
     const close = (amount = null) => {
       modal.remove();
       resolve(amount);
     };
     const form = modal.querySelector("form");
-    const input = form.elements.amount;
+    const input = form.elements.budget;
     modal.querySelector("[data-cancel]").onclick = () => close();
     form.onsubmit = (event) => {
       event.preventDefault();
-      const amount = Number(input.value);
-      if (!Number.isInteger(amount) || amount <= 0) return input.reportValidity();
-      close(amount);
+      const budget = Number(input.value);
+      if (!Number.isInteger(budget) || budget < committed)
+        return input.reportValidity();
+      close(budget);
     };
     modal.onclick = (event) => {
       if (event.target === modal) close();
