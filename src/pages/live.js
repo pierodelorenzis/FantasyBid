@@ -56,7 +56,16 @@ function playerArtwork(player) {
     0,
   ) % TEAM_PALETTES.length;
   const [primary, accent] = TEAM_COLORS[teamKey(team)] || TEAM_PALETTES[paletteIndex];
-  return `<div class="player-avatar" style="--shirt-primary:${primary};--shirt-accent:${accent}" role="img" aria-label="Maglia di ${team}"><span class="avatar-shirt"><span class="shirt-name">${player.name}</span></span><small>${team}</small></div>`;
+  const playerName = String(player.name || "").trim();
+  const longestWord = Math.max(...playerName.split(/\s+/).map((word) => word.length));
+  const nameSize =
+    playerName.length > 25 || longestWord > 14
+      ? "shirt-name-small"
+      : playerName.length > 17 || longestWord > 9
+        ? "shirt-name-medium"
+        : "";
+  const nameLayout = /\s/.test(playerName) ? "" : "shirt-name-single";
+  return `<div class="player-avatar" style="--shirt-primary:${primary};--shirt-accent:${accent}" role="img" aria-label="Maglia di ${team}"><span class="avatar-shirt"><span class="shirt-name ${nameSize} ${nameLayout}">${playerName}</span></span></div>`;
 }
 
 export function createLivePageRenderer() {
@@ -80,6 +89,10 @@ export function createLivePageRenderer() {
         ? '<span class="your-last-bid">Tu</span>'
         : player.highestBid.participantName;
     const roleArtwork = playerArtwork(player);
+    const playerDetails = [player.team, player.nation]
+      .map((value) => String(value || "").trim())
+      .filter(Boolean)
+      .join(" · ");
     const side =
       session.role === "admin"
         ? `<article class="bid-panel admin-control"><p>Controllo amministratore</p><h2>${auction.participants.filter((item) => item.role === "participant").length} <small>partecipanti</small></h2><hr><p>Osserva i rilanci, assegna il giocatore all'offerta più alta e chiama il successivo.</p><button id="closePlayer" class="primary">Assegna e chiama il prossimo</button></article>`
@@ -104,7 +117,7 @@ export function createLivePageRenderer() {
       rosterWarningKey && dismissedRosterWarningKey !== rosterWarningKey
         ? `<div class="shared-roster-warning" role="alert"><i class="warning-icon" data-lucide="triangle-alert"></i><p><strong>Attenzione per ${auction.rosterWarning.participantName}</strong>Dopo questa offerta restano ${money(auction.rosterWarning.remainingCredits)}. ${warningDetails}</p><button id="dismissRosterWarning" aria-label="Chiudi avviso"><i data-lucide="x"></i></button></div>`
         : "";
-    return `${sharedWarning}<div class="live-layout"><div class="live-main"><div class="live-status-row"><span class="auction-status ${auction.status === "live" ? "live" : "paused"}"><i></i>${auction.status === "live" ? "Asta in corso" : "Asta in pausa"}</span></div><div class="countdown-slot"></div><div class="auction-grid"><article class="player-card"><div class="player-hero"><span class="role">${player.role}</span><span class="tier">★ Fascia ${player.tier}</span><strong>${player.number || initials(player.name)}</strong><div class="role-art role-${player.role.toLowerCase()}">${roleArtwork}</div></div><div class="player-name"><h2>${player.name}</h2><span class="mobile-player-meta">${player.role} · Fascia ${player.tier}</span><div class="player-details"><p>${player.team} · ${player.nation}</p><span class="player-quote">Quotazione <b>${Number.isFinite(+player.quote) ? player.quote : 0}</b></span></div></div><div class="bid-info"><div><small>OFFERTA ATTUALE</small><b class="current-bid">${money(player.highestBid?.amount || 0)}</b></div><div><small>ULTIMA PUNTATA VALIDA</small><p>${lastBidder}</p></div></div></article>${side}</div></div><section class="auction-sidebar">${activity}</section></div>`;
+    return `${sharedWarning}<div class="live-layout"><div class="live-main"><div class="live-status-row"><span class="auction-status ${auction.status === "live" ? "live" : "paused"}"><i></i>${auction.status === "live" ? "Asta in corso" : "Asta in pausa"}</span></div><div class="countdown-slot"></div><div class="auction-grid"><article class="player-card player-role-${player.role.toLowerCase()}"><div class="player-hero"><span class="role">${player.role}</span><span class="tier">★ Fascia ${player.tier}</span><div class="role-art role-${player.role.toLowerCase()}">${roleArtwork}</div></div><div class="player-name"><h2>${player.name}</h2><div class="player-details"><p>${playerDetails}</p><span class="player-quote">Quotazione <b>${Number.isFinite(+player.quote) ? player.quote : 0}</b></span></div></div><div class="bid-info"><div><small>OFFERTA ATTUALE</small><b class="current-bid">${money(player.highestBid?.amount || 0)}</b></div><div><small>ULTIMA PUNTATA VALIDA</small><p>${lastBidder}</p></div></div></article>${side}</div></div><section class="auction-sidebar">${activity}</section></div>`;
   }
 
   return { dismissRosterWarning, render };
