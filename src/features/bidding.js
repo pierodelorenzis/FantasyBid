@@ -1,6 +1,17 @@
 import { api } from "../api.js";
 import { $, money, toast } from "../ui.js";
 
+const pendingBids = new Set();
+
+function setBidLoading(button, loading) {
+  if (!button) return;
+  if (loading) button.disabled = true;
+  button.classList.toggle("loading", loading);
+  button.setAttribute("aria-busy", String(loading));
+  if (loading)
+    button.innerHTML = '<span class="bid-loader" aria-hidden="true"></span> Registrazione…';
+}
+
 export function wireBidding({
   auction,
   session,
@@ -38,12 +49,13 @@ export function wireBidding({
     amount.oninput = () =>
       ($("#offerAmount").textContent = money(amount.value));
     const bidButton = $("#bid");
-    let bidPending = false;
+    const pendingKey = `${session.code}:${session.token}`;
+    setBidLoading(bidButton, pendingBids.has(pendingKey));
     bidButton.ondblclick = (event) => event.preventDefault();
     bidButton.onclick = async () => {
-      if (bidPending) return;
-      bidPending = true;
-      bidButton.disabled = true;
+      if (pendingBids.has(pendingKey)) return;
+      pendingBids.add(pendingKey);
+      setBidLoading(bidButton, true);
       try {
         const response = await api(`/auctions/${session.code}/bid`, {
           method: "POST",
@@ -53,11 +65,14 @@ export function wireBidding({
           }),
         });
         setAuction(response.auction);
+        pendingBids.delete(pendingKey);
         renderLive();
         toast("Offerta registrata");
       } catch (error) {
         toast(error.message);
-        bidPending = false;
+        pendingBids.delete(pendingKey);
+        setBidLoading(bidButton, false);
+        bidButton.innerHTML = `Fai la tua offerta <span id="offerAmount">${money(amount.value)}</span>`;
         bidButton.disabled = !auction.canBid;
       }
     };
