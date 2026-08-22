@@ -52,6 +52,14 @@ export function wireBidding({
     const pendingKey = `${session.code}:${session.token}`;
     setBidLoading(bidButton, pendingBids.has(pendingKey));
     bidButton.ondblclick = (event) => event.preventDefault();
+    bidButton.addEventListener(
+      "touchend",
+      (event) => {
+        event.preventDefault();
+        bidButton.click();
+      },
+      { passive: false },
+    );
     bidButton.onclick = async () => {
       if (pendingBids.has(pendingKey)) return;
       pendingBids.add(pendingKey);

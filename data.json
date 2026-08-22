@@ -260887,6 +260887,14 @@
             }
           ],
           "committed": 1
+        },
+        {
+          "token": "958f570398614761955a7629d161ab79",
+          "name": "Pp",
+          "role": "participant",
+          "budget": 300,
+          "players": [],
+          "committed": 0
         }
       ],
       "activity": [

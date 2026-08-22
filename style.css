@@ -784,7 +784,8 @@ button svg,
   width: 100%;
   margin-top: 14px;
 }
-#bid {
+#bid,
+#bid * {
   touch-action: manipulation;
   -webkit-user-select: none;
   user-select: none;
@@ -1388,18 +1389,48 @@ button svg,
     display: block;
   }
   .player-hero {
-    display: none;
+    display: flex;
+    height: 78px;
   }
   .player-hero > strong {
     display: none;
   }
-  .player-hero div {
-    width: 58px;
-    height: 58px;
-    font-size: 27px;
-  }
   .player-hero .role-art {
+    display: block;
+    width: 72px;
+    height: 70px;
+  }
+  .player-hero .player-avatar {
+    width: 72px;
+    height: 70px;
+    filter: drop-shadow(0 6px 5px #4d3ab844);
+  }
+  .player-hero .avatar-shirt {
+    top: 3px;
+    width: 70px;
+    height: 64px;
+    padding: 0;
+    border-radius: 9px;
+  }
+  .player-hero .avatar-shirt::before {
+    inset: 2px;
+  }
+  .player-hero .player-avatar small {
     display: none;
+  }
+  .player-hero .shirt-name {
+    position: absolute;
+    top: 18px;
+    right: 13px;
+    left: 13px;
+    display: block;
+    min-height: 0;
+    margin: 0;
+    font-size: 6px;
+    line-height: 1;
+    letter-spacing: -.03em;
+    text-shadow: 0 .5px 1px #111;
+    -webkit-text-stroke: .35px #111;
   }
   .player-hero .role,
   .player-hero .tier {
@@ -1441,19 +1472,63 @@ button svg,
     font-size: 19px;
   }
   .bid-panel {
-    padding: 13px 14px;
+    padding: 10px 14px;
+  }
+  .bid-panel:not(.admin-control) {
+    position: fixed;
+    z-index: 15;
+    right: 18px;
+    bottom: max(12px, env(safe-area-inset-bottom));
+    left: 18px;
+    width: auto;
+    max-height: calc(100dvh - 210px - env(safe-area-inset-bottom));
+    overflow-y: auto;
+    box-shadow: 0 10px 28px #18223a4d;
   }
   .bid-panel h2 {
-    font-size: 21px;
+    font-size: 20px;
   }
   .bar-label {
-    margin-top: 10px;
+    margin-top: 6px;
+  }
+  .bar {
+    margin-top: 4px;
   }
   .bid-panel hr {
-    margin: 10px 0;
+    margin: 7px 0;
   }
   .bid-panel .note {
-    margin-top: 7px;
+    display: none;
+  }
+  .bid-composer .offer {
+    height: 42px;
+    margin-top: 5px;
+  }
+  .live-layout {
+    padding-bottom: calc(318px + env(safe-area-inset-bottom));
+  }
+  .bid-composer {
+    position: static;
+  }
+  .bid-composer #bid {
+    position: static;
+    width: 100%;
+    min-height: 56px;
+    margin: 7px 0 0;
+    box-shadow: none;
+  }
+  .bid-composer #bid:disabled {
+    background: #7184c8;
+    color: #fff;
+    opacity: 1;
+    cursor: not-allowed;
+  }
+  .bid-composer #bid.loading:disabled {
+    background: var(--blue);
+    cursor: wait;
+  }
+  .shell.menu-open .bid-panel:not(.admin-control) {
+    visibility: hidden;
   }
   .live-layout {
     grid-template-columns: 1fr;
