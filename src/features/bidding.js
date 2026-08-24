@@ -60,7 +60,7 @@ export function wireBidding({
       (button) => (button.disabled = pending || !auction.canBid),
     );
     const submitBid = async (bidAmount) => {
-      if (pendingBids.has(pendingKey)) return;
+      if (!auction.canBid || pendingBids.has(pendingKey)) return;
       pendingBids.add(pendingKey);
       setBidLoading(bidButton, true);
       quickButtons.forEach((button) => (button.disabled = true));
@@ -89,6 +89,7 @@ export function wireBidding({
     };
     quickButtons.forEach((button) => {
       const submitQuickBid = () => {
+        if (button.disabled || !auction.canBid) return;
         const lastValidBid = Number.isFinite(
           +auction.currentPlayer?.highestBid?.amount,
         )

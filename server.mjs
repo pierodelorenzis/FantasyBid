@@ -650,6 +650,7 @@ const server = http.createServer(async (req, res) => {
       do auctionCode = code();
       while (db.auctions[auctionCode]);
       const token = id();
+      const initialTier = implicitTierSetting();
       const auction = {
         code: auctionCode,
         name: body.name,
@@ -658,11 +659,13 @@ const server = http.createServer(async (req, res) => {
         totalSlots: 25,
         remainingSlots: 25,
         rules: {
-          A: { minPrice: 20, increment: 3, cap: 150 },
-          B: { minPrice: 8, increment: 2, cap: 100 },
-          C: { minPrice: 1, increment: 1, cap: 50 },
+          [initialTier.name]: {
+            minPrice: initialTier.minPrice,
+            increment: initialTier.increment,
+            cap: initialTier.cap,
+          },
         },
-        tierSettings: defaultTierSettings(),
+        tierSettings: [initialTier],
         players: [],
         currentIndex: 0,
         playerOrder: null,
