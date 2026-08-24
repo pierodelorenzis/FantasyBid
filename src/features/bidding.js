@@ -99,14 +99,6 @@ export function wireBidding({
         submitBid(quickAmount);
       };
       button.onclick = submitQuickBid;
-      button.addEventListener(
-        "touchend",
-        (event) => {
-          event.preventDefault();
-          submitQuickBid();
-        },
-        { passive: false },
-      );
       button.ondblclick = (event) => event.preventDefault();
     });
     bidButton.ondblclick = (event) => event.preventDefault();
