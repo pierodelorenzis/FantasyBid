@@ -15,6 +15,8 @@ create table if not exists public.auctions (
   order_by_role boolean not null default false,
   countdown_ends_at bigint,
   start_countdown_ends_at bigint,
+  bid_duration_seconds integer not null default 30 check (bid_duration_seconds between 5 and 300),
+  bid_countdown_ends_at bigint,
   roster_warning jsonb,
   version bigint not null default 1 check (version > 0),
   created_at timestamptz not null default now(),

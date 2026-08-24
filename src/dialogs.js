@@ -73,9 +73,13 @@ export function creditDialog(participantName, currentBudget, committed) {
 export function catalogPlayerDialog(tiers) {
   return new Promise((resolve) => {
     const modal = document.createElement("div");
-    const defaultTier = tiers.at(-1)?.name || "";
+    const visibleTiers = tiers.filter((tier) => !tier.implicit);
+    const defaultTier = visibleTiers.at(-1)?.name || tiers.at(-1)?.name || "";
+    const tierField = visibleTiers.length
+      ? `<label>Fascia<select name="tier" required>${visibleTiers.map((tier) => `<option value="${tier.name}" ${tier.name === defaultTier ? "selected" : ""}>${tier.name}</option>`).join("")}</select></label>`
+      : `<input name="tier" type="hidden" value="${defaultTier}">`;
     modal.className = "confirm-modal";
-    modal.innerHTML = `<section class="confirm-card catalog-player-dialog" role="dialog" aria-modal="true" aria-labelledby="catalogPlayerTitle"><p class="eyebrow">CATALOGO GIOCATORI</p><h2 id="catalogPlayerTitle">Aggiungi giocatore</h2><form><div class="catalog-player-fields"><label>Nome<input name="name" required maxlength="100" autofocus></label><label>Ruolo<select name="role" required><option value="POR">Portiere</option><option value="DIF">Difensore</option><option value="CEN">Centrocampista</option><option value="ATT">Attaccante</option></select></label><label>Squadra<input name="team" maxlength="80"></label><label>Nazione<input name="nation" maxlength="80"></label><label>Quotazione<input name="quote" type="number" min="0" step="1" value="0" required></label><label>Fascia<select name="tier" required>${tiers.map((tier) => `<option value="${tier.name}" ${tier.name === defaultTier ? "selected" : ""}>${tier.name}</option>`).join("")}</select></label></div><div class="confirm-actions"><button type="button" class="ghost" data-cancel>Annulla</button><button class="primary" type="submit">Aggiungi giocatore</button></div></form></section>`;
+    modal.innerHTML = `<section class="confirm-card catalog-player-dialog" role="dialog" aria-modal="true" aria-labelledby="catalogPlayerTitle"><p class="eyebrow">CATALOGO GIOCATORI</p><h2 id="catalogPlayerTitle">Aggiungi giocatore</h2><form><div class="catalog-player-fields"><label>Nome<input name="name" required maxlength="100" autofocus></label><label>Ruolo<select name="role" required><option value="POR">Portiere</option><option value="DIF">Difensore</option><option value="CEN">Centrocampista</option><option value="ATT">Attaccante</option></select></label><label>Squadra<input name="team" maxlength="80"></label><label>Nazione<input name="nation" maxlength="80"></label><label>Quotazione<input name="quote" type="number" min="0" step="1" value="0" required></label>${tierField}</div><div class="confirm-actions"><button type="button" class="ghost" data-cancel>Annulla</button><button class="primary" type="submit">Aggiungi giocatore</button></div></form></section>`;
     const close = (player = null) => {
       modal.remove();
       resolve(player);

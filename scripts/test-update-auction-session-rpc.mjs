@@ -54,7 +54,8 @@ try {
     throw Error("Il countdown di avvio non è stato programmato.");
   await wait(7100);
   const started = await call("complete_start");
-  if (started.status !== "live") throw Error("L’asta non è stata avviata.");
+  if (started.status !== "live" || !started.bidCountdownEndsAt)
+    throw Error("L’asta non è stata avviata con il timer delle puntate.");
 
   const pause = await call("schedule_pause");
   if (pause.status !== "live" || !pause.countdownEndsAt)
@@ -66,7 +67,7 @@ try {
   const [{ data: auction, error: auctionReadError }, { data: activity, error: activityError }] = await Promise.all([
     supabase
       .from("auctions")
-      .select("status, countdown_ends_at, start_countdown_ends_at, version")
+      .select("status, countdown_ends_at, start_countdown_ends_at, bid_countdown_ends_at, version")
       .eq("code", code)
       .single(),
     supabase
@@ -80,6 +81,7 @@ try {
     auction.status !== "paused" ||
     auction.countdown_ends_at !== null ||
     auction.start_countdown_ends_at !== null ||
+    auction.bid_countdown_ends_at !== null ||
     Number(auction.version) !== 5 ||
     activity.length !== 2
   ) {

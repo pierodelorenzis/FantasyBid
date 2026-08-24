@@ -24,7 +24,8 @@ export function createAuctionUpdater({
     const amountInput = $("#amount");
     if (amountInput && pendingAmount && Number.isFinite(+pendingAmount)) {
       amountInput.value = Math.max(+amountInput.min, +pendingAmount);
-      $("#offerAmount").textContent = money(amountInput.value);
+      const offerAmount = $("#offerAmount");
+      if (offerAmount) offerAmount.textContent = money(amountInput.value);
       if (wasEditingAmount) amountInput.focus();
     }
   };

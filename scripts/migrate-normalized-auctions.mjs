@@ -56,6 +56,8 @@ const auctions = snapshots.map(({ code, state, version }) => ({
   order_by_role: Boolean(state.orderByRole),
   countdown_ends_at: state.countdownEndsAt || null,
   start_countdown_ends_at: state.startCountdownEndsAt || null,
+  bid_duration_seconds: state.bidDurationSeconds || 30,
+  bid_countdown_ends_at: state.bidCountdownEndsAt || null,
   roster_warning: state.rosterWarning || null,
   version,
 }));

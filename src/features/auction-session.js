@@ -1,6 +1,8 @@
 import { api } from "../api.js";
 import { $, renderIcons, toast } from "../ui.js";
 
+let activeCountdownTimer = null;
+
 export function wireAuctionSession({ auction, session, setAuction, renderLive }) {
   showCountdown(auction);
   const close = $("#closePlayer");
@@ -60,7 +62,7 @@ function renderCallPanel({ auction, session, setAuction, renderLive }) {
     CEN: "Centrocampisti",
     ATT: "Attaccanti",
   };
-  panel.innerHTML = `<h2>Chiama un giocatore</h2><p>Seleziona il prossimo nome: i giocatori sono ordinati alfabeticamente per ruolo.</p><div class="caller-groups">${Object.entries(roles).map(([role, label]) => { const list = auction.players.filter((player) => player.role === role).sort((first, second) => first.name.localeCompare(second.name, "it")); return `<section><h3>${label} <small>${list.length}</small></h3>${list.map((player) => { const completed = auction.players.indexOf(player) < auction.currentIndex; const assigned = completed && !!player.highestBid; return `<button class="caller-player ${player.id === auction.currentPlayer?.id ? "current" : ""} ${assigned ? "assigned" : ""} ${completed && !assigned ? "called" : ""}" ${completed ? "disabled" : `data-call-player="${player.id}"`}><span>${player.name}</span><small>${player.team || "—"} · Fascia ${player.tier} · Qt. ${Number.isFinite(+player.quote) ? player.quote : 0}${assigned ? ` · Assegnato a ${player.highestBid.participantName}` : completed ? " · Non assegnato" : ""}</small></button>`; }).join("") || '<p class="muted">Nessun giocatore disponibile.</p>'}</section>`; }).join("")}</div>`;
+  panel.innerHTML = `<h2>Chiama un giocatore</h2><p>Seleziona il prossimo nome: i giocatori sono ordinati alfabeticamente per ruolo.</p><div class="caller-groups">${Object.entries(roles).map(([role, label]) => { const list = auction.players.filter((player) => player.role === role).sort((first, second) => first.name.localeCompare(second.name, "it")); return `<section><h3>${label} <small>${list.length}</small></h3>${list.map((player) => { const completed = auction.players.indexOf(player) < auction.currentIndex; const assigned = completed && !!player.highestBid; return `<button class="caller-player ${player.id === auction.currentPlayer?.id ? "current" : ""} ${assigned ? "assigned" : ""} ${completed && !assigned ? "called" : ""}" ${completed ? "disabled" : `data-call-player="${player.id}"`}><span>${player.name}</span><small>${player.team || "—"}${(auction.tierSettings || []).some((tier) => !tier.implicit) ? ` · Fascia ${player.tier}` : ""} · Qt. ${Number.isFinite(+player.quote) ? player.quote : 0}${assigned ? ` · Assegnato a ${player.highestBid.participantName}` : completed ? " · Non assegnato" : ""}</small></button>`; }).join("") || '<p class="muted">Nessun giocatore disponibile.</p>'}</section>`; }).join("")}</div>`;
   panel.querySelectorAll("[data-call-player]").forEach(
     (button) =>
       (button.onclick = async () => {
@@ -83,26 +85,41 @@ function renderCallPanel({ auction, session, setAuction, renderLive }) {
 }
 
 function showCountdown(auction) {
-  const end = auction.countdownEndsAt || auction.startCountdownEndsAt;
-  if (!end) return;
+  clearInterval(activeCountdownTimer);
+  activeCountdownTimer = null;
+  const end =
+    auction.countdownEndsAt ||
+    auction.startCountdownEndsAt ||
+    auction.bidCountdownEndsAt;
+  if (!end || end <= Date.now()) return;
   const starting = !!auction.startCountdownEndsAt;
+  const lastCall = !!auction.countdownEndsAt;
   const banner = document.createElement("div");
-  banner.className = "auction-countdown" + (starting ? " starting" : "");
+  banner.className =
+    "auction-countdown" +
+    (starting ? " starting" : lastCall ? " last-call" : " bidding");
   banner.innerHTML = starting
     ? '<i data-lucide="play"></i> Asta al via tra <strong>0</strong> secondi'
-    : '<i data-lucide="timer"></i> Giocatore assegnato tra <strong>0</strong> secondi';
+    : lastCall
+      ? '<i data-lucide="timer"></i> Giocatore assegnato tra <strong>0</strong> secondi'
+      : '<i data-lucide="timer"></i> Tempo per puntare: <strong>0</strong> secondi';
   $(".countdown-slot").append(banner);
   renderIcons();
   const counter = banner.querySelector("strong");
-  const visibleDuration = 5000;
+  const visibleDuration = starting || lastCall
+    ? 5000
+    : (auction.bidDurationSeconds || 30) * 1000;
   const startsAt = end - visibleDuration;
-  let timer;
   const update = () => {
     const countdownNow = Math.max(Date.now(), startsAt);
     const seconds = Math.max(0, Math.ceil((end - countdownNow) / 1000));
     counter.textContent = seconds;
-    if (!seconds) clearInterval(timer);
+    if (!seconds) {
+      clearInterval(activeCountdownTimer);
+      activeCountdownTimer = null;
+      banner.remove();
+    }
   };
   update();
-  timer = setInterval(update, 200);
+  if (banner.isConnected) activeCountdownTimer = setInterval(update, 200);
 }

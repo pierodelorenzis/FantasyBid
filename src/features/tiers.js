@@ -7,10 +7,6 @@ export function wireTierManagement({ session, setAuction, renderAdmin }) {
     $$(".remove-tier").forEach(
       (button) =>
         (button.onclick = () => {
-          if ($$(".tier-row").length === 1) {
-            toast("Deve rimanere almeno una fascia");
-            return;
-          }
           button.closest(".tier-row").remove();
         }),
     );
@@ -30,13 +26,14 @@ export function wireTierManagement({ session, setAuction, renderAdmin }) {
       increment: +row.querySelector("[data-tier-increment]").value,
       cap: +row.querySelector("[data-tier-cap]").value,
     }));
+    const bidDurationSeconds = +$("#bidDurationSeconds").value;
     try {
       const result = await api(`/auctions/${session.code}/rules`, {
         method: "POST",
-        body: JSON.stringify({ token: session.token, tiers }),
+        body: JSON.stringify({ token: session.token, tiers, bidDurationSeconds }),
       });
       setAuction(result.auction);
-      toast("Fasce e regole aggiornate");
+      toast(tiers.length ? "Fasce e regole aggiornate" : "Fasce disattivate");
       renderAdmin();
     } catch (error) {
       toast(error.message);

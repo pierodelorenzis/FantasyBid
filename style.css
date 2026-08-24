@@ -825,6 +825,33 @@ button svg,
   outline: 0;
   width: 100%;
 }
+.quick-bids {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 7px;
+  margin-top: 8px;
+}
+.quick-bids button {
+  min-height: 36px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #f8fafc;
+  color: var(--blue);
+  font: 800 12px "DM Mono";
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.quick-bids button:hover {
+  background: #eef2ff;
+  border-color: #a5b4fc;
+}
+.quick-bids button:disabled {
+  background: #eef1f6;
+  border-color: #d8dee8;
+  color: #8b97a9;
+  cursor: not-allowed;
+  opacity: .75;
+}
 .bid-panel .primary {
   width: 100%;
   margin-top: 14px;
@@ -1170,6 +1197,40 @@ button svg,
 }
 .tier-actions .primary {
   margin-top: 0;
+}
+.bid-duration-setting {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 18px 0;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #f8faff;
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 700;
+}
+.bid-duration-setting span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  white-space: nowrap;
+}
+.bid-duration-setting input {
+  width: 76px;
+  min-height: 38px;
+  border: 1px solid #d8dee8;
+  border-radius: 7px;
+  padding: 7px 9px;
+  background: #fff;
+  color: var(--ink);
+  font: 700 14px "DM Mono";
+}
+.bid-duration-setting small {
+  margin-left: auto;
+  color: var(--muted);
+  font-weight: 400;
 }
 .admin-card label {
   font-size: 10px;
@@ -1566,17 +1627,44 @@ button svg,
     height: 42px;
     margin-top: 5px;
   }
+  .quick-bids {
+    grid-area: quick;
+    gap: 3px;
+    margin-top: 7px;
+  }
+  .quick-bids button {
+    min-height: 56px;
+    padding: 0;
+    font-size: 12px;
+  }
   .live-layout {
     padding-bottom: calc(318px + env(safe-area-inset-bottom));
   }
   .bid-composer {
     position: static;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(130px, .85fr);
+    grid-template-areas:
+      "label label"
+      "offer submit"
+      "quick quick";
+    column-gap: 7px;
+  }
+  .bid-composer > label {
+    grid-area: label;
+  }
+  .bid-composer .offer {
+    grid-area: offer;
   }
   .bid-composer #bid {
+    grid-area: submit;
     position: static;
     width: 100%;
-    min-height: 56px;
-    margin: 7px 0 0;
+    min-height: 42px;
+    margin: 5px 0 0;
+    padding: 7px 9px;
+    gap: 6px;
+    font-size: 10px;
     box-shadow: none;
   }
   .bid-composer #bid:disabled {
@@ -1644,6 +1732,13 @@ button svg,
   }
   .admin-card .tier-row {
     grid-template-columns: 1fr 1fr;
+  }
+  .bid-duration-setting {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .bid-duration-setting small {
+    margin-left: 0;
   }
   .admin-card fieldset > b {
     grid-column: 1/-1;
@@ -1930,6 +2025,11 @@ button svg,
   background: #ecfdf3;
   border-color: #22c55e;
   color: #15803d;
+}
+.auction-countdown.bidding {
+  background: #eef2ff;
+  border-color: #6366f1;
+  color: #4338ca;
 }
 .auction-countdown strong::before {
   content: " ";

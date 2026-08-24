@@ -35,6 +35,9 @@ const production = process.env.NODE_ENV === "production";
 const COUNTDOWN_VISIBLE_MS = 5000;
 const COUNTDOWN_SYNC_GRACE_MS = 2000;
 const COUNTDOWN_TOTAL_MS = COUNTDOWN_VISIBLE_MS + COUNTDOWN_SYNC_GRACE_MS;
+const DEFAULT_BID_DURATION_SECONDS = 30;
+const bidCountdownTotalMs = (auction) =>
+  auction.bidDurationSeconds * 1000 + COUNTDOWN_SYNC_GRACE_MS;
 if (production && !supabase)
   throw Error(
     "In produzione sono obbligatorie SUPABASE_URL e SUPABASE_SECRET_KEY",
@@ -196,6 +199,15 @@ function scheduleAtomicSessionCompletion(
       if (auction[countdownKey] !== endsAt) return;
       auction.status = data.status;
       auction[countdownKey] = null;
+      if (type === "start")
+        auction.bidCountdownEndsAt = data.bidCountdownEndsAt;
+      else auction.bidCountdownEndsAt = null;
+      if (type === "start" && auction.bidCountdownEndsAt)
+        scheduleBidCountdownCompletion(
+          auction,
+          administrator,
+          auction.bidCountdownEndsAt,
+        );
       const initialPlayer =
         type === "start" && auction.currentIndex === 0
           ? auction.players[auction.currentIndex]
@@ -225,26 +237,69 @@ function scheduleAtomicSessionCompletion(
     }
   }, delay);
 }
+function scheduleBidCountdownCompletion(auction, administrator, endsAt) {
+  const delay = Math.max(0, endsAt - Date.now()) + 100;
+  setTimeout(async () => {
+    if (
+      auction.bidCountdownEndsAt !== endsAt ||
+      auction.countdownEndsAt ||
+      auction.status !== "live"
+    )
+      return;
+    try {
+      if (atomicBidEnabled && supabase) {
+        const { data, error } = await supabase.rpc(
+          "complete_bid_countdown",
+          {
+            p_auction_code: auction.code,
+            p_admin_token: administrator.token,
+            p_expected_ends_at: endsAt,
+          },
+        );
+        if (error) throw error;
+        if (!data.completed) return;
+      }
+      if (auction.bidCountdownEndsAt !== endsAt) return;
+      auction.status = "paused";
+      auction.bidCountdownEndsAt = null;
+      auction.activity.unshift({
+        name: administrator.name,
+        action: "mette in pausa l’asta",
+      });
+      save(auction.code);
+    } catch (error) {
+      console.error(
+        "Completamento countdown puntata non riuscito:",
+        error.message,
+      );
+    }
+  }, delay);
+}
 storageReady.then(() => {
-  if (!atomicBidEnabled || !supabase) return;
   Object.values(db.auctions).forEach((auction) => {
     const administrator = auction.participants.find(
       (participant) => participant.role === "admin",
     );
     if (!administrator) return;
-    if (auction.startCountdownEndsAt)
+    if (atomicBidEnabled && supabase && auction.startCountdownEndsAt)
       scheduleAtomicSessionCompletion(
         auction,
         administrator,
         "start",
         auction.startCountdownEndsAt,
       );
-    if (auction.countdownEndsAt)
+    if (atomicBidEnabled && supabase && auction.countdownEndsAt)
       scheduleAtomicSessionCompletion(
         auction,
         administrator,
         "pause",
         auction.countdownEndsAt,
+      );
+    if (auction.bidCountdownEndsAt)
+      scheduleBidCountdownCompletion(
+        auction,
+        administrator,
+        auction.bidCountdownEndsAt,
       );
   });
 });
@@ -413,7 +468,20 @@ const defaultTierSettings = () => [
   { name: "B", minQuote: 8, minPrice: 8, increment: 2, cap: 100 },
   { name: "C", minQuote: 0, minPrice: 1, increment: 1, cap: 50 },
 ];
+const implicitTierSetting = () => ({
+  name: "BASE",
+  minQuote: 0,
+  minPrice: 1,
+  increment: 1,
+  cap: 2147483647,
+  implicit: true,
+});
 function ensureTierSettings(auction) {
+  const bidDuration = Number(auction.bidDurationSeconds);
+  auction.bidDurationSeconds =
+    Number.isInteger(bidDuration) && bidDuration >= 5 && bidDuration <= 300
+      ? bidDuration
+      : DEFAULT_BID_DURATION_SECONDS;
   if (!auction.tierSettings?.length) {
     auction.tierSettings = defaultTierSettings().map((tier) => ({
       ...tier,
@@ -610,6 +678,8 @@ const server = http.createServer(async (req, res) => {
           },
         ],
         activity: [],
+        bidDurationSeconds: DEFAULT_BID_DURATION_SECONDS,
+        bidCountdownEndsAt: null,
       };
       db.auctions[auctionCode] = auction;
       await saveNewAuction(auctionCode);
@@ -707,6 +777,7 @@ const server = http.createServer(async (req, res) => {
         if (error) throw Error(error.message);
         rememberState(auction);
         auction.countdownEndsAt = data.countdownEndsAt;
+        auction.bidCountdownEndsAt = null;
         auction.startCountdownEndsAt = null;
         save(auction.code);
         scheduleAtomicSessionCompletion(
@@ -725,6 +796,7 @@ const server = http.createServer(async (req, res) => {
       // first displayed second during this window, so HTTP/SSE latency does not
       // make some participants join an already-consumed countdown.
       auction.countdownEndsAt = Date.now() + COUNTDOWN_TOTAL_MS;
+      auction.bidCountdownEndsAt = null;
       save(auction.code);
       setTimeout(() => {
         if (auction.countdownEndsAt && auction.countdownEndsAt <= Date.now()) {
@@ -758,6 +830,7 @@ const server = http.createServer(async (req, res) => {
           ];
         }
         auction.status = "paused";
+        auction.bidCountdownEndsAt = null;
         auction.rosterWarning = null;
         auction.activity.unshift({
           name: administrator.name,
@@ -779,6 +852,7 @@ const server = http.createServer(async (req, res) => {
         auction.players[auction.currentIndex],
       ];
       auction.status = "paused";
+      auction.bidCountdownEndsAt = null;
       auction.rosterWarning = null;
       save(auction.code);
       return json(res, { auction: publicAuction(auction, body.token) });
@@ -1069,7 +1143,6 @@ const server = http.createServer(async (req, res) => {
         player = auction.players[auction.currentIndex];
       if (!participant || !player) throw Error("Sessione non valida");
       if (atomicBidEnabled && supabase) {
-        const countdownWasActive = Boolean(auction.countdownEndsAt);
         const { data, error } = await supabase.rpc("place_bid", {
           p_auction_code: auction.code,
           p_participant_token: participant.token,
@@ -1082,25 +1155,30 @@ const server = http.createServer(async (req, res) => {
           participantName: data.participantName,
           amount: data.amount,
         };
-        if (countdownWasActive) {
-          const { data: sessionState, error: sessionError } = await supabase
-            .from("auctions")
-            .select("countdown_ends_at")
-            .eq("code", auction.code)
-            .single();
-          if (sessionError) throw Error(sessionError.message);
-          auction.countdownEndsAt = sessionState.countdown_ends_at;
-          const administrator = auction.participants.find(
-            (item) => item.role === "admin",
+        const { data: sessionState, error: sessionError } = await supabase
+          .from("auctions")
+          .select("countdown_ends_at, bid_countdown_ends_at")
+          .eq("code", auction.code)
+          .single();
+        if (sessionError) throw Error(sessionError.message);
+        auction.countdownEndsAt = sessionState.countdown_ends_at;
+        auction.bidCountdownEndsAt = sessionState.bid_countdown_ends_at;
+        const administrator = auction.participants.find(
+          (item) => item.role === "admin",
+        );
+        if (administrator && auction.countdownEndsAt)
+          scheduleAtomicSessionCompletion(
+            auction,
+            administrator,
+            "pause",
+            auction.countdownEndsAt,
           );
-          if (administrator && auction.countdownEndsAt)
-            scheduleAtomicSessionCompletion(
-              auction,
-              administrator,
-              "pause",
-              auction.countdownEndsAt,
-            );
-        }
+        if (administrator && auction.bidCountdownEndsAt)
+          scheduleBidCountdownCompletion(
+            auction,
+            administrator,
+            auction.bidCountdownEndsAt,
+          );
         auction.rosterWarning = data.rosterWarning || null;
         auction.activity.unshift({
           name: data.participantName,
@@ -1153,6 +1231,18 @@ const server = http.createServer(async (req, res) => {
             save(auction.code);
           }
         }, COUNTDOWN_TOTAL_MS + 100);
+      } else {
+        auction.bidCountdownEndsAt =
+          Date.now() + bidCountdownTotalMs(auction);
+        const administrator = auction.participants.find(
+          (item) => item.role === "admin",
+        );
+        if (administrator)
+          scheduleBidCountdownCompletion(
+            auction,
+            administrator,
+            auction.bidCountdownEndsAt,
+          );
       }
       const remainingCredits =
         participant.budget - participant.committed - +body.amount;
@@ -1227,6 +1317,7 @@ const server = http.createServer(async (req, res) => {
       auction.remainingSlots = auction.totalSlots;
       auction.countdownEndsAt = null;
       auction.startCountdownEndsAt = null;
+      auction.bidCountdownEndsAt = null;
       auction.rosterWarning = null;
       auction.activity = [];
       auction.history = [];
@@ -1287,6 +1378,7 @@ const server = http.createServer(async (req, res) => {
         auction.currentIndex++;
         auction.remainingSlots = Math.max(0, auction.remainingSlots - 1);
         auction.status = "paused";
+        auction.bidCountdownEndsAt = null;
         auction.rosterWarning = null;
         auction.activity.unshift({
           name: administrator.name,
@@ -1315,6 +1407,7 @@ const server = http.createServer(async (req, res) => {
         if (starting) {
           auction.startCountdownEndsAt = data.startCountdownEndsAt;
           auction.countdownEndsAt = null;
+          auction.bidCountdownEndsAt = null;
           scheduleAtomicSessionCompletion(
             auction,
             administrator,
@@ -1325,6 +1418,7 @@ const server = http.createServer(async (req, res) => {
           auction.status = data.status;
           auction.countdownEndsAt = null;
           auction.startCountdownEndsAt = null;
+          auction.bidCountdownEndsAt = null;
           auction.activity.unshift({
             name: administrator.name,
             action: "mette in pausa l’asta",
@@ -1344,6 +1438,7 @@ const server = http.createServer(async (req, res) => {
         auction.status = data.status;
         auction.countdownEndsAt = null;
         auction.startCountdownEndsAt = null;
+        auction.bidCountdownEndsAt = null;
         auction.activity.unshift({
           name: administrator.name,
           action: "mette in pausa l’asta",
@@ -1355,6 +1450,7 @@ const server = http.createServer(async (req, res) => {
         if (auction.status === "live") {
           rememberState(auction);
           auction.status = "paused";
+          auction.bidCountdownEndsAt = null;
           auction.activity.unshift({
             name: administrator.name,
             action: "mette in pausa l’asta",
@@ -1376,6 +1472,13 @@ const server = http.createServer(async (req, res) => {
             ) {
               auction.status = "live";
               auction.startCountdownEndsAt = null;
+              auction.bidCountdownEndsAt =
+                Date.now() + bidCountdownTotalMs(auction);
+              scheduleBidCountdownCompletion(
+                auction,
+                administrator,
+                auction.bidCountdownEndsAt,
+              );
               auction.activity.unshift({
                 name: administrator.name,
                 action: "avvia l’asta",
@@ -1388,14 +1491,14 @@ const server = http.createServer(async (req, res) => {
       if (bits[3] === "pause") {
         rememberState(auction);
         auction.status = "paused";
+        auction.bidCountdownEndsAt = null;
         auction.activity.unshift({
           name: administrator.name,
           action: "mette in pausa l’asta",
         });
       }
       if (bits[3] === "rules") {
-        if (!Array.isArray(body.tiers) || !body.tiers.length)
-          throw Error("Inserisci almeno una fascia");
+        if (!Array.isArray(body.tiers)) throw Error("Fasce non valide");
         const names = new Set();
         const tierSettings = body.tiers.map((tier) => {
           const name = String(tier.name || "")
@@ -1419,7 +1522,16 @@ const server = http.createServer(async (req, res) => {
             throw Error("Valori della fascia non validi");
           return values;
         });
+        if (!tierSettings.length) tierSettings.push(implicitTierSetting());
         tierSettings.sort((first, second) => second.minQuote - first.minQuote);
+        const bidDurationSeconds = Number(body.bidDurationSeconds);
+        let storedBidCountdownEndsAt = null;
+        if (
+          !Number.isInteger(bidDurationSeconds) ||
+          bidDurationSeconds < 5 ||
+          bidDurationSeconds > 300
+        )
+          throw Error("La durata delle puntate deve essere tra 5 e 300 secondi");
         if (atomicBidEnabled && supabase) {
           const { error } = await supabase.rpc("apply_auction_tiers", {
             p_auction_code: auction.code,
@@ -1428,8 +1540,35 @@ const server = http.createServer(async (req, res) => {
             p_tiers: tierSettings,
           });
           if (error) throw Error(error.message);
+          const { error: durationError } = await supabase.rpc(
+            "set_bid_duration",
+            {
+              p_auction_code: auction.code,
+              p_admin_token: administrator.token,
+              p_duration_seconds: bidDurationSeconds,
+            },
+          );
+          if (durationError) throw Error(durationError.message);
+          const { data: sessionState, error: sessionError } = await supabase
+            .from("auctions")
+            .select("bid_countdown_ends_at")
+            .eq("code", auction.code)
+            .single();
+          if (sessionError) throw Error(sessionError.message);
+          storedBidCountdownEndsAt = sessionState.bid_countdown_ends_at;
         }
         rememberState(auction);
+        auction.bidDurationSeconds = bidDurationSeconds;
+        if (auction.status === "live" && !auction.countdownEndsAt)
+          auction.bidCountdownEndsAt =
+            storedBidCountdownEndsAt ||
+            Date.now() + bidCountdownTotalMs(auction);
+        if (auction.bidCountdownEndsAt)
+          scheduleBidCountdownCompletion(
+            auction,
+            administrator,
+            auction.bidCountdownEndsAt,
+          );
         auction.tierSettings = tierSettings;
         ensureTierSettings(auction);
         recalculateTiers(auction);
@@ -1454,6 +1593,7 @@ const server = http.createServer(async (req, res) => {
         auction.currentIndex++;
         auction.remainingSlots = Math.max(0, auction.remainingSlots - 1);
         auction.status = "paused";
+        auction.bidCountdownEndsAt = null;
         auction.rosterWarning = null;
         auction.activity.unshift({
           name: administrator.name,

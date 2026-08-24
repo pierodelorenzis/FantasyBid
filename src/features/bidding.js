@@ -1,5 +1,5 @@
 import { api } from "../api.js";
-import { $, money, toast } from "../ui.js";
+import { $, $$, money, toast } from "../ui.js";
 
 const pendingBids = new Set();
 
@@ -30,7 +30,8 @@ export function wireBidding({
   if (amount) {
     const changeAmount = (step) => {
       amount.value = Math.max(+amount.min, +amount.value + step);
-      $("#offerAmount").textContent = money(amount.value);
+      const offerAmount = $("#offerAmount");
+      if (offerAmount) offerAmount.textContent = money(amount.value);
     };
     const wireAmountButton = (button, step) => {
       button.onclick = () => changeAmount(step);
@@ -46,30 +47,29 @@ export function wireBidding({
     };
     wireAmountButton($("#plus"), 1);
     wireAmountButton($("#minus"), -1);
-    amount.oninput = () =>
-      ($("#offerAmount").textContent = money(amount.value));
+    amount.oninput = () => {
+      const offerAmount = $("#offerAmount");
+      if (offerAmount) offerAmount.textContent = money(amount.value);
+    };
     const bidButton = $("#bid");
+    const quickButtons = [...$$("[data-quick-bid]")];
     const pendingKey = `${session.code}:${session.token}`;
-    setBidLoading(bidButton, pendingBids.has(pendingKey));
-    bidButton.ondblclick = (event) => event.preventDefault();
-    bidButton.addEventListener(
-      "touchend",
-      (event) => {
-        event.preventDefault();
-        bidButton.click();
-      },
-      { passive: false },
+    const pending = pendingBids.has(pendingKey);
+    setBidLoading(bidButton, pending);
+    quickButtons.forEach(
+      (button) => (button.disabled = pending || !auction.canBid),
     );
-    bidButton.onclick = async () => {
+    const submitBid = async (bidAmount) => {
       if (pendingBids.has(pendingKey)) return;
       pendingBids.add(pendingKey);
       setBidLoading(bidButton, true);
+      quickButtons.forEach((button) => (button.disabled = true));
       try {
         const response = await api(`/auctions/${session.code}/bid`, {
           method: "POST",
           body: JSON.stringify({
             token: session.token,
-            amount: +amount.value,
+            amount: bidAmount,
           }),
         });
         setAuction(response.auction);
@@ -82,8 +82,42 @@ export function wireBidding({
         setBidLoading(bidButton, false);
         bidButton.innerHTML = `Fai la tua offerta <span id="offerAmount">${money(amount.value)}</span>`;
         bidButton.disabled = !auction.canBid;
+        quickButtons.forEach(
+          (button) => (button.disabled = !auction.canBid),
+        );
       }
     };
+    quickButtons.forEach((button) => {
+      const submitQuickBid = () => {
+        const lastValidBid = Number.isFinite(
+          +auction.currentPlayer?.highestBid?.amount,
+        )
+          ? +auction.currentPlayer.highestBid.amount
+          : 0;
+        const quickAmount = lastValidBid + +button.dataset.quickBid;
+        submitBid(quickAmount);
+      };
+      button.onclick = submitQuickBid;
+      button.addEventListener(
+        "touchend",
+        (event) => {
+          event.preventDefault();
+          submitQuickBid();
+        },
+        { passive: false },
+      );
+      button.ondblclick = (event) => event.preventDefault();
+    });
+    bidButton.ondblclick = (event) => event.preventDefault();
+    bidButton.addEventListener(
+      "touchend",
+      (event) => {
+        event.preventDefault();
+        bidButton.click();
+      },
+      { passive: false },
+    );
+    bidButton.onclick = () => submitBid(+amount.value);
   }
 
   const bid = $("#bid");
